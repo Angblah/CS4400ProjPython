@@ -1,0 +1,75 @@
+<!-- Admin Navbar-->
+<div class="container-fluid">
+    <nav class="navbar navbar-inverse">
+        <ul class="nav navbar-nav">
+            <li class="nav-item">
+                <a class="nav-link" href="#">View Applications</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Popular Project Report</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Application Report</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Add a Project</a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="#">Add a Course</a>
+            </li>
+        </ul>
+        <a class="navbar-brand" href="#">Log Out</a>
+    </nav>
+</div>
+<!-- Admin Navbar-->
+    
+<div class="container">
+    <div class="jumbotron">
+        <h1 class="display-3">Add Course</h1>
+        <form id="registerform" method ="post" action="/register">
+            <div class="form-group">
+                <label for="username"> Course Number </label>
+                <input id="username" class="form-control" type="text" name="username" placeholder="Course Number">
+            </div>
+            <div class="form-group">
+                <label for="email"> Course Name </label>
+                <input id="email" class="form-control" type="text" name="email" placeholder="Course Name">
+            </div>
+            <div class="form-group">
+                <label for="password"> Course Instructor </label>
+                <input id="password" class="form-control" type="text" name="password" placeholder="Course Instructor">
+            </div>
+            <div class="form-group">
+                <label for="confpassword"> Confirm Password </label>
+                <input id="confpassword" class="form-control" type="text" name="confpassword" placeholder="Confirm Password">
+            </div>
+            <div class="form-group">
+                <label for="majorSelect"> Designation </label>
+                <select class="form-control" id="majorSelect">
+                <option>Sustainable Communities</option>
+                <option>Community</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="majorSelect"> Category </label>
+                <select class="form-control" id="majorSelect">
+                    <option>Computing for Good</option>
+                    <option>Doing Good for Your Neighborhood</option>
+                    <option>Reciprocal Teaching and Learning</option>
+                    <option>Urban Development</option>
+                    <option>Adaptive Learning</option>
+                    <option>Technology for Social Good</option>
+                    <option>Sustainable Communities</option>
+                    <option>Crowd-sourced</option>
+                    <option>Collaborative Action</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="confpassword"> Estimated Number of Students </label>
+                <input id="confpassword" class="form-control" type="text" name="confpassword" placeholder="# of Students">
+            </div>
+            <button id="cancel-btn" class="btn btn-primary" type="submit">Clear</button>
+            <button id="register-btn" class="btn btn-primary" type="submit">Add Course</button>
+        </form>
+    </div>
+</div>
