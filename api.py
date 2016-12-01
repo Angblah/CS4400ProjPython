@@ -58,7 +58,11 @@ class CreateUser(Resource):
                 else:
                     return {'status':100,'message':'Register failure'}
             conn.commit()
-            return {'status':200,'user': {'username': _userUsername, 'userType':'Student'}}
+            #Format return into JSON object
+            userData = {'username': _userUsername, 'userType':'Student'}
+            js = json.dumps(userData)
+            resp = Response(js, status=200, mimetype='application/json')
+            return resp
 
         except Exception as e:
             return {'error': str(e)}
@@ -86,7 +90,8 @@ class AuthenticateUser(Resource):
 
             if(len(data)>0):
                 if(data):
-                    userData = {'username'  : data[0][0],'userType' : data[0][2]}
+                    #Format return into JSON object
+                    userData = {'username': data[0][0], 'userType': data[0][2]}
                     js = json.dumps(userData)
                     resp = Response(js, status=200, mimetype='application/json')
                     return resp

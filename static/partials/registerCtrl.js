@@ -13,9 +13,9 @@ angular.module('myApp').controller('registerController',
         // handle success
         .success(function (data) {
           //$location.path('/main');
-          if (data.user) {
+          if (data.username) {
             $scope.disabled = false;
-            $scope.username = data.user.username;
+            $scope.username = data.username;
             $location.path('/main');
             $scope.registerform = {};
           } else {
