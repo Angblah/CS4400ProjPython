@@ -16,11 +16,11 @@ angular.module('myApp').controller('loginController',
           //$location.path('/main');
           if (data) {
             $scope.disabled = false;
-            $scope.username = data.user.username;
+            $scope.username = data.username;
             // redirect to main page depending on type
-            if (data.user.userType == "Student") {
+            if (data.userType == "Student") {
               $location.path('/main');
-            } else if (data.user.userType == "Admin") {
+            } else if (data.userType == "Admin") {
               $location.path('/adminapps');
             }
             $location

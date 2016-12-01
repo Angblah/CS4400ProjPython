@@ -1,8 +1,6 @@
-from flask import Flask
-from flask_restful import Resource, Api
-from flask_restful import reqparse
+from flask import Flask, Response, json, send_file
+from flask_restful import Resource, Api, reqparse
 from flaskext.mysql import MySQL
-from flask import send_file
 
 mysql = MySQL()
 app = Flask(__name__)
@@ -62,7 +60,10 @@ class AuthenticateUser(Resource):
 
             if(len(data)>0):
                 if(data):
-                    return {'status':200,'user': {'username': data[0][0], 'userType': data[0][2]}}
+                    userData = {'username'  : data[0][0],'userType' : data[0][2]}
+                    js = json.dumps(userData)
+                    resp = Response(js, status=200, mimetype='application/json')
+                    return resp
                 else:
                     return {'status':100,'message':'Authentication failure'}
 
