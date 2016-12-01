@@ -24,16 +24,14 @@
       <div class="row form-group">
         <div class="col-lg-6">
           <label for="title"> Title </label>
-          <input id="title" class="form-control" type="text" name="title" placeholder="">
+          <input id="title" class="form-control" type="text" name="title" ng-model="search.title" placeholder="">
         </div>
 
         <!-- must use a dropdown for category -->
         <div class="col-lg-3">
           <label for="category">Category</label>
-          <select class="form-control" id="category">
-            <option value="" hidden>Please Select</option>
-            <option>Category 1</option>
-            <option>Category 2</option>
+          <select class="form-control" id="category" ng-model="data.category">
+          <option ng-repeat="category in data.availableCategories" value="{{category.id}}">{{category.name}}</option>
           </select>
         </div>
       </div>
@@ -41,7 +39,7 @@
       <div class="row form-group">
         <div class="col-lg-6">
           <label for="designation">Designation</label>
-          <select class="form-control" id="designation">
+          <select class="form-control" id="designation" ng-model="search.designation">
             <option value="" hidden>Please Select</option>
             <option>Sustainable Communities</option>
             <option>Community</option>
@@ -50,7 +48,7 @@
 
         <div class="col-lg-3">
           <label for="major">Major</label>
-          <select class="form-control" id="major">
+          <select class="form-control" id="major" ng-model="search.major">
             <option value="" hidden>Please Select</option>
             <option>Major 1</option>
             <option>Major 2</option>
@@ -60,7 +58,7 @@
         <!-- leave hardcoded -->
         <div class="col-lg-3">
           <label for="year">Year</label>
-          <select class="form-control" id="year">
+          <select class="form-control" id="year" ng-model="search.year">
             <option value="" hidden>Please Select</option>
             <option>Freshman</option>
             <option>Sophomore</option>

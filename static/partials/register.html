@@ -2,25 +2,26 @@
     <div class="jumbotron">
         <h1 class="display-3">Register Here!</h1>
         <div ng-show="error" class="alert alert-danger">//errorMessage//</div>
-        <form id="registerform" ng-submit="register()">
+        <form id="registerform">
             <div class="form-group">
                 <label for="username"> Username </label>
-                <input id="username" class="form-control" type="text" name="username" ng-model="registerform.username" placeholder="Username">
+                <input id="username" class="form-control" type="text" name="username" ng-model="registerform.username" placeholder="Username" required>
             </div>
             <div class="form-group">
                 <label for="email"> GT Email Address </label>
-                <input id="email" class="form-control" type="email" name="email" ng-model="registerform.email" placeholder="Email">
+                <input id="email" class="form-control" type="email" name="email" ng-model="registerform.email" placeholder="Email" required>
             </div>
             <div class="form-group">
                 <label for="password"> Password </label>
-                <input id="password" class="form-control" type="password" name="password" ng-model="registerform.password"placeholder="Password">
+                <input id="password" class="form-control" type="password" name="password" ng-model="registerform.password" placeholder="Password" required>
             </div>
             <div class="form-group">
                 <label for="confpassword"> Confirm Password </label>
-                <input id="confpassword" class="form-control" type="password" name="confpassword" ng-model="registerform.confpassword" placeholder="Confirm Password">
+                <input id="confpassword" class="form-control" type="password" name="confpassword" ng-model="registerform.confpassword" placeholder="Confirm Password" required>
+                <!-- <span ng-show="registerform.confpassword.$invalid">Passwords must match.</span> -->
             </div>
             <button id="cancel-btn" class="btn btn-primary" onclick="location.href='#/'">Cancel</button>
-            <button id="register-btn" class="btn btn-primary" ng-click="register()">Register</button>
+            <button id="register-btn" class="btn btn-primary" ng-disabled="registerform.$invalid" ng-click="register()">Register</button>
         </form>
     </div>
 </div>

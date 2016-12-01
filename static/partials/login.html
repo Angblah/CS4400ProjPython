@@ -2,7 +2,7 @@
     <div class="jumbotron">
         <h1 class="display-3">Login to SLS Courses and Projects!</h1>
         <div ng-show="error" class="alert alert-danger">//errorMessage//</div>
-        <form id="loginform" ng-submit="authenticate()">
+        <form id="loginform">
             <div class="form-group">
                 <label for="username"> Username </label>
                 <input id="username" class="form-control" type="text" name="username" ng-model="loginForm.username" placeholder="Username">
@@ -11,7 +11,6 @@
                 <label for="password"> Password </label>
                 <input id="password" class="form-control" type="password" name="password" ng-model="loginForm.password" placeholder="Password">
             </div>
-            <button id="username-btn" class="btn btn-primary" ng-disabled="disabled">//username//</button>
             <button id="login-btn" class="btn btn-primary" ng-click="authenticate()">Login</button>
             <button id="register-pg-btn" class="btn btn-primary" onclick="location.href='#/register'"> Sign Up </a></button>
         </form>
