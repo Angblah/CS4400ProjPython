@@ -95,7 +95,7 @@ class AuthenticateUser(Resource):
 
         except Exception as e:
             return {'error': str(e)}
-class searchProjects(Resource):
+class SearchProjects(Resource):
     # def post(self):
     #     try:
     #         # Parse the arguments
@@ -139,7 +139,7 @@ class searchProjects(Resource):
 
 api.add_resource(CreateUser, '/api/CreateUser')
 api.add_resource(AuthenticateUser, '/api/AuthenticateUser')
-api.add_resource(CreateUser, '/api/CreateUser')
+api.add_resource(SearchProjects, '/api/SearchProjects')
 
 
 if __name__ == '__main__':
