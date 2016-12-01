@@ -11,10 +11,13 @@ angular.module('myApp').factory('UserService',
         //Post request to server
         return $http.post('/api/AuthenticateUser', {username: username, password: password})
         .success(function(data) {
+            console.log("Success occured");
+            user = data.user.username;
+            isLoggedIn = true;
             return data;
         })
         .error(function(data, status) {
-            console.error("Authenticate User Error", status, data);
+            console.error("Services: Authenticate User Error", status, data);
         });
     }
 
