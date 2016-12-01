@@ -1,4 +1,3 @@
-
 angular.module('myApp').controller('loginController',
   ['$scope', '$location', 'UserService',
   function ($scope, $location, UserService) {
