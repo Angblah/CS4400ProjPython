@@ -9,7 +9,7 @@ myApp.config(function ($routeProvider) {
     })
     .when('/register', {
         templateUrl: 'static/partials/register.html',
-        controller: 'loginController'
+        controller: 'registerController'
     })
     //Student Partials
     .when('/main', {
