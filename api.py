@@ -68,9 +68,52 @@ class AuthenticateUser(Resource):
 
         except Exception as e:
             return {'error': str(e)}
+class searchProjects(Resource):
+    # def post(self):
+    #     try:
+    #         # Parse the arguments
+    #         parser = reqparse.RequestParser()
+    #         parser.add_argument('title', type=str, help='Title of project')
+    #         parser.add_argument('category', type=str, help='Category of project')
+    #         parser.add_argument('designation', type=str, help='Designation of project')
+    #         parser.add_argument('major', type=str, help='Major of project')
+    #         parser.add_argument('year', type=str, help='Year of project')
+    #         parser.add_argument('type', type=str, help='Type of project')
+    #         args = parser.parse_args()
+
+    #         _projTitle = args['title']
+    #         _projCateogry = args['category']
+    #         _projDesignation = args['designation']
+    #         _projMajor = args['major']
+    #         _projYear = args['year']
+    #         _projType = args['type']
+
+    #         conn = mysql.connect()
+    #         cursor = conn.cursor()
+    #         #Could try string formatting for statement execute
+    #         #Check for username AND password match in user table
+    #         stmt = "SELECT * FROM projects"
+    #         cursor.execute(stmt)
+    #         data = cursor.fetchall()
+    def getCategory(self):
+        try:
+            conn = mysql.connect()
+            cursor = conn.cursor()
+            stmt = "SELECT * FROM category"
+            cursor.execute(stmt)
+            data = cursor.fetchall()
+            if(len(data)>0):
+                if(data):
+                    return {'status':200,'categories': {'categories': data[0][0]}}
+                else:
+                    return {'status':100,'message':'Failure'}
+        except Exception as e:
+            return {'error': str(e)}
 
 api.add_resource(CreateUser, '/api/CreateUser')
 api.add_resource(AuthenticateUser, '/api/AuthenticateUser')
+api.add_resource(CreateUser, '/api/CreateUser')
+
 
 if __name__ == '__main__':
     app.run()
