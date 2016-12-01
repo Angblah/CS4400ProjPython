@@ -26,15 +26,41 @@ class CreateUser(Resource):
         try:
             # Parse the arguments
             parser = reqparse.RequestParser()
-            parser.add_argument('username', type=str, help='Email address to create user')
-            parser.add_argument('')
+            parser.add_argument('username', type=str, help='Username to create user')
+            parser.add_argument('email', type=str, help='Email to create user')
             parser.add_argument('password', type=str, help='Password to create user')
             args = parser.parse_args()
 
+            _userUsername = args['username']
             _userEmail = args['email']
             _userPassword = args['password']
 
-            return {'Email': args['email'], 'Password': args['password']}
+            conn = mysql.connect()
+            cursor = conn.cursor()
+
+            # insert into user (username, password, usertype)
+            stmt1 = "INSERT INTO user VALUES ('{}', '{}', 'Student')".format(_userUsername,_userPassword)
+
+            cursor.execute(stmt1)
+            data1 = cursor.fetchall() #no data should be returned?
+            if(len(data1)>0):
+                if(data1):
+                    print ('data 1 failure' + data1)
+                else:
+                    return {'status':100,'message':'Register failure'}
+            conn.commit()
+
+            # insert into student (Username, Email, Major_Name, Year)
+            stmt2 = "INSERT INTO student (Username, Email) VALUES ('{}', '{}')".format(_userUsername,_userEmail)
+            cursor.execute(stmt2)
+            data2 = cursor.fetchall() #no data should be returned?
+            if(len(data2)>0):
+                if(data2):
+                    print ('data 2 failure' + data2)
+                else:
+                    return {'status':100,'message':'Register failure'}
+            conn.commit()
+            return {'status':200,'user': {'username': _userUsername, 'userType':'Student'}}
 
         except Exception as e:
             return {'error': str(e)}
