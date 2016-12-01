@@ -2,7 +2,12 @@ angular.module('myApp').factory('UserService',
 ['$timeout', '$http', function ($timeout, $http) {
 
     var user = null;
+<<<<<<< HEAD
 
+=======
+    var isLoggedIn = false;
+    
+>>>>>>> origin/master
     function authenticate(username, password) {
         //http://twisted.readthedocs.io/en/twisted-16.2.0/core/howto/defer-intro.html
         //See above on deffereds for async code
@@ -31,6 +36,11 @@ angular.module('myApp').factory('UserService',
 
     return ({
         authenticate: authenticate,
+<<<<<<< HEAD
         register: register
+=======
+        user: user,
+        isLoggedIn: isLoggedIn
+>>>>>>> origin/master
     });
 }]);
