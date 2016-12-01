@@ -26,7 +26,8 @@ class CreateUser(Resource):
         try:
             # Parse the arguments
             parser = reqparse.RequestParser()
-            parser.add_argument('email', type=str, help='Email address to create user')
+            parser.add_argument('username', type=str, help='Email address to create user')
+            parser.add_argument('')
             parser.add_argument('password', type=str, help='Password to create user')
             args = parser.parse_args()
 
@@ -49,21 +50,19 @@ class AuthenticateUser(Resource):
 
             _userUsername = args['username']
             _userPassword = args['password']
+            isStudent = False
 
             conn = mysql.connect()
             cursor = conn.cursor()
             #Could try string formatting for statement execute
-            ''' 
-                stmt = "SELECT * FROM student WHERE Username='{}'"
-                cursor.execute(stmt);
-            '''                
-            cursor.execute("SELECT * FROM student where Username='" + _userUsername + "'")
+            #Check for username AND password match in user table
+            stmt = "SELECT * FROM user WHERE Username='{}' AND Password='{}'".format(_userUsername,_userPassword)
+            cursor.execute(stmt)
             data = cursor.fetchall()
 
             if(len(data)>0):
                 if(data):
-                    return {'status':200,'student': {'username': data[0][0],
-                    'email': data[0][1], 'Major_Name': data[0][2], 'Year': data[0][3]}}
+                    return {'status':200,'user': {'username': data[0][0], 'userType': data[0][2]}}
                 else:
                     return {'status':100,'message':'Authentication failure'}
 

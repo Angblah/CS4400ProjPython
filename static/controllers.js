@@ -17,7 +17,14 @@ angular.module('myApp').controller('loginController',
           //$location.path('/main');
           if (data) {
             $scope.disabled = false;
-            $scope.username = data.student.username;
+            $scope.username = data.user.username;
+            // redirect to main page depending on type
+            if (data.user.userType == "Student") {
+              $location.path('/main');
+            } else if (data.user.userType == "Admin") {
+              $location.path('/adminapps');
+            }
+            $location
             $scope.loginForm = {};
           } else {
             $scope.error = true;
