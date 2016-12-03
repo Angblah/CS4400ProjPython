@@ -14,7 +14,7 @@ myApp.config(function ($routeProvider) {
     //Student Partials
     .when('/main', {
         templateUrl: 'static/partials/student/main.html',
-        controller: 'loginController'
+        controller: 'searchController'
     })
     .when('/profile', {
         templateUrl: 'static/partials/student/profile.html',

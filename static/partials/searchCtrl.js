@@ -1,11 +1,14 @@
-angular.module('myApp').controller('searchController',
-	['$scope', '$location', 'SearchService',
-	function ($scope, $location, SearchService) {
-		
-		$scope.data = {
-			availableCategories: [
-				{id: '1', name: 'asdf'},
-				{id: '2', name: 'bsdf'}
-			]
-		};
+angular.module('myApp')
+ .controller('searchController', ['$scope', function($scope) {
+   $scope.data = {
+    model: null,
+    availableOptions: [
+         {value: 'myString', name: 'string'},
+         {value: 1, name: 'integer'},
+         {value: true, name: 'boolean'},
+         {value: null, name: 'null'},
+         {value: {prop: 'value'}, name: 'object'},
+         {value: ['a'], name: 'array'}
+    ]
+   };
 }]);

@@ -28,12 +28,16 @@
         </div>
 
         <!-- must use a dropdown for category -->
-        <div class="col-lg-3">
-          <label for="category">Category</label>
-          <select class="form-control" id="category" ng-model="data.category">
-          <option ng-repeat="category in data.availableCategories" value="{{category.id}}">{{category.name}}</option>
-          </select>
-        </div>
+<div ng-controller="searchController">
+  <form name="myForm">
+    <label for="ngvalueselect"> Category: </label>
+    <select size="1" name="ngvalueselect" ng-model="data.model" multiple>
+      <option ng-repeat="option in data.availableOptions" ng-value="option.value">//option.name//</option>
+    </select>
+  </form>
+  <hr>
+  <pre>model = //data.model | json//</pre><br/>
+</div>
       </div>
 
       <div class="row form-group">
