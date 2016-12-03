@@ -148,6 +148,37 @@ class GetDesignation(Resource):
                     return {'status':100,'message':'Failure'}
         except Exception as e:
             return {'error': str(e)}
+class GetMajor(Resource):
+    def get(self):
+        try:
+            conn = mysql.connect()
+            cursor = conn.cursor()
+            stmt = "SELECT Major_Name FROM major"
+            cursor.execute(stmt)
+            data = cursor.fetchall()
+            if(len(data)>0):
+                if(data):
+                    return data
+                else:
+                    return {'status':100,'message':'Failure'}
+        except Exception as e:
+            return {'error': str(e)}
+class GetDesignation(Resource):
+    def get(self):
+        try:
+            conn = mysql.connect()
+            cursor = conn.cursor()
+            stmt = "SELECT NAME FROM designation"
+            cursor.execute(stmt)
+            data = cursor.fetchall()
+            data = cursor.fetchall()
+            if(len(data)>0):
+                if(data):
+                    return data
+                else:
+                    return {'status':100,'message':'Failure'}
+        except Exception as e:
+            return {'error': str(e)}
 
 class AddCourse(Resource):
     # Handles loading of categories, designation, major, department
