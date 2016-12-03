@@ -19,7 +19,7 @@ def login():
 
 api = Api(app)
 
-class CreateUser(Resource):
+class Student(Resource):
     def post(self):
         try:
             # Parse the arguments
@@ -64,6 +64,73 @@ class CreateUser(Resource):
             resp = Response(js, status=200, mimetype='application/json')
             return resp
 
+        except Exception as e:
+            return {'error': str(e)}
+
+    def get(self):
+        try:
+            # Parse the arguments
+            parser = reqparse.RequestParser()
+            parser.add_argument('username', type=str, help='Username to filter the student')
+            args = parser.parse_args()
+
+            _userUsername = args['username']
+
+            conn = mysql.connect()
+            cursor = conn.cursor()
+
+            # Select all student info for profile
+            stmt = "SELECT * FROM student WHERE Username='{}'".format(_userUsername)
+            cursor.execute(stmt)
+            data = cursor.fetchall()
+
+            stmt = "SELECT DEPARTMENT FROM major WHERE Major_Name='{}'".format(data[0][2])
+            cursor.execute(stmt2)
+            department = cursor.fetchall()
+
+            #Format return into JSON object
+            if(len(data)>0):
+                if(data):
+                    #Format return into JSON object
+                    studentData = {'username': data[0][0], 'email': data[0][1], 'major_name': data[0][2], 'department': department[0][1], 'year': data[0][3]}
+                    js = json.dumps(studentData)
+                    resp = Response(js, status=200, mimetype='application/json')
+                    return resp
+                else:
+                    return {'status':100,'message':'Student Get failure'}
+
+        except Exception as e:
+            return {'error': str(e)}
+        
+    def put(self):
+        try:
+            # Parse the arguments
+            parser = reqparse.RequestParser()
+            parser.add_argument('username', type=str, help='Username to select user to update')
+            parser.add_argument('major_name', type=str, help='Major name to update')
+            parser.add_argument('year', type=str, help='Year to update')
+            args = parser.parse_args()
+
+            _userUsername = args['username']
+            _userMjr = args['major_name']
+            _userYear = args['year']
+
+            conn = mysql.connect()
+            cursor = conn.cursor()
+
+            # insert into user (username, password, usertype)
+            stmt = "UPDATE student SET Major_Name='{}', Year='{}' WHERE Username='{}'".format(_userMjr, _userYear, _userUsername)
+            cursor.execute(stmt)
+            data = cursor.fetchall() #no data should be returned?
+
+            #Format return into JSON object
+            if(len(data)>0):
+                return {'status':100,'message':'Update student failure'}
+
+            userData = {'username': _userUsername}
+            js = json.dumps(userData)
+            resp = Response(js, status=200, mimetype='application/json')
+            return resp
         except Exception as e:
             return {'error': str(e)}
 
@@ -142,7 +209,7 @@ class SearchProjects(Resource):
         except Exception as e:
             return {'error': str(e)}
 
-api.add_resource(CreateUser, '/api/CreateUser')
+api.add_resource(Student, '/api/Student')
 api.add_resource(AuthenticateUser, '/api/AuthenticateUser')
 api.add_resource(SearchProjects, '/api/SearchProjects')
 

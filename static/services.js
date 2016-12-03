@@ -1,8 +1,7 @@
 angular.module('myApp').factory('UserService',
 ['$timeout', '$http', function ($timeout, $http) {
 
-    var user = null;
-
+    var username = null;
     var isLoggedIn = false;
 
     function authenticate(username, password) {
@@ -12,19 +11,18 @@ angular.module('myApp').factory('UserService',
         //Post request to server
         return $http.post('/api/AuthenticateUser', {username: username, password: password})
         .success(function(data) {
-            console.log("Success occured");
-            user = data.user.username;
+            username = data.user.username;
             isLoggedIn = true;
             return data;
         })
         .error(function(data, status) {
-            console.error("Services: Authenticate User Error", status, data);
+            console.error("Authenticate User Error", status, data);
         });
     }
 
     function register(username, email, password) {
       //Post request to server (api.py)
-      return $http.post('/api/CreateUser', {username: username, email: email, password: password})
+      return $http.post('/api/Student', {username: username, email: email, password: password})
       .success(function(data) {
           return data;
       })
@@ -33,11 +31,31 @@ angular.module('myApp').factory('UserService',
       });
     }
 
+    function getStudent(username) {
+        return $http.get('/api/Student', {username: username})
+        .success(function (data) {
+            return data;
+        })
+        .error(function(data,status) {
+            console.error("Get Student Error", status, data);
+        });
+    }
+
+    function updateStudent(username, major_name, year) {
+        return $http.put('/api/Student', {username: username, major_name: major_name, year: year})
+        .success(function (data) {
+            return data;
+        })
+        .error(function(data,status) {
+            console.error("Update Student Error", status, data);
+        });
+    }
+
 
     return ({
         authenticate: authenticate,
         register: register,
-        user: user,
+        username: username,
         isLoggedIn: isLoggedIn
     });
 }]);
