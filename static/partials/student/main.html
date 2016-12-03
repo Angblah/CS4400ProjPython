@@ -28,31 +28,33 @@
         </div>
 
         <!-- must use a dropdown for category -->
-        <div class="col-lg-3">
-          <label for="category">Category</label>
-          <select class="form-control" id="category" ng-model="data.category">
-          <option ng-repeat="category in data.availableCategories" value="{{category.id}}">{{category.name}}</option>
-          </select>
-        </div>
+<div ng-controller="searchController">
+  <form name="myForm">
+    <label for="category"> Category: </label>
+    <select size="1" name="category" ng-model="data.model" multiple>
+      <option ng-repeat="option in data.categories" ng-value="option.value">//option[0]//</option>
+    </select>
+  </form>
+  <hr>
+  <pre>model = //data.model | json//</pre><br/>
+</div>
       </div>
 
-      <div class="row form-group">
+      <div class="row form-group" ng-controller="searchController">
         <div class="col-lg-6">
-          <label for="designation">Designation</label>
-          <select class="form-control" id="designation" ng-model="search.designation">
-            <option value="" hidden>Please Select</option>
-            <option>Sustainable Communities</option>
-            <option>Community</option>
-          </select>
+          <label for="designations">Designation</label>
+          <select name="designations" ng-model="data.model">
+      <option ng-repeat="option in data.designations" ng-value="//option.value//">//option[0]//</option>
+    </select>
         </div>
 
-        <div class="col-lg-3">
+        <div class="col-lg-3" ng-controller="searchController">
           <label for="major">Major</label>
-          <select class="form-control" id="major" ng-model="search.major">
-            <option value="" hidden>Please Select</option>
-            <option>Major 1</option>
-            <option>Major 2</option>
-          </select>
+          <select name="major" ng-model="data.model">
+      <option ng-repeat="option in data.majors" ng-value="//option.value//">//option[0]//</option>
+    </select>
+    <pre>model = //data.model//</pre><br/>
+
         </div>
 
         <!-- leave hardcoded -->

@@ -59,3 +59,4 @@ angular.module('myApp').factory('UserService',
         isLoggedIn: isLoggedIn
     });
 }]);
+
