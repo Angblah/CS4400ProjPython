@@ -204,7 +204,7 @@ class AddCourse(Resource):
             cursor.execute(stmtDepts)
             depData = cursor.fetchall()
 
-            if(len(catData) > 0 and len(desData) > 0 
+            if(len(catData) > 0 and len(desData) > 0
                 and len(majorData) > 0 and len(depData) > 0):
 
                 if(catData and desData and majorData and depData):
@@ -237,7 +237,7 @@ class AddCourse(Resource):
                 else:
                     return {'status':100,'message':'Failure'}
         except Exception as e:
-            return {'error': str(e)} 
+            return {'error': str(e)}
 
 #Add request url to api
 api.add_resource(CreateUser, '/api/CreateUser')
@@ -247,7 +247,7 @@ api.add_resource(GetCategory, '/api/GetCategory')
 api.add_resource(GetMajor, '/api/GetMajor')
 api.add_resource(GetDesignation, '/api/GetDesignation')
 
-api.add_resource(SearchProjects, '/api/SearchProjects')
+# api.add_resource(SearchProjects, '/api/SearchProjects')
 api.add_resource(AddCourse, '/api/AddCourse')
 
 
