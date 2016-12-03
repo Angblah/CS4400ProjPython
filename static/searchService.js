@@ -15,8 +15,9 @@ angular.module('myApp').factory('SearchService',
     // }
 
     function getCategory() {
-        return $http.getCategory('/api/SearchProjects')
+        return $http.get('/api/GetCategory')
         .success(function(data) {
+            // console.log(data);
             return data;
         })
         .error(function(data, status) {
@@ -24,7 +25,30 @@ angular.module('myApp').factory('SearchService',
         });
     }
 
+    function getDesignation() {
+        return $http.get('/api/GetDesignation')
+        .success(function(data) {
+            // console.log(data);
+            return data;
+        })
+        .error(function(data, status) {
+            console.error("Error getting designations")
+        });
+    }
+    function getMajor() {
+        return $http.get('/api/GetMajor')
+        .success(function(data) {
+            // console.log(data);
+            return data;
+        })
+        .error(function(data, status) {
+            console.error("Error getting majors")
+        });
+    }
+
     return ({
-        getCategory: getCategory
+        getCategory: getCategory,
+        getDesignation: getDesignation,
+        getMajor: getMajor
     });
 }]);
