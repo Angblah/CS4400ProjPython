@@ -153,7 +153,7 @@ class GetMajor(Resource):
         try:
             conn = mysql.connect()
             cursor = conn.cursor()
-            stmt = "SELECT Major_Name FROM major"
+            stmt = "SELECT * FROM major"
             cursor.execute(stmt)
             data = cursor.fetchall()
             if(len(data)>0):

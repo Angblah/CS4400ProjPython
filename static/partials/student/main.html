@@ -31,36 +31,35 @@
 <div ng-controller="searchController">
   <form name="myForm">
     <label for="category"> Category: </label>
-    <select size="1" name="category" ng-model="data.model" multiple>
+    <select size="1" name="category" ng-model="data.model_category" multiple>
       <option ng-repeat="option in data.categories" ng-value="option.value">//option[0]//</option>
     </select>
   </form>
   <hr>
-  <pre>model = //data.model | json//</pre><br/>
+  <pre>//data.model_category | json//</pre><br/>
 </div>
       </div>
 
       <div class="row form-group" ng-controller="searchController">
         <div class="col-lg-6">
           <label for="designations">Designation</label>
-          <select name="designations" ng-model="data.model">
+          <select name="designations" ng-model="data.model_designation">
       <option ng-repeat="option in data.designations" ng-value="//option.value//">//option[0]//</option>
     </select>
         </div>
 
         <div class="col-lg-3" ng-controller="searchController">
           <label for="major">Major</label>
-          <select name="major" ng-model="data.model">
+          <select name="major" ng-model="data.model_major">
       <option ng-repeat="option in data.majors" ng-value="//option.value//">//option[0]//</option>
     </select>
-    <pre>model = //data.model//</pre><br/>
-
+    <pre>//data.model_category | json//</pre><br/>
         </div>
 
         <!-- leave hardcoded -->
         <div class="col-lg-3">
           <label for="year">Year</label>
-          <select class="form-control" id="year" ng-model="search.year">
+          <select class="form-control" id="year" ng-model="data.model_year">
             <option value="" hidden>Please Select</option>
             <option>Freshman</option>
             <option>Sophomore</option>
@@ -88,6 +87,8 @@
     </form>
     </div>
 
+  <pre>//data.model_category// //data.model_designation//
+    //data.model_major// //data.model_year// </pre><br/>
 
 <div class="divider"></div>
 

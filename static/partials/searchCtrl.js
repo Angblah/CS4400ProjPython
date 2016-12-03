@@ -20,7 +20,10 @@ angular.module('myApp')
     });
 
     $scope.data = {
-    model: null,
+    model_category: null, 
+    model_designation: null,    
+    model_major: null,
+    model_year: null,
     categories: [],
     designations: [["Community"],["Sustainable Communities"]],
     majors: [],
