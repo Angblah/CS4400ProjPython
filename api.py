@@ -101,6 +101,7 @@ class AuthenticateUser(Resource):
 
         except Exception as e:
             return {'error': str(e)}
+
 class GetCategory(Resource):
     def get(self):
         try:
@@ -148,11 +149,106 @@ class GetDesignation(Resource):
         except Exception as e:
             return {'error': str(e)}
 
+class AddCourse(Resource):
+    def post(self):
+        try:
+            conn = mysql.connect()
+            cursor = conn.cursor()
+
+        except Exception as e:
+            return {'error': str(e)} 
+    def getCategory(self):
+        try:
+            conn = mysql.connect()
+            cursor = conn.cursor()
+            stmt = "SELECT * FROM category"
+            cursor.execute(stmt)
+            data = cursor.fetchall()
+            if(len(data)>0):
+                if(data):
+                    userData = {'categories': data[0][0]}
+                    js = json.dumps(userData)
+                    resp = Response(js, status=200, mimetype='application/json')
+                    return resp
+                else:
+                    return {'status':100,'message':'Failure'}
+        except Exception as e:
+            return {'error': str(e)}
+
+    def getDesignation(self):
+        try:
+            conn = mysql.connect()
+            cursor = conn.cursor()
+            stmt = "SELECT * FROM designation"
+            cursor.execute(stmt)
+            data = cursor.fetchall()
+            if(len(data)>0):
+                if(data):
+                    jsData = {'designation': None}
+                    designations = []
+                    for d in data:
+                        designations.append(d)
+                    jsData['designation'] = designations
+                    js = json.dumps(jsData)
+                    resp = Response(js, status=200, mimetype='application/json')
+                    print(resp)
+                    return resp
+                else:
+                    return {'status':100,'message':'Failure'}
+        except Exception as e:
+            return {'error': str(e)}
+    
+    def post(self):
+        try:
+            conn = mysql.connect()
+            cursor = conn.cursor()
+            stmt = "SELECT * FROM major"
+            cursor.execute(stmt)
+            data = cursor.fetchall()
+            if(len(data)>0):
+                if(data):
+                    jData = {'majors': None}
+                    majors = []
+                    for major in data:
+                        majors.append(major[0])
+                    jData['majors'] = majors
+                    js = json.dumps(jData)
+                    resp = Response(js, status=200, mimetype='application/json')
+                    return resp
+                else:
+                    return {'status':100,'message':'Failure'}
+        except Exception as e:
+            return {'error': str(e)}
+
+    def getDepts(self):
+        try:
+            conn = mysql.connect()
+            cursor = conn.cursor()
+            stmt = "SELECT * FROM department"
+            cursor.execute(stmt)
+            data = cursor.fetchall()
+            if(len(data)>0):
+                if(data):
+                    userData = {'depts': data[0][0]}
+                    js = json.dumps(userData)
+                    resp = Response(js, status=200, mimetype='application/json')
+                    return resp
+                else:
+                    return {'status':100,'message':'Failure'}
+        except Exception as e:
+            return {'error': str(e)}
+
+#Add request url to api
 api.add_resource(CreateUser, '/api/CreateUser')
 api.add_resource(AuthenticateUser, '/api/AuthenticateUser')
+
 api.add_resource(GetCategory, '/api/GetCategory')
 api.add_resource(GetMajor, '/api/GetMajor')
 api.add_resource(GetDesignation, '/api/GetDesignation')
+
+api.add_resource(SearchProjects, '/api/SearchProjects')
+api.add_resource(AddCourse, '/api/AddCourse')
+
 
 
 if __name__ == '__main__':
