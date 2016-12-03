@@ -55,7 +55,7 @@ myApp.config(function ($routeProvider) {
     })
     .when('/addcourse', {
         templateUrl: 'static/partials/admin/addcourse.html',
-        controller: 'loginController'
+        controller: 'addCourseCtrl'
     })
     .otherwise({
         redirectTo: '/'

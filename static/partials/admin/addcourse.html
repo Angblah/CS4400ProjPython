@@ -12,10 +12,10 @@
                 <a class="nav-link" href="#">Application Report</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">Add a Project</a>
+                <a class="nav-link" href="#/addproject">Add a Project</a>
             </li>
             <li class="nav-item active">
-                <a class="nav-link" href="#">Add a Course</a>
+                <a class="nav-link" href="#/addcourse">Add a Course</a>
             </li>
         </ul>
         <a class="navbar-brand" href="#">Log Out</a>
@@ -26,29 +26,32 @@
 <div class="container">
     <div class="jumbotron">
         <h1 class="display-3">Add Course</h1>
-        <form id="registerform" method ="post" action="/register">
+        <div ng-show="error" class="alert alert-danger">//errorMessage//</div>
+        <form id="courseform" method ="post" action="/register">
             <div class="form-group">
-                <label for="username"> Course Number </label>
-                <input id="username" class="form-control" type="text" name="username" placeholder="Course Number">
+                <label for="number"> Course Number </label>
+                <input id="number" class="form-control" type="text" name="number" ng-model="registerform.number" placeholder="Course Number">
             </div>
             <div class="form-group">
-                <label for="email"> Course Name </label>
-                <input id="email" class="form-control" type="text" name="email" placeholder="Course Name">
+                <label for="name"> Course Name </label>
+                <input id="name" class="form-control" type="text" name="name" ng-model="registerform.name" placeholder="Course Name">
             </div>
             <div class="form-group">
-                <label for="password"> Course Instructor </label>
-                <input id="password" class="form-control" type="text" name="password" placeholder="Course Instructor">
+                <label for="instructor"> Course Instructor </label>
+                <input id="instructor" class="form-control" type="text" name="instructor" ng-model="registerform.instructor" placeholder="Course Instructor">
             </div>
             <div class="form-group">
                 <label for="confpassword"> Confirm Password </label>
                 <input id="confpassword" class="form-control" type="text" name="confpassword" placeholder="Confirm Password">
             </div>
             <div class="form-group">
-                <label for="majorSelect"> Designation </label>
-                <select class="form-control" id="majorSelect">
-                <option>Sustainable Communities</option>
-                <option>Community</option>
+                <label for="desSelect"> Designation </label>
+                <select class="form-control" id="majorSelect" ng-model="chooseDes" 
+                ng-options="val for value in des">
+                    <!--<option>Sustainable Communities</option>
+                    <option>Community</option>-->
                 </select>
+
             </div>
             <div class="form-group">
                 <label for="majorSelect"> Category </label>
@@ -66,10 +69,10 @@
             </div>
             <div class="form-group">
                 <label for="confpassword"> Estimated Number of Students </label>
-                <input id="confpassword" class="form-control" type="text" name="confpassword" placeholder="# of Students">
+                <input id="confpassword" class="form-control" type="text" name="confpassword" ng-model="registerform.numStudents" placeholder="# of Students">
             </div>
             <button id="cancel-btn" class="btn btn-primary" type="submit">Clear</button>
-            <button id="register-btn" class="btn btn-primary" type="submit">Add Course</button>
+            <button type="submit" id="register-btn" class="btn btn-primary" ng-click="register()">Add Course</button>
         </form>
     </div>
 </div>
