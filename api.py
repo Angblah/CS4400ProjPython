@@ -2,6 +2,7 @@ from flask import Flask, Response, json, send_file
 from flask_restful import Resource, Api, reqparse
 from flaskext.mysql import MySQL
 
+
 mysql = MySQL()
 app = Flask(__name__)
 
@@ -101,34 +102,8 @@ class AuthenticateUser(Resource):
         except Exception as e:
             return {'error': str(e)}
 
-class SearchProjects(Resource):
-    # def post(self):
-    #     try:
-    #         # Parse the arguments
-    #         parser = reqparse.RequestParser()
-    #         parser.add_argument('title', type=str, help='Title of project')
-    #         parser.add_argument('category', type=str, help='Category of project')
-    #         parser.add_argument('designation', type=str, help='Designation of project')
-    #         parser.add_argument('major', type=str, help='Major of project')
-    #         parser.add_argument('year', type=str, help='Year of project')
-    #         parser.add_argument('type', type=str, help='Type of project')
-    #         args = parser.parse_args()
-
-    #         _projTitle = args['title']
-    #         _projCateogry = args['category']
-    #         _projDesignation = args['designation']
-    #         _projMajor = args['major']
-    #         _projYear = args['year']
-    #         _projType = args['type']
-
-    #         conn = mysql.connect()
-    #         cursor = conn.cursor()
-    #         #Could try string formatting for statement execute
-    #         #Check for username AND password match in user table
-    #         stmt = "SELECT * FROM projects"
-    #         cursor.execute(stmt)
-    #         data = cursor.fetchall()
-    def getCategory(self):
+class GetCategory(Resource):
+    def get(self):
         try:
             conn = mysql.connect()
             cursor = conn.cursor()
@@ -137,106 +112,113 @@ class SearchProjects(Resource):
             data = cursor.fetchall()
             if(len(data)>0):
                 if(data):
-                    return {'status':200,'categories': {'categories': data[0][0]}}
+                    return data
+                else:
+                    return {'status':100,'message':'Failure'}
+        except Exception as e:
+            return {'error': str(e)}
+class GetMajor(Resource):
+    def get(self):
+        try:
+            conn = mysql.connect()
+            cursor = conn.cursor()
+            stmt = "SELECT Major_Name FROM major"
+            cursor.execute(stmt)
+            data = cursor.fetchall()
+            if(len(data)>0):
+                if(data):
+                    return data
+                else:
+                    return {'status':100,'message':'Failure'}
+        except Exception as e:
+            return {'error': str(e)}
+class GetDesignation(Resource):
+    def get(self):
+        try:
+            conn = mysql.connect()
+            cursor = conn.cursor()
+            stmt = "SELECT NAME FROM designation"
+            cursor.execute(stmt)
+            data = cursor.fetchall()
+            data = cursor.fetchall()
+            if(len(data)>0):
+                if(data):
+                    return data
                 else:
                     return {'status':100,'message':'Failure'}
         except Exception as e:
             return {'error': str(e)}
 
 class AddCourse(Resource):
-    def post(self):
+    # Handles loading of categories, designation, major, department
+    def get(self):
         try:
             conn = mysql.connect()
             cursor = conn.cursor()
+            # All statements to fetch info with
+            stmtCat = "SELECT * FROM category"
+            stmtDes = "SELECT * FROM designation"
+            stmtMajor = "SELECT * FROM major"
+            stmtDepts = "SELECT * FROM department"
+            # Category fetch
+            cursor.execute(stmtCat)
+            catData = cursor.fetchall()
+            # Designation fetch
+            cursor.execute(stmtDes)
+            desData = cursor.fetchall()
+            # Major fetch
+            cursor.execute(stmtMajor)
+            majorData = cursor.fetchall()
+            # Department fetch
+            cursor.execute(stmtDepts)
+            depData = cursor.fetchall()
 
-        except Exception as e:
-            return {'error': str(e)} 
-    def getCategory(self):
-        try:
-            conn = mysql.connect()
-            cursor = conn.cursor()
-            stmt = "SELECT * FROM category"
-            cursor.execute(stmt)
-            data = cursor.fetchall()
-            if(len(data)>0):
-                if(data):
-                    userData = {'categories': data[0][0]}
-                    js = json.dumps(userData)
-                    resp = Response(js, status=200, mimetype='application/json')
-                    return resp
-                else:
-                    return {'status':100,'message':'Failure'}
-        except Exception as e:
-            return {'error': str(e)}
+            if(len(catData) > 0 and len(desData) > 0 
+                and len(majorData) > 0 and len(depData) > 0):
 
-    def getDesignation(self):
-        try:
-            conn = mysql.connect()
-            cursor = conn.cursor()
-            stmt = "SELECT * FROM designation"
-            cursor.execute(stmt)
-            data = cursor.fetchall()
-            if(len(data)>0):
-                if(data):
-                    jsData = {'designation': None}
+                if(catData and desData and majorData and depData):
+                    # Dictionary to use for JSON
+                    jsData = {'category': None, 'designation': None, 'major': None, 'department': None}
+                    # Put majors into dictionary
+                    majors = []
+                    for m in majorData:
+                        majors.append(m[0])
+                    jsData['major'] = majors
+                    # Put designations into dictionary
                     designations = []
-                    for d in data:
-                        designations.append(d)
+                    for d in desData:
+                        designations.append(d[0])
                     jsData['designation'] = designations
+                    # Put departments into dictionary
+                    departments = []
+                    for dp in depData:
+                        departments.append(dp[0])
+                    jsData['department'] = departments
+                    # Put categories into dictionary
+                    categories = []
+                    for c in catData:
+                        categories.append(c[0])
+                    jsData['category'] = categories
+                    # Dump into json
                     js = json.dumps(jsData)
                     resp = Response(js, status=200, mimetype='application/json')
-                    print(resp)
                     return resp
                 else:
                     return {'status':100,'message':'Failure'}
         except Exception as e:
-            return {'error': str(e)}
-    
-    def post(self):
-        try:
-            conn = mysql.connect()
-            cursor = conn.cursor()
-            stmt = "SELECT * FROM major"
-            cursor.execute(stmt)
-            data = cursor.fetchall()
-            if(len(data)>0):
-                if(data):
-                    jData = {'majors': None}
-                    majors = []
-                    for major in data:
-                        majors.append(major[0])
-                    jData['majors'] = majors
-                    js = json.dumps(jData)
-                    resp = Response(js, status=200, mimetype='application/json')
-                    return resp
-                else:
-                    return {'status':100,'message':'Failure'}
-        except Exception as e:
-            return {'error': str(e)}
-
-    def getDepts(self):
-        try:
-            conn = mysql.connect()
-            cursor = conn.cursor()
-            stmt = "SELECT * FROM department"
-            cursor.execute(stmt)
-            data = cursor.fetchall()
-            if(len(data)>0):
-                if(data):
-                    userData = {'depts': data[0][0]}
-                    js = json.dumps(userData)
-                    resp = Response(js, status=200, mimetype='application/json')
-                    return resp
-                else:
-                    return {'status':100,'message':'Failure'}
-        except Exception as e:
-            return {'error': str(e)}
+            return {'error': str(e)} 
 
 #Add request url to api
 api.add_resource(CreateUser, '/api/CreateUser')
 api.add_resource(AuthenticateUser, '/api/AuthenticateUser')
+
+api.add_resource(GetCategory, '/api/GetCategory')
+api.add_resource(GetMajor, '/api/GetMajor')
+api.add_resource(GetDesignation, '/api/GetDesignation')
+
 api.add_resource(SearchProjects, '/api/SearchProjects')
 api.add_resource(AddCourse, '/api/AddCourse')
+
 
 
 if __name__ == '__main__':

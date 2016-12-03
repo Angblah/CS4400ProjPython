@@ -4,35 +4,19 @@ angular.module('myApp').controller('addCourseCtrl',
     var des = '';
     var major = '';
 
-      AddCourseService.preload()
+      AddCourseService.loadData()
           .success(function (data) {
-            if (data.designation &&) {
+            if (data.designation && data.major && data.department && data.category) {
               des = data.designation;
+              major = data.major
               $scope.disabled = false;
               $location.path('/addcourse');
               $scope.courseform = {};
             } else {
               $scope.error = true;
-              $scope.errorMessage = "Unable to fetch Deignations";
+              $scope.errorMessage = "Unable to fetch Data";
               $scope.disabled = false;
               $scope.courseform = {};
             }
           });
-
-      AddCourseService.loadMajor()
-        .success(function (data) {
-          //$location.path('/main');
-          if (data.majors) {
-            des = data.majors
-            $scope.disabled = false;
-            $location.path('/addcourse');
-            $scope.courseform = {};
-          } else {
-            $scope.error = true;
-            $scope.errorMessage = "Unable to fetch Major";
-            $scope.disabled = false;
-            $scope.courseform = {};
-          }
-      });
-
 }])

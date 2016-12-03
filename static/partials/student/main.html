@@ -32,7 +32,7 @@
   <form name="myForm">
     <label for="category"> Category: </label>
     <select size="1" name="category" ng-model="data.model" multiple>
-      <option ng-repeat="option in data.categories" ng-value="option.value">//option.name//</option>
+      <option ng-repeat="option in data.categories" ng-value="option.value">//option[0]//</option>
     </select>
   </form>
   <hr>
@@ -42,17 +42,19 @@
 
       <div class="row form-group" ng-controller="searchController">
         <div class="col-lg-6">
-          <label for="designation">Designation</label>
-          <select name="designation" ng-model="data.model">
-      <option ng-repeat="option in data.designations" value="//option.value//">//option.name//</option>
+          <label for="designations">Designation</label>
+          <select name="designations" ng-model="data.model">
+      <option ng-repeat="option in data.designations" ng-value="//option.value//">//option[0]//</option>
     </select>
         </div>
 
         <div class="col-lg-3" ng-controller="searchController">
           <label for="major">Major</label>
-          <select name="designation" ng-model="data.model">
-      <option ng-repeat="option in data.majors" value="//option.value//">//option.name//</option>
+          <select name="major" ng-model="data.model">
+      <option ng-repeat="option in data.majors" ng-value="//option.value//">//option[0]//</option>
     </select>
+    <pre>model = //data.model//</pre><br/>
+
         </div>
 
         <!-- leave hardcoded -->
