@@ -25,24 +25,25 @@
 
 <div class = "container-fluid">
 	<h1> Add a Project </h1>
-	<form id="addproj" method ="post" action="/login">
+	<div ng-show="error" class="alert alert-danger">//errorMessage//</div>
+	<form id="addproj">
 			<div class="form-group">
-				<label> Project Name </label>
+				<label for="addproj"> Project Name </label>
 				<input id="proj_name" ng-model="projform.name" class="form-control" type="text" maxlength="50">
 			</div>
 
 			<div class="form-group">
-				<label> Advisor </label>
+				<label for="addproj"> Advisor </label>
 				<input ng-model="projform.advisor" id="proj_advisor" class="form-control" type="text" maxlength="25">
 			</div>
 
 			<div class="form-group">
-				<label> Advisor Email </label>
+				<label for="addproj"> Advisor Email </label>
 				<input ng-model="projform.email" id="proj_advisor_email" class="form-control" type="email" maxlength="25">
 			</div>
 
 			<div class="form-group">
-				<label> Description </label>
+				<label for="addproj"> Description </label>
 				<textarea ng-model="projform.description" id="proj_desc" class = "form-control" type="textarea" maxlength="400"></textarea>
 			</div>
 
@@ -55,44 +56,36 @@
 
             <div class="form-group">
                 <label for="addproj"> Designation </label>
-                <select name="designations" ng-model="projform.designation">
+                <select name="designation" ng-model="projform.designation">
                     <option ng-repeat="option in data.designations" ng-value="//option//">//option[0]//</option>
                 </select>
             </div>
 
 			<div class="form-group">
-				<label> Estimated # of students </label>
+				<label for="addproj"> Estimated # of students </label>
 				<input id="proj_num_students" class="form-control" type="text" maxlength="4" ng-model="projform.students">
 			</div>
 
 			<div class="form-group">
-				<label> Department Requirement </label>
-				<select class="form-control" id="proj_department_req" ng-model="projform.departments">
-					<option>computing for good</option>
-					<option>doing good for your neighborhood</option>
-					<option>reciprocal	teaching and learning</option>
-					<option>urban development</option>
-					<option>adaptive learning</option>
-					<option>technology for social good</option>
-					<option>sustainable	communities</option>
-					<option>crowd-sourced</option>
-					<option>collaborative action</option>
+				<label for="addproj"> Department Requirement </label>
+				<select name = "departments" id="proj_department_req" ng-model="projform.departments">
+					 <option ng-repeat="option in data.departments" ng-value="//option//">//option[0]//</option>
 				</select>
 			</div>
 			
             <div class="form-group">
                 <label for="addproj"> Major Requirement </label>
-                <select name="designations" ng-model="projform.designation">
+                <select name="major" ng-model="projform.major">
                     <option ng-repeat="option in data.majors" ng-value="//option//">//option[0]//</option>
                 </select>
             </div>
 
             <div class="form-group">
                 <label for="addproj"> Year Requirement </label>
-                <select name="designations" ng-model="projform.designation">
+                <select name="year" ng-model="projform.designatiyearon">
                     <option ng-repeat="option in data.years" ng-value="//option//">//option[0]//</option>
                 </select>
             </div>
-			<button type="submit" id="register-btn" class="btn btn-primary" ng-click="submit()">Add Project</button>
+			<button type="submit" id="addproj-pg-btn" class="btn btn-primary" ng-click="add()">Add Project</button>
 	</form>
 </div>

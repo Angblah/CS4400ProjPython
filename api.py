@@ -134,16 +134,27 @@ class GetMajor(Resource):
         except Exception as e:
             return {'error': str(e)}
 
+class GetDepartments(Resource):
+    def get(self):
+        try:
+            conn = mysql.connect()
+            cursor = conn.cursor()
+            stmt = "SELECT Dept_Name FROM department"
+            cursor.execute(stmt)
+            data = cursor.fetchall()
+            if(len(data)>0):
+                if(data):
+                    return data
+                else:
+                    return {'status':100,'message':'Failure'}
+        except Exception as e:
+            return {'error': str(e)}
+
 class GetDesignation(Resource):
     def get(self):
         try:
             conn = mysql.connect()
             cursor = conn.cursor()
-<<<<<<< HEAD
-            stmt = "SELECT * FROM designation"
-            cursor.execute(stmt)
-            data = cursor.fetchall()
-=======
             stmt = "SELECT name FROM designation"
             cursor.execute(stmt)
             data = cursor.fetchall()
@@ -242,7 +253,7 @@ class QueryCourse(Resource):
                     return {'status':100,'message':'Failure'}
         except Exception as e:
             return {'error': str(e)}
-            
+
 class QueryBoth(Resource):
     def get(self):
         try:
@@ -334,9 +345,11 @@ class AddProject(Resource):
             parser.add_argument('advisor', type=str, help='Project adviost')
             parser.add_argument('students', type=str, help='Estimated number of students in project')
             parser.add_argument('email', type=str, help='Project Adviosr email')
-            parser.add_argument('desination', type=str, help='Project designation')
+            parser.add_argument('designation', type=str, help='Project designation')
             parser.add_argument('category', type=str, help='Project categories')
-            parser.add_argument('requirement', type=str, help='Requirements for project')
+            parser.add_argument('major', type=str, help='Major req for project')
+            parser.add_argument('department', type=str, help='Dept req for project')
+            parser.add_argument('year', type=str, help='year req for project')
             args = parser.parse_args()
 
             _projectName = args['name']
@@ -346,11 +359,74 @@ class AddProject(Resource):
             _projectStudents = args['students']
             _projectCategory = args['category']
             _projectDesignation = args['designation']
-            _projectCategory = args['requirement']
+            _projectMajor = args['major'] 
+            _projectDept = args['department'] 
+            _projectYear = args['year']          
 
             conn = mysql.connect()
             cursor = conn.cursor()
+
+            # Statement for inserting into project
+            stmt1 = "INSERT INTO project VALUES ('{}','{}','{}','{}','{}','{}')".format(_projectName,_projectDescription,_projectAdvisor,_projectEmail,_projectStudents,_projectDesignation)
+            cursor.execute(stmt1)
+            data1 = cursor.fetchall() #no data should be returned?
+            print("Executed")
+            if(len(data1)>0):
+                if(data1):
+                    print ('data 1 failure' + data1)
+                else:
+                    return {'status':100,'message':'Course add failure'}
+            conn.commit()
+
+            # Insert categories
+            _projectCategory = _projectCategory.split(",")
+            for category in _projectCategory:
+                stmt2 = "INSERT INTO project_category VALUES ('{}', '{}')".format(category, _projectName)
+                cursor.execute(stmt2)
+                data2 = cursor.fetchall()
+                if(len(data2)>0):
+                    if(data2):
+                        print ('data 2 failure' + data2)
+                    else:
+                        return {'status':100,'message':'Course add failure in categories'} 
+                conn.commit()             
+
+            # Insert requirements
+            # Format SQL statement
+            stmt3 = "INSERT INTO project_requirement VALUES('{}'".format(_projectName)
+            if(_projectDept != "? string: ?"):
+                stmt3 += ", '{}'".format(_projectDept)
+            else:
+                stmt3 += ", NULL"
+
+            if(_projectYear != "? undefinded:undefined ?"):
+                if (_projectYear == "Freshman"):
+                    stmt3 += ", '1'"
+                elif (_projectYear == "Sophomore"):
+                    stmt3 += ", '2'"
+                elif (_projectYear == "Junior"):
+                    stmt3 += ", '3'"
+                elif (_projectYear == "Senior"):
+                    stmt3 += ", '4'"
+            else:
+                stmt3 += ", NULL"
+
+            if(_projectMajor != "? string: ?"):
+                stmt3 += ", '{}''".format(_projectMajor)
+            else:
+                stmt3 += ", NULL"
+            stmt3 += ')'
+
+            cursor.execute(stmt3)
+            data3 = cursor.fetchall() #no data should be returned?
+            if(len(data3)>0):
+                if(data3):
+                    print ('data 3 failure' + data1)
+                else:
+                    return {'status':100,'message':'Course add failure'}
+            conn.commit()            
             
+            return "added"
         except Exception as e:
             return {'error': str(e)}
  
@@ -377,6 +453,7 @@ api.add_resource(AddCourse, '/api/AddCourse')
 api.add_resource(AddProject, '/api/AddProject')
 api.add_resource(GetCategory, '/api/GetCategory')
 api.add_resource(GetMajor, '/api/GetMajor')
+api.add_resource(GetDepartments, '/api/GetDepartments')
 api.add_resource(GetDesignation, '/api/GetDesignation')
 api.add_resource(GetTopTenProjects, '/api/GetTopTenProjects')
 
