@@ -27,52 +27,66 @@
     <div class="jumbotron">
         <h1 class="display-3">Add Course</h1>
         <div ng-show="error" class="alert alert-danger">//errorMessage//</div>
-        <form id="courseform" method ="post" action="/register">
+        <form id="cform">
             <div class="form-group">
                 <label for="number"> Course Number </label>
-                <input id="number" class="form-control" type="text" name="number" ng-model="registerform.number" placeholder="Course Number">
+                <input maxlength="10" id="number" class="form-control" type="text" name="number" ng-model="courseform.number" placeholder="Course Number">
+                <span class="error" ng-show="numCheckFail">Course must have a course number</span>
             </div>
             <div class="form-group">
-                <label for="name"> Course Name </label>
-                <input id="name" class="form-control" type="text" name="name" ng-model="registerform.name" placeholder="Course Name">
+                <label for="cform"> Course Name </label>
+                <input maxlength="70" id="name" class="form-control" type="text" name="name" ng-model="courseform.name" placeholder="Course Name">
+                <span class="error" ng-show="nameCheckFail">Must have a name for the course</span>
             </div>
             <div class="form-group">
-                <label for="instructor"> Course Instructor </label>
-                <input id="instructor" class="form-control" type="text" name="instructor" ng-model="registerform.instructor" placeholder="Course Instructor">
+                <label for="cform"> Course Instructor </label>
+                <input maxlength="25" id="instructor" class="form-control" type="text" name="instructor" ng-model="courseform.instructor" placeholder="Course Instructor">
+                <span class="error" ng-show="instructorCheckFail">Must have an instructor for the course</span>
             </div>
             <div class="form-group">
-                <label for="confpassword"> Confirm Password </label>
-                <input id="confpassword" class="form-control" type="text" name="confpassword" placeholder="Confirm Password">
-            </div>
-            <div class="form-group">
-                <label for="desSelect"> Designation </label>
-                <select class="form-control" id="majorSelect" ng-model="chooseDes" 
+                <label for="cform"> Designation </label>
+                <select class="form-control" id="designation" ng-model="chooseDes" 
                 ng-options="val for value in des">
                     <!--<option>Sustainable Communities</option>
                     <option>Community</option>-->
                 </select>
-
             </div>
             <div class="form-group">
-                <label for="majorSelect"> Category </label>
-                <select class="form-control" id="majorSelect">
-                    <option>Computing for Good</option>
-                    <option>Doing Good for Your Neighborhood</option>
-                    <option>Reciprocal Teaching and Learning</option>
-                    <option>Urban Development</option>
-                    <option>Adaptive Learning</option>
-                    <option>Technology for Social Good</option>
-                    <option>Sustainable Communities</option>
-                    <option>Crowd-sourced</option>
-                    <option>Collaborative Action</option>
-                </select>
+                <label id="category" type= "checkbox" for="cform"> Category </label>
+                    <div class="checkbox">
+                            <label><input type="checkbox" value="">Computing for Good</label>
+                    </div>
+                    <div class="checkbox">
+                        <label><input type="checkbox" value="">Doing Good for Your Neighborhood</label>
+                    </div>
+                    <div class="checkbox">
+                            <label><input type="checkbox" value="">Reciprocal Teaching and Learning</label>
+                    </div>
+                    <div class="checkbox">
+                        <label><input type="checkbox" value="">Urban Development</label>
+                    </div>
+                    <div class="checkbox">
+                            <label><input type="checkbox" value="">Adaptive Learning</label>
+                    </div>
+                    <div class="checkbox">
+                        <label><input type="checkbox" value="">Technology for Social Good</label>
+                    </div>
+                    <div class="checkbox">
+                            <label><input type="checkbox" value="">Sustainable Communities</label>
+                    </div>
+                    <div class="checkbox">
+                        <label><input type="checkbox" value="">Crowd-sourced</label>
+                    </div>
+                    <div class="checkbox">
+                            <label><input type="checkbox" value="">Collaborative Action</label>
+                    </div>                                                                              
             </div>
             <div class="form-group">
-                <label for="confpassword"> Estimated Number of Students </label>
-                <input id="confpassword" class="form-control" type="text" name="confpassword" ng-model="registerform.numStudents" placeholder="# of Students">
+                <label for="cform"> Estimated Number of Students </label>
+                <input maxlength="4" id="student" class="form-control" type="text" name="student" ng-model="courseform.students" placeholder="# of Students">
+                <span class="error" ng-show="studentCheckFail">Must have an estimated number of students</span>
             </div>
-            <button id="cancel-btn" class="btn btn-primary" type="submit">Clear</button>
-            <button type="submit" id="register-btn" class="btn btn-primary" ng-click="register()">Add Course</button>
+            <button type="submit" id="register-btn" class="btn btn-primary" ng-click="submit()">Add Course</button>
         </form>
     </div>
 </div>
