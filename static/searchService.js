@@ -65,13 +65,13 @@ angular.module('myApp').factory('SearchService',
             console.error("Error getting projects")
         });
         } else if (type === 'Course') {
-            return $http.get('/api/QueryCourse')
+            return $http.get('/api/QueryCourse', {params:{title:title, category:category, designation:designation}})
             .success(function(data) {
-            // console.log(data);
+                console.log(data);
             return data;
         })
         .error(function(data, status) {
-            console.error("Error getting categories")
+            console.error("Error getting courses")
         });
         } else {
             return $http.get('/api/QueryBoth')
@@ -80,7 +80,7 @@ angular.module('myApp').factory('SearchService',
             return data;
         })
         .error(function(data, status) {
-            console.error("Error getting categories and projects")
+            console.error("Error getting courses and projects")
         });
         }
     }

@@ -258,32 +258,24 @@ class QueryProject(Resource):
                 stmt += "Proj_Name='{}'"
                 argys.append(projTitle)
             if args['category'] is not None:
-                print('got cat')
-
                 if len(argys) != 0:
                     stmt += " AND P_Category='{}'"
                 else:
                     stmt += "P_Category='{}'"
                 argys.append(projCategory)
             if args['designation'] is not None:
-                print('got desg')
-
                 if len(argys) != 0:
                     stmt += " AND P_Designation='{}'"
                 else:
                     stmt += "P_Designation='{}'"
                 argys.append(projDesignation)
             if args['major'] is not None:
-                print('got maj')
-
                 if len(argys) != 0:
                     stmt += " AND Maj_Restrict='{}'"
                 else:
                     stmt += "Maj_Restrict='{}'"
                 argys.append(projMajor)
             if args['year'] is not None:
-                print('got year')
-
                 if len(argys) != 0:
                     stmt += " AND Yr_Restrict='{}'"
                 else:
@@ -313,26 +305,47 @@ class QueryCourse(Resource):
             parser.add_argument('title', type=str, help="title of project")
             parser.add_argument('category', type=str, help="category of project")
             parser.add_argument('designation', type=str, help="designation of project")
-            parser.add_argument('major', type=str, help="major restriction of project")
-            parser.add_argument('year', type=str, help="year restriction of project")
             args = parser.parse_args()
 
-            _projTitle = args['title']
-            _projCategory = args['category']
-            _projDesignation = args['designation']
-            _projMajor = args['major']
-            _projYear = args['year']
+            courseTitle = args['title']
+            courseCategory = args['category']
+            courseDesignation = args['designation']
+            print(courseTitle)
+            print(courseCategory)
+            print(courseDesignation)
+            #build onto statements if null
+
+            argys = []
+            stmt = "SELECT * from course2 WHERE "
+            if args['title'] is not None or args['title'] == "":
+                stmt += "Course_Name='{}'"
+                argys.append(courseTitle)
+            if args['category'] is not None:
+                if len(argys) != 0:
+                    stmt += " AND C_Category='{}'"
+                else:
+                    stmt += "C_Category='{}'"
+                argys.append(courseCategory)
+            if args['designation'] is not None:
+                if len(argys) != 0:
+                    stmt += " AND C_Designation='{}'"
+                else:
+                    stmt += "C_Designation='{}'"
+                argys.append(courseDesignation)
+
+            print (stmt)
+            print (argys)
+            stmt = stmt.format(*argys)
 
             conn = mysql.connect()
             cursor = conn.cursor()
-            stmt = "SELECT Proj_Name FROM project1 WHERE Maj_Restrict = '{}'".format(_projMajor)
             cursor.execute(stmt)
             data = cursor.fetchall()
-            if(len(data)>0):
-                if(data):
-                    return data
-                else:
-                    return {'status':100,'message':'Failure'}
+            print([{'proj':x,'type':'Course'} for x in data])
+            if(data):
+                return [{'proj':x,'type':'Course'} for x in data]
+            else:
+                return {'status':100,'message':'Failure'}
         except Exception as e:
             return {'error': str(e)}
 
