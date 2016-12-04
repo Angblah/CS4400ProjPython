@@ -501,7 +501,7 @@ class GetAdminApplications(Resource):
         try:
             conn = mysql.connect()
             cursor = conn.cursor()
-            stmt = "SELECT Proj_Name, Major_Name, Year, Status From application NATURAL JOIN student"
+            stmt = "SELECT Proj_Name, Major_Name, Year, Status, Username From application NATURAL JOIN student"
             cursor.execute(stmt)
             data = cursor.fetchall()
             if(len(data)>0):
@@ -509,6 +509,68 @@ class GetAdminApplications(Resource):
                     return data
                 else:
                     return {'status':100,'message':'Failure'}
+        except Exception as e:
+            return {'error': str(e)}
+
+class RejectApplication(Resource):
+    def post(self):
+        try:
+            # Parse the arguments
+            parser = reqparse.RequestParser()
+            parser.add_argument('projname', type=str)
+            parser.add_argument('username', type=str)
+            args = parser.parse_args()
+
+            _projname = args['projname']
+            _username = args['username']
+
+            conn = mysql.connect()
+            cursor = conn.cursor()
+            stmt = "UPDATE application SET status = '-1' WHERE Proj_Name = '{}' AND Username = '{}'".format(_projname,_username)
+            cursor.execute(stmt)
+            data = cursor.fetchall()
+            conn.commit()
+            if(len(data)>0):
+                if(data):
+                    #Format return into JSON object
+                    userData = {'username': data[0][0], 'userType': data[0][2]}
+                    js = json.dumps(userData)
+                    resp = Response(js, status=200, mimetype='application/json')
+                    return resp
+                else:
+                    return {'status':100,'message':'Authentication failure'}
+
+        except Exception as e:
+            return {'error': str(e)}
+
+class AcceptApplication(Resource):
+    def post(self):
+        try:
+            # Parse the arguments
+            parser = reqparse.RequestParser()
+            parser.add_argument('projname', type=str)
+            parser.add_argument('username', type=str)
+            args = parser.parse_args()
+
+            _projname = args['projname']
+            _username = args['username']
+
+            conn = mysql.connect()
+            cursor = conn.cursor()
+            stmt = "UPDATE application SET status = '1' WHERE Proj_Name = '{}' AND Username = '{}'".format(_projname,_username)
+            cursor.execute(stmt)
+            data = cursor.fetchall()
+            conn.commit()
+            if(len(data)>0):
+                if(data):
+                    #Format return into JSON object
+                    userData = {'username': data[0][0], 'userType': data[0][2]}
+                    js = json.dumps(userData)
+                    resp = Response(js, status=200, mimetype='application/json')
+                    return resp
+                else:
+                    return {'status':100,'message':'Authentication failure'}
+
         except Exception as e:
             return {'error': str(e)}
 
@@ -525,6 +587,9 @@ api.add_resource(GetTopTenProjects, '/api/GetTopTenProjects')
 api.add_resource(GetProjectByApps, '/api/GetProjectByApps')
 api.add_resource(GetNumApps, '/api/GetNumApps')
 api.add_resource(GetNumAccepted, '/api/GetNumAccepted')
+api.add_resource(RejectApplication, '/api/RejectApplication')
+api.add_resource(AcceptApplication, '/api/AcceptApplication')
+
 
 # api.add_resource(SearchProjects, '/api/SearchProjects')
 api.add_resource(AddCourse, '/api/AddCourse')

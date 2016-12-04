@@ -25,6 +25,9 @@
 <h1>View Applications</h1>
 
 <div class="container">
+  <button id="accept-btn" class="btn btn-primary" ng-click="accept()">Accept</button>
+  <button id="reject-btn" class="btn btn-primary" ng-click="reject()">Reject</button>
+
     <table id="appTable" class="table table-hover">
       <thead>
         <tr>
@@ -36,7 +39,6 @@
       </thead>
       <tbody>
         <tr ng-repeat="proj in projects" ng-click="selectRow(proj)" ng-class="{'selected':proj == selectedApplication}">
-          <!-- change to proj in projects when done -->
           <td>//proj.name//</td>
           <td>//proj.major//</td>
           <td>//proj.year//</td>
