@@ -8,7 +8,9 @@ angular.module('myApp')
 
     SearchService.getMajor()
     .success(function(data) {
-        $scope.data.majors = data;
+        for (x in data['majors']) {
+            $scope.data.majors.push(data['majors'][x]['Major_Name']);
+        }
     });
     // SearchService.getDesignation()
     // .success(function(data) {
