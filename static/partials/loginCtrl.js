@@ -9,17 +9,27 @@ angular.module('myApp').controller('loginController',
       $scope.error = false;
       $scope.disabled = true;
 
+      if ($scope.loginForm.username === null) {
+        $scope.error = true;
+        $scope.errorMessage = "Needs a username";
+        return;
+      }
+      if ($scope.loginForm.password === null) {
+        $scope.error = true;
+        $scope.errorMessage = "Needs a password";
+        return;
+      }
+
       // call login from service
       UserService.authenticate($scope.loginForm.username, $scope.loginForm.password)
         // handle success
         .success(function (data) {
           //$location.path('/main');
           if (data) {
-            $scope.disabled = false;
-            $scope.username = data.username;
             // redirect to main page depending on type
             if (data.userType == "Student") {
               $location.path('/main');
+              
             } else if (data.userType == "Admin") {
               $location.path('/adminapps');
             }
@@ -28,7 +38,6 @@ angular.module('myApp').controller('loginController',
           } else {
             $scope.error = true;
             $scope.errorMessage = "Invalid username and/or password";
-            $scope.disabled = false;
             $scope.loginForm = {};
           }
         });

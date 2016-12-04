@@ -22,3 +22,36 @@
     </nav>
 </div>
 <!-- Admin Navbar-->
+<h1>View Applications</h1>
+
+<div class="container">
+  <button id="accept-btn" class="btn btn-primary" ng-click="accept()">Accept</button>
+  <button id="reject-btn" class="btn btn-primary" ng-click="reject()">Reject</button>
+
+    <table id="appTable" class="table table-hover">
+      <thead>
+        <tr>
+          <th>Project</th>
+          <th>Applicant Major</th>
+          <th>Applicant Year</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-repeat="proj in projects" ng-click="selectRow(proj)" ng-class="{'selected':proj == selectedApplication}">
+          <td>//proj.name//</td>
+          <td>//proj.major//</td>
+          <td>//proj.year//</td>
+          <td>//proj.status//</td>
+        </tr>
+      </tbody>
+    </table>
+</div>
+
+<style>
+.selected {
+    background-color:grey;
+    color:white;
+    font-weight:bold;
+}
+</style>

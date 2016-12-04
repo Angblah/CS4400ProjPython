@@ -2,7 +2,6 @@ angular.module('myApp').controller('projReportController',
   ['$scope', 'GetProjService',
   function ($scope, GetProjService) {
 
-    // call register from service
     GetProjService.getPopProjects()
       // handle success
       .success(function (data) {
