@@ -26,7 +26,7 @@ myApp.config(function ($routeProvider) {
     })
     .when('/studentapps', {
         templateUrl: 'static/partials/student/studapps.html',
-        controller: 'loginController'
+        controller: 'studentAppViewCtrl'
     })
     .when('/viewcourse', {
         templateUrl: 'static/partials/student/viewcourse.html',

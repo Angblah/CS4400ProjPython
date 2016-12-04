@@ -611,6 +611,29 @@ class GetNumAccepted(Resource):
         except Exception as e:
             return {'error': str(e)}
 
+class GetStudentApplications(Resource):
+    def get(self):
+        try:
+            parser = reqparse.RequestParser()
+            parser.add_argument('username', type=str, help='Username of student')
+            args = parser.parse_args() 
+            
+            _curUser = args['username']
+
+            conn = mysql.connect()
+            cursor = conn.cursor()
+            stmt = "SELECT * From application WHERE Username='{}'".format(_curUser)
+            print(stmt)
+            cursor.execute(stmt)
+            data = cursor.fetchall()
+            if(len(data)>0):
+                if(data):
+                    return data
+                else:
+                    return {'status':100,'message':'Failure'}
+        except Exception as e:
+            return {'error': str(e)}
+
 class GetAdminApplications(Resource):
     def get(self):
         try:
@@ -699,6 +722,7 @@ api.add_resource(GetDepartments, '/api/GetDepartments')
 api.add_resource(GetDesignation, '/api/GetDesignation')
 
 api.add_resource(GetAdminApplications, '/api/GetAdminApplications')
+api.add_resource(GetStudentApplications, '/api/GetStudentApplications')
 api.add_resource(GetTopTenProjects, '/api/GetTopTenProjects')
 api.add_resource(GetProjectByApps, '/api/GetProjectByApps')
 api.add_resource(GetNumApps, '/api/GetNumApps')

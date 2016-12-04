@@ -30,13 +30,17 @@ angular.module('myApp').controller('addProjCtrl',
 
     AddProjService.getMajor()
       .success(function(data) {
-        $scope.data.majors = data;
-    });    
+        var majI = 0;
+        for (i = 0; i < data.majors.length; i++) {
+          $scope.data.majors[majI] = [data.majors[i]["Major_Name"]];
+          majI++;
+        }
+    });  
 
     AddProjService.getDepartments()
       .success(function(data) {
         $scope.data.departments = data;
-    });     
+      });        
 
     $scope.fetchCategories = function () {
       $scope.chosenCat = ""

@@ -1,17 +1,40 @@
+<!--Nav bar-->
 <div class="container-fluid">
     <nav class="navbar navbar-inverse">
         <ul class="nav navbar-nav">
             <li class="nav-item">
-                <a class="nav-link" href="#">Edit Profile</a>
+                <a class="nav-link" href="#/profile">Profile</a>
             </li>
             <li class="nav-item active">
-                <a class="nav-link" href="#">Home</a>
+                <a class="nav-link" href="#/main">Home</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">My Applications</a>
+                <a class="nav-link" href="#/studentapps">My Applications</a>
             </li>
         </ul>
         <a class="navbar-brand" href="#">Log Out</a>
-
     </nav>
+</div>
+<!--Nav bar-->
+
+<h1>My Applications</h1>
+
+<div class="container">
+
+    <table id="appTable" class="table table-hover">
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Project<th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-repeat="proj in projects" ng-click="selectRow(proj)" ng-class="{'selected':proj == selectedApplication}">
+          <td>//proj.date//</td>
+          <td>//proj.name//</td>
+          <td>//proj.status//</td>
+        </tr>
+      </tbody>
+    </table>
 </div>
