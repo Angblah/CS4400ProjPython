@@ -138,9 +138,95 @@ class GetDesignation(Resource):
         try:
             conn = mysql.connect()
             cursor = conn.cursor()
-            stmt = "SELECT NAME FROM designation"
+            stmt = "SELECT name FROM designation"
             cursor.execute(stmt)
             data = cursor.fetchall()
+            if(len(data)>0):
+                if(data):
+                    return data
+                else:
+                    return {'status':100,'message':'Failure'}
+        except Exception as e:
+            return {'error': str(e)}
+class QueryProject(Resource):
+    def get(self):
+        try:
+            parser = reqparse.RequestParser()
+            parser.add_argument('title', type=str, help="title of project")
+            parser.add_argument('category', type=str, help="category of project")
+            parser.add_argument('designation', type=str, help="designation of project")
+            parser.add_argument('major', type=str, help="major restriction of project")
+            parser.add_argument('year', type=str, help="year restriction of project")
+            args = parser.parse_args()
+
+            _projTitle = args['title']
+            _projCategory = args['category']
+            _projDesignation = args['designation']
+            _projMajor = args['major']
+            _projYear = args['year']
+
+            conn = mysql.connect()
+            cursor = conn.cursor()
+            stmt = "SELECT Proj_Name FROM project1 WHERE Yr_Restrict='{}'".format(_projYear)
+            cursor.execute(stmt)
+            data = cursor.fetchall()
+            if(data):
+                return data
+            else:
+                return {'status':100,'message':'Failure'}
+        except Exception as e:
+            return {'error': str(e)}
+class QueryCourse(Resource):
+    def get(self):
+        try:
+            parser = reqparse.RequestParser()
+            parser.add_argument('title', type=str, help="title of project")
+            parser.add_argument('category', type=str, help="category of project")
+            parser.add_argument('designation', type=str, help="designation of project")
+            parser.add_argument('major', type=str, help="major restriction of project")
+            parser.add_argument('year', type=str, help="year restriction of project")
+            args = parser.parse_args()
+
+            _projTitle = args['title']
+            _projCategory = args['category']
+            _projDesignation = args['designation']
+            _projMajor = args['major']
+            _projYear = args['year']
+
+            conn = mysql.connect()
+            cursor = conn.cursor()
+            stmt = "SELECT Proj_Name FROM project1 WHERE Maj_Restrict = '{}'".format(_projMajor)
+            cursor.execute(stmt)
+            data = cursor.fetchall()
+            if(len(data)>0):
+                if(data):
+                    return data
+                else:
+                    return {'status':100,'message':'Failure'}
+        except Exception as e:
+            return {'error': str(e)}
+class QueryBoth(Resource):
+    def get(self):
+        try:
+            parser = reqparse.RequestParser()
+            parser.add_argument('title', type=str, help="title of project")
+            parser.add_argument('category', type=str, help="category of project")
+            parser.add_argument('designation', type=str, help="designation of project")
+            parser.add_argument('major', type=str, help="major restriction of project")
+            parser.add_argument('year', type=str, help="year restriction of project")
+
+            args = parser.parse_args()
+
+            _projTitle = args['title']
+            _projCategory = args['category']
+            _projDesignation = args['designation']
+            _projMajor = args['major']
+            _projYear = args['year']
+
+            conn = mysql.connect()
+            cursor = conn.cursor()
+            stmt = "SELECT Proj_Name FROM project1 WHERE Maj_Restrict = '{}'".format(_projMajor)
+            cursor.execute(stmt)
             data = cursor.fetchall()
             if(len(data)>0):
                 if(data):
@@ -157,6 +243,12 @@ api.add_resource(AuthenticateUser, '/api/AuthenticateUser')
 api.add_resource(GetCategory, '/api/GetCategory')
 api.add_resource(GetMajor, '/api/GetMajor')
 api.add_resource(GetDesignation, '/api/GetDesignation')
+
+api.add_resource(QueryProject, '/api/QueryProject')
+api.add_resource(QueryCourse, '/api/QueryCourse')
+api.add_resource(QueryBoth, '/api/QueryBoth')
+
+
 
 
 
