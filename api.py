@@ -122,6 +122,10 @@ class Student(Resource):
             _userMjr = args['major_name']
             _userYear = args['year']
 
+            print(_userUsername)
+            print(_userMjr)
+            print(_userYear)
+
             conn = mysql.connect()
             cursor = conn.cursor()
 
@@ -129,6 +133,8 @@ class Student(Resource):
             stmt = "UPDATE student SET Major_Name='{}', Year='{}' WHERE Username='{}'".format(_userMjr, _userYear, _userUsername)
             cursor.execute(stmt)
             data = cursor.fetchall() #no data should be returned?
+
+            print('UPDATE SUCCESS')
 
             #Format return into JSON object
             if(len(data)>0):

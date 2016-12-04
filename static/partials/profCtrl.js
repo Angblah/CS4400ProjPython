@@ -4,7 +4,6 @@ angular.module('myApp').controller('profileController',
       UserService.getMajors()
       .success(function(data) {
           if (data) {
-              console.log("getMajors Success");
               $scope.data.majorOptions = data.majors;
           }
       });
@@ -19,12 +18,18 @@ angular.module('myApp').controller('profileController',
               $scope.data.email = data.email;
               if (data.major_name) {
                   $scope.data.selectedMajor.Major_Name = data.major_name;
+                  $scope.updateDepartment(data.major_name);
+                  $scope.data.selectedMajor.Dept_Name = data.department;
               } else {
                   $scope.data.selectedMajor.Major_Name = "Undecided"
+                  $scope.data.selectedDepartment = "None"
               }
-              $scope.updateDepartment(data.major_name);
-              //$scope.data.selectedDepartment = data.selectedDepartment;
-              $scope.data.selectedYear = data.year;
+              if (data.year) {
+                  $scope.data.selectedYear = data.year;
+              } else {
+                  $scope.data.selectedYear = "None";
+              }
+              
               console.log($scope.data);
           }
       });
@@ -34,14 +39,21 @@ angular.module('myApp').controller('profileController',
           email: "",
           majorOptions: [{Major_Name: "", Dept_Name: ""}],
           selectedMajor: {Major_Name: "", Dept_Name: ""},
-          YearOptions: ["Freshman", "Sophomore", "Junior", "Senior"],
+          yearOptions: ["Freshman", "Sophomore", "Junior", "Senior"],
           selectedYear: "",
           selectedDepartment: ""
       }
       
       $scope.saveProfile = function() {
+          console.log($scope.data.username, $scope.data.selectedYear);
+          console.log($scope.data.selectedMajor.Major_Name);
+          console.log($scope.data.selectedMajor.Dept_Name);
+          var major_name = ''
+          if ($scope.data.selectedMajor.Major_Name !== 'Undecided') {
+              major_name = $scope.data.selectedMajor.Major_Name;
+          }
           UserService.updateStudent($scope.data.username,
-          $scope.data.selectedMajor, $scope.data.selectedYear)
+          major_name, $scope.data.selectedYear)
           .success(function (data) {
               if (data) {
                   $location.path('#/profile');
@@ -52,11 +64,8 @@ angular.module('myApp').controller('profileController',
       $scope.updateDepartment = function(major_name) {
           var majorOptions = $scope.data.majorOptions;
           for (major in majorOptions) {
-              console.log(majorOptions[major].Major_Name);
               if (majorOptions[major].Major_Name === major_name) {
-                  console.log(majorOptions[major].Dept_Name);
                   $scope.data.selectedDepartment = majorOptions[major].Dept_Name;
-                  console.log($scope.data.selectedDepartment)
                   return;
               }
           }
