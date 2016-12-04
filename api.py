@@ -108,7 +108,7 @@ class Student(Resource):
 
         except Exception as e:
             return {'error': str(e)}
-        
+
     def put(self):
         try:
             # Parse the arguments
@@ -318,7 +318,7 @@ class QueryCourse(Resource):
                     return {'status':100,'message':'Failure'}
         except Exception as e:
             return {'error': str(e)}
-            
+
 class QueryBoth(Resource):
     def get(self):
         try:
@@ -353,11 +353,8 @@ class QueryBoth(Resource):
 class AddCourse(Resource):
     def post(self):
         try:
-<<<<<<< HEAD
             # Handle adding stuff
 
-=======
->>>>>>> origin/master
             # Parse the arguments
             parser = reqparse.RequestParser()
             parser.add_argument('number', type=str, help='Number of course')
@@ -399,8 +396,8 @@ class AddCourse(Resource):
                     if(data2):
                         print ('data 2 failure' + data2)
                     else:
-                        return {'status':100,'message':'Course add failure in categories'}                
-                conn.commit()  
+                        return {'status':100,'message':'Course add failure in categories'}
+                conn.commit()
             return "added"
         except Exception as e:
             return {'error': str(e)}
@@ -431,10 +428,10 @@ class AddProject(Resource):
 
             conn = mysql.connect()
             cursor = conn.cursor()
-            
+
         except Exception as e:
             return {'error': str(e)}
- 
+
 class GetTopTenProjects(Resource):
     def get(self):
         try:
@@ -502,7 +499,6 @@ class GetNumAccepted(Resource):
 #Add request url to api
 api.add_resource(Student, '/api/Student')
 api.add_resource(AuthenticateUser, '/api/AuthenticateUser')
-api.add_resource(AddCourse, '/api/AddCourse')
 api.add_resource(AddProject, '/api/AddProject')
 api.add_resource(GetCategory, '/api/GetCategory')
 api.add_resource(GetMajor, '/api/GetMajor')
