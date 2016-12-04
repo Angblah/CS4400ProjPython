@@ -1,6 +1,10 @@
 <div class="jumbotron">
     <h1>Edit Profile</h1>
     <form name="editProfForm">
+
+      <h3>Major: //data.selectedMajor//</h3>
+      <label ng-model="data.selectedMajor"></label>
+      <label ng-model="data.selectedMajor.Major_Name"></label>
       <div class="row form-group">
         <label for="majorSelect">Major: </label>
         <select class="form-control" id="majorSelect" ng-options="major.Major_Name for major in data.majorOptions"
