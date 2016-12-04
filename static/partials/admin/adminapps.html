@@ -22,3 +22,26 @@
     </nav>
 </div>
 <!-- Admin Navbar-->
+<h1>View Applications</h1>
+
+<div class="container">
+    <table id="appTable" class="table table-hover table-striped">
+      <thead>
+        <tr>
+          <th>Project</th>
+          <th>Applicant Major</th>
+          <th>Applicant Year</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-repeat="proj in projects">
+          <!-- change to proj in projects when done -->
+          <td>//proj.name//</td>
+          <td>//proj.major//</td>
+          <td>//proj.year//</td>
+          <td>//proj.status//</td>
+        </tr>
+      </tbody>
+    </table>
+</div>

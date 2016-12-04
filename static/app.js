@@ -39,7 +39,7 @@ myApp.config(function ($routeProvider) {
     //Admin Partials
     .when('/adminapps', {
         templateUrl: 'static/partials/admin/adminapps.html',
-        controller: 'loginController'
+        controller: 'adminAppController'
     })
     .when('/applicationreport', {
         templateUrl: 'static/partials/admin/appreport.html',

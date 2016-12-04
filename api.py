@@ -496,6 +496,22 @@ class GetNumAccepted(Resource):
         except Exception as e:
             return {'error': str(e)}
 
+class GetAdminApplications(Resource):
+    def get(self):
+        try:
+            conn = mysql.connect()
+            cursor = conn.cursor()
+            stmt = "SELECT Proj_Name, Major_Name, Year, Status From application NATURAL JOIN student"
+            cursor.execute(stmt)
+            data = cursor.fetchall()
+            if(len(data)>0):
+                if(data):
+                    return data
+                else:
+                    return {'status':100,'message':'Failure'}
+        except Exception as e:
+            return {'error': str(e)}
+
 #Add request url to api
 api.add_resource(Student, '/api/Student')
 api.add_resource(AuthenticateUser, '/api/AuthenticateUser')
@@ -504,6 +520,7 @@ api.add_resource(GetCategory, '/api/GetCategory')
 api.add_resource(GetMajor, '/api/GetMajor')
 api.add_resource(GetDesignation, '/api/GetDesignation')
 
+api.add_resource(GetAdminApplications, '/api/GetAdminApplications')
 api.add_resource(GetTopTenProjects, '/api/GetTopTenProjects')
 api.add_resource(GetProjectByApps, '/api/GetProjectByApps')
 api.add_resource(GetNumApps, '/api/GetNumApps')

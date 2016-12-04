@@ -1,6 +1,16 @@
 angular.module('myApp').factory('GetProjService',
 ['$timeout', '$http', function ($timeout, $http) {
 
+    function getAdminApplications() {
+      return $http.get('/api/GetAdminApplications')
+      .success(function(data) {
+          return data;
+      })
+      .error(function(data, status) {
+          console.error("Data Load Error", status, data);
+      });
+    }
+
     function getPopProjects() {
       return $http.get('/api/GetTopTenProjects')
       .success(function(data) {
@@ -42,6 +52,7 @@ angular.module('myApp').factory('GetProjService',
     }
 
     return ({
+        getAdminApplications: getAdminApplications,
         getPopProjects: getPopProjects,
         getProjectByApps: getProjectByApps,
         getNumApps: getNumApps,
