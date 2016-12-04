@@ -53,7 +53,8 @@ angular.module('myApp').controller('profileController',
           .success(function (data) {
               if (data) {
                   console.log(data);
-                  $location.path('#/profile');
+                  $location.path('/profile');
+                  $location
               } else {
                   console.log("Success but issues");
               }

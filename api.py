@@ -134,7 +134,7 @@ class Student(Resource):
             cursor.execute(stmt)
             data = cursor.fetchall() #no data should be returned?
 
-            print('UPDATE SUCCESS')
+            print(data)
 
             #Format return into JSON object
             if(len(data)>0):
