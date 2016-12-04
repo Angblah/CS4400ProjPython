@@ -123,7 +123,7 @@ class GetMajor(Resource):
         try:
             conn = mysql.connect()
             cursor = conn.cursor()
-            stmt = "SELECT Major_Name FROM major"
+            stmt = "SELECT * FROM major"
             cursor.execute(stmt)
             data = cursor.fetchall()
             if(len(data)>0):
@@ -133,7 +133,10 @@ class GetMajor(Resource):
                     return {'status':100,'message':'Failure'}
         except Exception as e:
             return {'error': str(e)}
-            
+<<<<<<< HEAD
+
+=======
+>>>>>>> 1db6eb22bc8626279f8766b7084fca26bd83dc19
 class GetDesignation(Resource):
     def get(self):
         try:
@@ -151,9 +154,39 @@ class GetDesignation(Resource):
         except Exception as e:
             return {'error': str(e)}
 
+<<<<<<< HEAD
 class AddCourse(Resource):
+    def post(self):
+        try:
+            # Handle adding stuff 
+            
+            # Parse the arguments
+            parser = reqparse.RequestParser()
+            parser.add_argument('number', type=str, help='Number of course')
+            parser.add_argument('name', type=str, help='Name of course')
+            parser.add_argument('instructor', type=str, help='Course instructor')
+            parser.add_argument('students', type=str, help='Estimated number of students in course')
+            parser.add_argument('designation', type=str, help='Designation of course')
+            parser.add_argument('category', type=str, help='Course categories')
+            args = parser.parse_args()
 
+            _courseNum = args['number']
+            _courseName = args['name']
+            _courseInstructor = args['instructor_First']
+            _courseStudents = args['students']
+            _courseDesignation = args['designation']
+            _courseCategory = args['category']
 
+            if(len(data)>0):
+                if(data):
+                    return data
+                else:
+                    return {'status':100,'message':'Failure'}
+        except Exception as e:
+            return {'error': str(e)}
+
+=======
+>>>>>>> 1db6eb22bc8626279f8766b7084fca26bd83dc19
 #Add request url to api
 api.add_resource(CreateUser, '/api/CreateUser')
 api.add_resource(AuthenticateUser, '/api/AuthenticateUser')
@@ -162,8 +195,6 @@ api.add_resource(GetCategory, '/api/GetCategory')
 api.add_resource(GetMajor, '/api/GetMajor')
 api.add_resource(GetDesignation, '/api/GetDesignation')
 
-# api.add_resource(SearchProjects, '/api/SearchProjects')
-api.add_resource(AddCourse, '/api/AddCourse')
 
 
 

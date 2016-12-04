@@ -43,11 +43,11 @@ myApp.config(function ($routeProvider) {
     })
     .when('/applicationreport', {
         templateUrl: 'static/partials/admin/appreport.html',
-        controller: 'loginController'
+        controller: 'appReportController'
     })
     .when('/projectsreport', {
         templateUrl: 'static/partials/admin/projreport.html',
-        controller: 'loginController'
+        controller: 'projReportController'
     })
     .when('/addproject', {
         templateUrl: 'static/partials/admin/addproj.html',
