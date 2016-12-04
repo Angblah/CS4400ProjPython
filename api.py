@@ -160,19 +160,48 @@ class QueryProject(Resource):
             parser.add_argument('year', type=str, help="year restriction of project")
             args = parser.parse_args()
 
-            _projTitle = args['title']
-            _projCategory = args['category']
-            _projDesignation = args['designation']
-            _projMajor = args['major']
-            _projYear = args['year']
+            # if args['title'] is not None:
+            #     projTitle = args['title']
+            # else:
+            #     projTitle = True
+            # if args['category'] is not None:
+            #     projCategory = args['category']
+            # else:
+            #     projCategory = True
+            # if args['designation'] is not None:
+            #     projDesignation = args['designation']
+            # else:
+            #     projDesignation = True
+            # if args['major'] is not None:
+            #     projMajor = args['major']
+            # else:
+            #     projMajor = True
+            # if args['year'] is not None:
+            #     projYear = args['year']
+            # else:
+            #     projYear = True
+
+            projTitle = args['title']
+            projCategory = args['category']
+            projDesignation = args['designation']
+            projMajor = args['major']
+            projYear = args['year']
+            #build onto statements if null
+            print(projTitle)
+            print(projCategory)
+            print(projDesignation)
+            print(projMajor)
+            print(projYear)
+            
 
             conn = mysql.connect()
             cursor = conn.cursor()
-            stmt = "SELECT Proj_Name FROM project1 WHERE Yr_Restrict='{}'".format(_projYear)
+            stmt = "SELECT DISTINCT Proj_Name from project1 WHERE Proj_Name= '{}' OR P_Designation='{}' AND Maj_Restrict='{}'".format(projTitle,projDesignation,projMajor)
             cursor.execute(stmt)
             data = cursor.fetchall()
+            print([{'name':x,'type':'Project'} for x in data])
             if(data):
-                return data
+                return [{'name':x,'type':'Project'} for x in data]
             else:
                 return {'status':100,'message':'Failure'}
         except Exception as e:

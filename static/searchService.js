@@ -47,18 +47,18 @@ angular.module('myApp').factory('SearchService',
                 break;
             case 'Senior':
                 year = 4;
-                break;    
+                break;
+            default:
+                year = null;
         }
 
         console.log([title, category, designation, major, year, type]);
-        
+
         if (type === 'Project') {
             console.log('getting projects...')
-            return $http.get('/api/QueryProject', {title:title,
-                category:category, designation:designation, major:major,
-                 year:year})
+            return $http.get('/api/QueryProject', {params:{title:title, category:category, designation:designation, major:major, year:year}})
             .success(function(data) {
-                console.log(data);
+                // console.log(data);
             return data;
         })
         .error(function(data, status) {
