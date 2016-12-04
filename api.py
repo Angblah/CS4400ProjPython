@@ -123,7 +123,7 @@ class GetMajor(Resource):
         try:
             conn = mysql.connect()
             cursor = conn.cursor()
-            stmt = "SELECT Major_Name FROM major"
+            stmt = "SELECT * FROM major"
             cursor.execute(stmt)
             data = cursor.fetchall()
             if(len(data)>0):
@@ -158,8 +158,6 @@ api.add_resource(GetCategory, '/api/GetCategory')
 api.add_resource(GetMajor, '/api/GetMajor')
 api.add_resource(GetDesignation, '/api/GetDesignation')
 
-# api.add_resource(SearchProjects, '/api/SearchProjects')
-api.add_resource(AddCourse, '/api/AddCourse')
 
 
 

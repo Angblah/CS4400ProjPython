@@ -3,30 +3,30 @@ angular.module('myApp')
  function($scope, $location, SearchService) {
     SearchService.getCategory()
         .success(function(data) {
-            console.log(data);
             $scope.data.categories = data;
     });
 
-    // SearchService.getDesignation()
-    // .success(function(data) {
-    //     console.log(data);
-    //     $scope.data.designations = data;
-    // });
-
     SearchService.getMajor()
     .success(function(data) {
-        console.log(data);
         $scope.data.majors = data;
     });
-
+    
+    // SearchService.query(model_title, model_category,
+    //     model_designation, model_major, model_year);
+    $scope.query = function() {
+        SearchService.query($scope.data.model_title, $scope.data.model_category,
+            $scope.data.model_designation, $scope.data.model_major, $scope.data.model_year)
+    }
     $scope.data = {
-    model_category: null, 
-    model_designation: null,    
-    model_major: null,
-    model_year: null,
+    title: null,
+    category: null,
+    designation: null,
+    major: null,
+    year: 'YA YA  YA ',
     categories: [],
     designations: [["Community"],["Sustainable Communities"]],
     majors: [],
+    projects: []
    };
 
 }]);

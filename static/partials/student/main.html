@@ -24,43 +24,45 @@
       <div class="row form-group">
         <div class="col-lg-6">
           <label for="title"> Title </label>
-          <input id="title" class="form-control" type="text" name="title" ng-model="search.title" placeholder="">
+          <input id="title" class="form-control" type="text" name="title" ng-model="data.title" placeholder="">
+           <pre>//data.title// </pre><br/>
         </div>
+
 
         <!-- must use a dropdown for category -->
 <div ng-controller="searchController">
   <form name="myForm">
     <label for="category"> Category: </label>
-    <select size="1" name="category" ng-model="data.model_category" multiple>
-      <option ng-repeat="option in data.categories" ng-value="option.value">//option[0]//</option>
+    <select size="1" name="category" ng-model="data.category" multiple>
+      <option ng-repeat="option in data.categories" ng-value="option">//option[0]//</option>
     </select>
   </form>
   <hr>
-  <pre>//data.model_category | json//</pre><br/>
+  <pre>//data.category | json//</pre><br/>
 </div>
       </div>
 
       <div class="row form-group" ng-controller="searchController">
         <div class="col-lg-6">
           <label for="designations">Designation</label>
-          <select name="designations" ng-model="data.model_designation">
-      <option ng-repeat="option in data.designations" ng-value="//option.value//">//option[0]//</option>
+          <select name="designations" ng-model="data.designation">
+      <option ng-repeat="option in data.designations" ng-value="//option//">//option[0]//</option>
     </select>
         </div>
 
         <div class="col-lg-3" ng-controller="searchController">
           <label for="major">Major</label>
-          <select name="major" ng-model="data.model_major">
+          <select name="major" ng-model="data.major">
       <option ng-repeat="option in data.majors" ng-value="//option.value//">//option[0]//</option>
     </select>
-    <pre>//data.model_category | json//</pre><br/>
+    <pre>//data.major | json//</pre><br/>
+
         </div>
 
         <!-- leave hardcoded -->
         <div class="col-lg-3">
           <label for="year">Year</label>
-          <select class="form-control" id="year" ng-model="data.model_year">
-            <option value="" hidden>Please Select</option>
+          <select class="form-control" id="year" ng-model="data.year">
             <option>Freshman</option>
             <option>Sophomore</option>
             <option>Junior</option>
@@ -69,27 +71,27 @@
         </div>
       </div>    
 
-      <div class="col-lg-3">
+      <div class="col-lg-3" ng-controller ="searchController">
         <label>
-        <input type="radio" name="filter-type" value="male">Project</label>
+        <input style="margin: 0px 5px 0px 5px" type="radio" name="filter-type" value="male">Project</label>
         <label>
         <input style="margin: 0px 5px 0px 5px" type="radio" name="filter-type" value="male">Course</label>
         <label>
         <input style="margin: 0px 5px 0px 5px" type="radio" name="filter-type" value="male">Both</label>
       </div>
-                
-      <button id="apply-filter-btn" class="btn btn-primary pull-right" type="submit" >Apply Filter</button>
+
+      <div ng-controller ="searchController">
+      <button id="apply-filter-btn" class="btn btn-primary pull-right" ng-click="query()">Apply Filter</button>
       
       <button id="reset-filter-btn" class="btn btn-primary pull-right" type="reset" style="margin: 0px 5px 0px 0px">Reset Filter</button>
-
+<pre>//data.major | json//</pre><br/>
       </div>
+    </div>
 
     </form>
     </div>
 
-  <pre>//data.model_category// //data.model_designation//
-    //data.model_major// //data.model_year// </pre><br/>
-
+</div>
 <div class="divider"></div>
 
 <!--   results table -->

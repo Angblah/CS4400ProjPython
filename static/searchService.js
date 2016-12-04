@@ -45,10 +45,17 @@ angular.module('myApp').factory('SearchService',
             console.error("Error getting majors")
         });
     }
-
+    function query(title, category, designation, major, year) {
+        console.log(title);
+        console.log(category);
+        console.log(designation);
+        console.log(major);
+        console.log(year);
+    }
     return ({
         getCategory: getCategory,
         getDesignation: getDesignation,
-        getMajor: getMajor
+        getMajor: getMajor,
+        query: query
     });
 }]);
