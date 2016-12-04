@@ -192,7 +192,7 @@ class QueryProject(Resource):
             print(projDesignation)
             print(projMajor)
             print(projYear)
-            
+
 
             conn = mysql.connect()
             cursor = conn.cursor()
@@ -269,8 +269,8 @@ class QueryBoth(Resource):
 class AddCourse(Resource):
     def post(self):
         try:
-            # Handle adding stuff 
-            
+            # Handle adding stuff
+
             # Parse the arguments
             parser = reqparse.RequestParser()
             parser.add_argument('number', type=str, help='Number of course')
@@ -312,6 +312,54 @@ class GetTopTenProjects(Resource):
         except Exception as e:
             return {'error': str(e)}
 
+class GetProjectByApps(Resource):
+    def get(self):
+        try:
+            conn = mysql.connect()
+            cursor = conn.cursor()
+            stmt = "SELECT * FROM (SELECT Proj_Name, num_Apps, CONVERT((Accepted/num_Apps*100),char) as Acceptance_Rate FROM num_applications NATURAL JOIN (SELECT Proj_Name, SUM(Status) as Accepted FROM application WHERE Status >= 0 GROUP BY Proj_Name) temp_table) with_acceptance_temp NATURAL JOIN (SELECT Proj_Name, GROUP_CONCAT(Major_Name ORDER BY Num_Major_Apps DESC SEPARATOR '/') as Majors FROM project_with_majors GROUP BY Proj_Name) with_proj_temp ORDER BY Acceptance_Rate DESC"
+            cursor.execute(stmt)
+            data = cursor.fetchall()
+            if(len(data)>0):
+                if(data):
+                    return data
+                else:
+                    return {'status':100,'message':'Failure'}
+        except Exception as e:
+            return {'error': str(e)}
+
+class GetNumApps(Resource):
+    def get(self):
+        try:
+            conn = mysql.connect()
+            cursor = conn.cursor()
+            stmt = "SELECT CONVERT(SUM(num_Apps),char) FROM num_applications"
+            cursor.execute(stmt)
+            data = cursor.fetchall()
+            if(len(data)>0):
+                if(data):
+                    return data
+                else:
+                    return {'status':100,'message':'Failure'}
+        except Exception as e:
+            return {'error': str(e)}
+
+class GetNumAccepted(Resource):
+    def get(self):
+        try:
+            conn = mysql.connect()
+            cursor = conn.cursor()
+            stmt = "SELECT CONVERT(SUM(Status),char) FROM application WHERE Status >=0"
+            cursor.execute(stmt)
+            data = cursor.fetchall()
+            if(len(data)>0):
+                if(data):
+                    return data
+                else:
+                    return {'status':100,'message':'Failure'}
+        except Exception as e:
+            return {'error': str(e)}
+
 #Add request url to api
 api.add_resource(CreateUser, '/api/CreateUser')
 api.add_resource(AuthenticateUser, '/api/AuthenticateUser')
@@ -319,13 +367,15 @@ api.add_resource(AuthenticateUser, '/api/AuthenticateUser')
 api.add_resource(GetCategory, '/api/GetCategory')
 api.add_resource(GetMajor, '/api/GetMajor')
 api.add_resource(GetDesignation, '/api/GetDesignation')
+
 api.add_resource(GetTopTenProjects, '/api/GetTopTenProjects')
+api.add_resource(GetProjectByApps, '/api/GetProjectByApps')
+api.add_resource(GetNumApps, '/api/GetNumApps')
+api.add_resource(GetNumAccepted, '/api/GetNumAccepted')
 
 api.add_resource(QueryProject, '/api/QueryProject')
 api.add_resource(QueryCourse, '/api/QueryCourse')
 api.add_resource(QueryBoth, '/api/QueryBoth')
-
-
 
 if __name__ == '__main__':
     app.run()
