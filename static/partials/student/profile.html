@@ -2,15 +2,24 @@
     <nav class="navbar navbar-inverse">
         <ul class="nav navbar-nav">
             <li class="nav-item">
-                <a class="nav-link" href="#">Edit Profile</a>
+                <a class="nav-link" href="#">Profile</a>
             </li>
             <li class="nav-item active">
-                <a class="nav-link" href="#">Home</a>
+                <a class="nav-link" href="#/main">Home</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">My Applications</a>
+                <a class="nav-link" href="#/studentapps">My Applications</a>
             </li>
         </ul>
-        <a class="navbar-brand" href="#">Log Out</a>
+        <a class="navbar-brand" href="/">Log Out</a>
     </nav>
+    <div class="jumbotron">
+        <h1>Profile</h1>
+        <h3>Username: //data.username//</h3>
+        <h3>Email: //data.email//</h3>
+        <h3>Major: //data.selectedMajor.major_name//</h3>
+        <h3>Department: //data.selectedDepartment//</h3>
+        <h3>Year: //selectedYear//</h3>
+        <button id="register-pg-btn" class="btn btn-primary" ng-href="#/editprofile"> Edit Profile </button>
+    </div>
 </div>

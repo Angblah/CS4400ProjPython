@@ -1,7 +1,7 @@
 angular.module('myApp').factory('UserService',
 ['$timeout', '$http', function ($timeout, $http) {
 
-    var username = null;
+    var user = null;
     var isLoggedIn = false;
 
     function authenticate(username, password) {
@@ -11,7 +11,7 @@ angular.module('myApp').factory('UserService',
         //Post request to server
         return $http.post('/api/AuthenticateUser', {username: username, password: password})
         .success(function(data) {
-            username = data.user.username;
+            user = data.username;
             isLoggedIn = true;
             return data;
         })
@@ -55,8 +55,10 @@ angular.module('myApp').factory('UserService',
     return ({
         authenticate: authenticate,
         register: register,
-        username: username,
-        isLoggedIn: isLoggedIn
+        user: user,
+        isLoggedIn: isLoggedIn,
+        getStudent: getStudent,
+        updateStudent: updateStudent
     });
 }]);
 

@@ -26,14 +26,15 @@ angular.module('myApp').controller('loginController',
         .success(function (data) {
           //$location.path('/main');
           if (data) {
-            $scope.disabled = false;
+            console.log(data);
+            console.log(UserService.user);
+            console.log(UserService.isLoggedIn);
+            //UserService.username = data.username;
             // redirect to main page depending on type
-            if (data.user.userType == "Student") {
-
-              alert("User is :", UserService.user);
+            if (data.userType == "Student") {
               $location.path('/main');
               
-            } else if (data.user.userType == "Admin") {
+            } else if (data.userType == "Admin") {
               $location.path('/adminapps');
             }
             $location
@@ -41,7 +42,6 @@ angular.module('myApp').controller('loginController',
           } else {
             $scope.error = true;
             $scope.errorMessage = "Invalid username and/or password";
-            $scope.disabled = false;
             $scope.loginForm = {};
           }
         });

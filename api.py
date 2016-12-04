@@ -218,7 +218,7 @@ class GetDesignation(Resource):
         except Exception as e:
             return {'error': str(e)}
 
-class AddCourse(Resource):
+#class AddCourse(Resource):
 
 
 #Add request url to api
@@ -230,7 +230,7 @@ api.add_resource(GetMajor, '/api/GetMajor')
 api.add_resource(GetDesignation, '/api/GetDesignation')
 
 # api.add_resource(SearchProjects, '/api/SearchProjects')
-api.add_resource(AddCourse, '/api/AddCourse')
+# api.add_resource(AddCourse, '/api/AddCourse')
 
 
 
