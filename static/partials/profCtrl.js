@@ -19,7 +19,6 @@ angular.module('myApp').controller('profileController',
               if (data.major_name) {
                   $scope.data.selectedMajor.Major_Name = data.major_name;
                   $scope.updateDepartment(data.major_name);
-                  $scope.data.selectedMajor.Dept_Name = data.department;
               } else {
                   $scope.data.selectedMajor.Major_Name = "Undecided"
                   $scope.data.selectedDepartment = "None"
@@ -45,9 +44,6 @@ angular.module('myApp').controller('profileController',
       }
       
       $scope.saveProfile = function() {
-          console.log($scope.data.username, $scope.data.selectedYear);
-          console.log($scope.data.selectedMajor.Major_Name);
-          console.log($scope.data.selectedMajor.Dept_Name);
           var major_name = ''
           if ($scope.data.selectedMajor.Major_Name !== 'Undecided') {
               major_name = $scope.data.selectedMajor.Major_Name;
@@ -56,7 +52,10 @@ angular.module('myApp').controller('profileController',
           major_name, $scope.data.selectedYear)
           .success(function (data) {
               if (data) {
+                  console.log(data);
                   $location.path('#/profile');
+              } else {
+                  console.log("Success but issues");
               }
           });
       }
@@ -66,6 +65,7 @@ angular.module('myApp').controller('profileController',
           for (major in majorOptions) {
               if (majorOptions[major].Major_Name === major_name) {
                   $scope.data.selectedDepartment = majorOptions[major].Dept_Name;
+                  $scope.data.selectedMajor.Dept_Name = majorOptions[major].Dept_Name;
                   return;
               }
           }

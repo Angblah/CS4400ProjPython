@@ -141,6 +141,7 @@ class Student(Resource):
                 return {'status':100,'message':'Update student failure'}
 
             userData = {'username': _userUsername}
+            print(userData)
             js = json.dumps(userData)
             resp = Response(js, status=200, mimetype='application/json')
             return resp
