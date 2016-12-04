@@ -4,6 +4,11 @@ angular.module('myApp').controller('adminAppController',
 
     // WHEN REJECTING AN APPLICATION MAKE THE STATUS IN THE DB TABLE '-1'!!!!!!
 
+    $scope.selectRow = function(application) {
+      $scope.selectedApplication = application;
+      console.log($scope.selectedApplication);
+    }
+
 
     GetProjService.getAdminApplications()
       // handle success
@@ -42,12 +47,5 @@ angular.module('myApp').controller('adminAppController',
       }
       return results;
     }
-
-    $scope.temp = [
-      {'name':'Excel Current Events',
-      'major':'ECE',
-      'year':'freshman',
-      'status':'pending'}
-    ];
 
 }]);
