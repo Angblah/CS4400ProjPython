@@ -18,10 +18,10 @@ angular.module('myApp')
         SearchService.query($scope.data.title, $scope.data.category,
             $scope.data.designation, $scope.data.major, $scope.data.year,
             $scope.data.type)
-        // .success(function(data) {
-            // console.log(data);
-            // $scope.data.projects = data;
-        // })
+        .success(function(data) {
+            $scope.data.projects = data
+            console.log($scope.data.projects);
+        })
     }
     $scope.data = {
     title: null,

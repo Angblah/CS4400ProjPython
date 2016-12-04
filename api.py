@@ -227,6 +227,7 @@ class GetDesignation(Resource):
                     return {'status':100,'message':'Failure'}
         except Exception as e:
             return {'error': str(e)}
+
 class QueryProject(Resource):
     def get(self):
         try:
@@ -238,27 +239,56 @@ class QueryProject(Resource):
             parser.add_argument('year', type=str, help="year restriction of project")
             args = parser.parse_args()
 
-            _projTitle = args['title']
-            _projCategory = args['category']
-            _projDesignation = args['designation']
-            _projMajor = args['major']
-            _projYear = args['year']
+            # if args['title'] is not None:
+            #     projTitle = args['title']
+            # else:
+            #     projTitle = True
+            # if args['category'] is not None:
+            #     projCategory = args['category']
+            # else:
+            #     projCategory = True
+            # if args['designation'] is not None:
+            #     projDesignation = args['designation']
+            # else:
+            #     projDesignation = True
+            # if args['major'] is not None:
+            #     projMajor = args['major']
+            # else:
+            #     projMajor = True
+            # if args['year'] is not None:
+            #     projYear = args['year']
+            # else:
+            #     projYear = True
+
+            projTitle = args['title']
+            projCategory = args['category']
+            projDesignation = args['designation']
+            projMajor = args['major']
+            projYear = args['year']
+            #build onto statements if null
+            print(projTitle)
+            print(projCategory)
+            print(projDesignation)
+            print(projMajor)
+            print(projYear)
+            
 
             print(_projYear)
             print(_projTitle)
 
             conn = mysql.connect()
             cursor = conn.cursor()
-            stmt = "SELECT Proj_Name FROM project1 WHERE Yr_Restrict='{}'".format(_projYear)
+            stmt = "SELECT DISTINCT Proj_Name from project1 WHERE Proj_Name= '{}' OR P_Designation='{}' AND Maj_Restrict='{}'".format(projTitle,projDesignation,projMajor)
             cursor.execute(stmt)
             data = cursor.fetchall()
-            print(data)
+            print([{'name':x,'type':'Project'} for x in data])
             if(data):
-                return data
+                return [{'name':x,'type':'Project'} for x in data]
             else:
                 return {'status':100,'message':'Failure'}
         except Exception as e:
             return {'error': str(e)}
+
 class QueryCourse(Resource):
     def get(self):
         try:
@@ -288,6 +318,7 @@ class QueryCourse(Resource):
                     return {'status':100,'message':'Failure'}
         except Exception as e:
             return {'error': str(e)}
+            
 class QueryBoth(Resource):
     def get(self):
         try:
@@ -322,8 +353,6 @@ class QueryBoth(Resource):
 class AddCourse(Resource):
     def post(self):
         try:
-            # Handle adding stuff 
-            
             # Parse the arguments
             parser = reqparse.RequestParser()
             parser.add_argument('number', type=str, help='Number of course')
@@ -336,19 +365,71 @@ class AddCourse(Resource):
 
             _courseNum = args['number']
             _courseName = args['name']
-            _courseInstructor = args['instructor_First']
+            _courseInstructor = args['instructor']
             _courseStudents = args['students']
             _courseDesignation = args['designation']
             _courseCategory = args['category']
 
-            if(len(data)>0):
-                if(data):
-                    return data
+            conn = mysql.connect()
+            cursor = conn.cursor()
+
+            # Statement for inserting into courses
+            stmt1 = "INSERT INTO course VALUES ('{}','{}','{}','{}','{}')".format(_courseNum,_courseName,_courseInstructor,_courseStudents,_courseDesignation)
+            cursor.execute(stmt1)
+            data1 = cursor.fetchall() #no data should be returned?
+            if(len(data1)>0):
+                if(data1):
+                    print ('data 1 failure' + data1)
                 else:
-                    return {'status':100,'message':'Failure'}
+                    return {'status':100,'message':'Course add failure'}
+            conn.commit()
+
+            # Need to insert categories
+            _courseCategory = _courseCategory.split(",")
+            for category in _courseCategory:
+                stmt = "INSERT INTO course_category VALUES ('{}', '{}')".format(_courseName, category)
+                cursor.execute(stmt)
+                data2 = cursor.fetchall()
+                if(len(data2)>0):
+                    if(data2):
+                        print ('data 2 failure' + data2)
+                    else:
+                        return {'status':100,'message':'Course add failure in categories'}                
+                conn.commit()  
+            return "added"
         except Exception as e:
             return {'error': str(e)}
 
+class AddProject(Resource):
+    def post(self):
+        try:
+            # Parse the arguments
+            parser = reqparse.RequestParser()
+            parser.add_argument('name', type=str, help='Name of project')
+            parser.add_argument('description', type=str, help='Description of project')
+            parser.add_argument('advisor', type=str, help='Project adviost')
+            parser.add_argument('students', type=str, help='Estimated number of students in project')
+            parser.add_argument('email', type=str, help='Project Adviosr email')
+            parser.add_argument('desination', type=str, help='Project designation')
+            parser.add_argument('category', type=str, help='Project categories')
+            parser.add_argument('requirement', type=str, help='Requirements for project')
+            args = parser.parse_args()
+
+            _projectName = args['name']
+            _projectDescription = args['description']
+            _projectAdvisor = args['advisor']
+            _projectEmail = args['email']
+            _projectStudents = args['students']
+            _projectCategory = args['category']
+            _projectDesignation = args['designation']
+            _projectCategory = args['requirement']
+
+            conn = mysql.connect()
+            cursor = conn.cursor()
+            
+        except Exception as e:
+            return {'error': str(e)}
+ 
 class GetTopTenProjects(Resource):
     def get(self):
         try:
@@ -368,7 +449,8 @@ class GetTopTenProjects(Resource):
 #Add request url to api
 api.add_resource(Student, '/api/Student')
 api.add_resource(AuthenticateUser, '/api/AuthenticateUser')
-
+api.add_resource(AddCourse, '/api/AddCourse')
+api.add_resource(AddProject, '/api/AddProject')
 api.add_resource(GetCategory, '/api/GetCategory')
 api.add_resource(GetMajor, '/api/GetMajor')
 api.add_resource(GetDesignation, '/api/GetDesignation')
