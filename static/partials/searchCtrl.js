@@ -2,31 +2,41 @@ angular.module('myApp')
  .controller('searchController', ['$scope', '$location', 'SearchService',
  function($scope, $location, SearchService) {
     SearchService.getCategory()
-        .success(function(data) {
-            $scope.data.categories = data;
+    .success(function(data) {
+        $scope.data.categories = data;
     });
 
     SearchService.getMajor()
     .success(function(data) {
         $scope.data.majors = data;
     });
-    
-    // SearchService.query(model_title, model_category,
-    //     model_designation, model_major, model_year);
+    // SearchService.getDesignation()
+    // .success(function(data) {
+    //     $scope.data.designations = data;
+    // });
     $scope.query = function() {
-        SearchService.query($scope.data.model_title, $scope.data.model_category,
-            $scope.data.model_designation, $scope.data.model_major, $scope.data.model_year)
+        SearchService.query($scope.data.title, $scope.data.category,
+            $scope.data.designation, $scope.data.major, $scope.data.year,
+            $scope.data.type)
+        // .success(function(data) {
+            // console.log(data);
+            // $scope.data.projects = data;
+        // })
     }
     $scope.data = {
     title: null,
     category: null,
     designation: null,
     major: null,
-    year: 'YA YA  YA ',
+    year: null,
+    type: 'Both',
     categories: [],
     designations: [["Community"],["Sustainable Communities"]],
     majors: [],
-    projects: []
+    projects: [],
+    types: ['Project','Course','Both'],
    };
+    $scope.names = ['pizza', 'unicorns', 'robots'];
+       $scope.my = { favorite: 'unicorns' };
 
 }]);

@@ -4,6 +4,10 @@ angular.module('myApp').factory('UserService',
     var user = null;
     var isLoggedIn = false;
 
+    function getUser() {
+        return user;
+    }
+
     function authenticate(username, password) {
         //http://twisted.readthedocs.io/en/twisted-16.2.0/core/howto/defer-intro.html
         //See above on deffereds for async code
@@ -32,7 +36,7 @@ angular.module('myApp').factory('UserService',
     }
 
     function getStudent(username) {
-        return $http.get('/api/Student', {username: username})
+        return $http.get('/api/Student', {params: {username: username}})
         .success(function (data) {
             return data;
         })
@@ -64,7 +68,7 @@ angular.module('myApp').factory('UserService',
     return ({
         authenticate: authenticate,
         register: register,
-        user: user,
+        getUser: getUser,
         isLoggedIn: isLoggedIn,
         getStudent: getStudent,
         updateStudent: updateStudent,
