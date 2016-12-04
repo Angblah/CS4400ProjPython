@@ -123,7 +123,7 @@ class GetMajor(Resource):
         try:
             conn = mysql.connect()
             cursor = conn.cursor()
-            stmt = "SELECT * FROM major"
+            stmt = "SELECT Major_Name FROM major"
             cursor.execute(stmt)
             data = cursor.fetchall()
             if(len(data)>0):
@@ -139,7 +139,131 @@ class GetDesignation(Resource):
         try:
             conn = mysql.connect()
             cursor = conn.cursor()
+<<<<<<< HEAD
             stmt = "SELECT * FROM designation"
+            cursor.execute(stmt)
+            data = cursor.fetchall()
+=======
+            stmt = "SELECT name FROM designation"
+            cursor.execute(stmt)
+            data = cursor.fetchall()
+            if(len(data)>0):
+                if(data):
+                    return data
+                else:
+                    return {'status':100,'message':'Failure'}
+        except Exception as e:
+            return {'error': str(e)}
+
+class QueryProject(Resource):
+    def get(self):
+        try:
+            parser = reqparse.RequestParser()
+            parser.add_argument('title', type=str, help="title of project")
+            parser.add_argument('category', type=str, help="category of project")
+            parser.add_argument('designation', type=str, help="designation of project")
+            parser.add_argument('major', type=str, help="major restriction of project")
+            parser.add_argument('year', type=str, help="year restriction of project")
+            args = parser.parse_args()
+
+            # if args['title'] is not None:
+            #     projTitle = args['title']
+            # else:
+            #     projTitle = True
+            # if args['category'] is not None:
+            #     projCategory = args['category']
+            # else:
+            #     projCategory = True
+            # if args['designation'] is not None:
+            #     projDesignation = args['designation']
+            # else:
+            #     projDesignation = True
+            # if args['major'] is not None:
+            #     projMajor = args['major']
+            # else:
+            #     projMajor = True
+            # if args['year'] is not None:
+            #     projYear = args['year']
+            # else:
+            #     projYear = True
+
+            projTitle = args['title']
+            projCategory = args['category']
+            projDesignation = args['designation']
+            projMajor = args['major']
+            projYear = args['year']
+            #build onto statements if null
+            print(projTitle)
+            print(projCategory)
+            print(projDesignation)
+            print(projMajor)
+            print(projYear)
+            
+
+            conn = mysql.connect()
+            cursor = conn.cursor()
+            stmt = "SELECT DISTINCT Proj_Name from project1 WHERE Proj_Name= '{}' OR P_Designation='{}' AND Maj_Restrict='{}'".format(projTitle,projDesignation,projMajor)
+            cursor.execute(stmt)
+            data = cursor.fetchall()
+            print([{'name':x,'type':'Project'} for x in data])
+            if(data):
+                return [{'name':x,'type':'Project'} for x in data]
+            else:
+                return {'status':100,'message':'Failure'}
+        except Exception as e:
+            return {'error': str(e)}
+
+class QueryCourse(Resource):
+    def get(self):
+        try:
+            parser = reqparse.RequestParser()
+            parser.add_argument('title', type=str, help="title of project")
+            parser.add_argument('category', type=str, help="category of project")
+            parser.add_argument('designation', type=str, help="designation of project")
+            parser.add_argument('major', type=str, help="major restriction of project")
+            parser.add_argument('year', type=str, help="year restriction of project")
+            args = parser.parse_args()
+
+            _projTitle = args['title']
+            _projCategory = args['category']
+            _projDesignation = args['designation']
+            _projMajor = args['major']
+            _projYear = args['year']
+
+            conn = mysql.connect()
+            cursor = conn.cursor()
+            stmt = "SELECT Proj_Name FROM project1 WHERE Maj_Restrict = '{}'".format(_projMajor)
+            cursor.execute(stmt)
+            data = cursor.fetchall()
+            if(len(data)>0):
+                if(data):
+                    return data
+                else:
+                    return {'status':100,'message':'Failure'}
+        except Exception as e:
+            return {'error': str(e)}
+            
+class QueryBoth(Resource):
+    def get(self):
+        try:
+            parser = reqparse.RequestParser()
+            parser.add_argument('title', type=str, help="title of project")
+            parser.add_argument('category', type=str, help="category of project")
+            parser.add_argument('designation', type=str, help="designation of project")
+            parser.add_argument('major', type=str, help="major restriction of project")
+            parser.add_argument('year', type=str, help="year restriction of project")
+
+            args = parser.parse_args()
+
+            _projTitle = args['title']
+            _projCategory = args['category']
+            _projDesignation = args['designation']
+            _projMajor = args['major']
+            _projYear = args['year']
+
+            conn = mysql.connect()
+            cursor = conn.cursor()
+            stmt = "SELECT Proj_Name FROM project1 WHERE Maj_Restrict = '{}'".format(_projMajor)
             cursor.execute(stmt)
             data = cursor.fetchall()
             if(len(data)>0):
@@ -230,6 +354,21 @@ class AddProject(Resource):
         except Exception as e:
             return {'error': str(e)}
  
+class GetTopTenProjects(Resource):
+    def get(self):
+        try:
+            conn = mysql.connect()
+            cursor = conn.cursor()
+            stmt = "SELECT application.Proj_Name, COUNT(application.Proj_Name) as num_Apps FROM project LEFT OUTER JOIN application ON project.Proj_Name=application.Proj_Name WHERE application.Proj_Name IS NOT NULL GROUP BY application.Proj_Name ORDER BY num_Apps DESC LIMIT 10"
+            cursor.execute(stmt)
+            data = cursor.fetchall()
+            if(len(data)>0):
+                if(data):
+                    return data
+                else:
+                    return {'status':100,'message':'Failure'}
+        except Exception as e:
+            return {'error': str(e)}
 
 #Add request url to api
 api.add_resource(CreateUser, '/api/CreateUser')
@@ -239,7 +378,11 @@ api.add_resource(AddProject, '/api/AddProject')
 api.add_resource(GetCategory, '/api/GetCategory')
 api.add_resource(GetMajor, '/api/GetMajor')
 api.add_resource(GetDesignation, '/api/GetDesignation')
+api.add_resource(GetTopTenProjects, '/api/GetTopTenProjects')
 
+api.add_resource(QueryProject, '/api/QueryProject')
+api.add_resource(QueryCourse, '/api/QueryCourse')
+api.add_resource(QueryBoth, '/api/QueryBoth')
 
 
 

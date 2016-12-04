@@ -16,7 +16,6 @@
       </nav>
     </div>
 
-
     <div class="container">
       <h1 class="display-3">Search for a Course/Project</h1>
       <form id="searchform" method ="post" action="/search">
@@ -25,12 +24,9 @@
         <div class="col-lg-6">
           <label for="title"> Title </label>
           <input id="title" class="form-control" type="text" name="title" ng-model="data.title" placeholder="">
-           <pre>//data.title// </pre><br/>
         </div>
 
-
         <!-- must use a dropdown for category -->
-<div ng-controller="searchController">
   <form name="myForm">
     <label for="category"> Category: </label>
     <select size="1" name="category" ng-model="data.category" multiple>
@@ -38,11 +34,7 @@
     </select>
   </form>
   <hr>
-  <pre>//data.category | json//</pre><br/>
-</div>
-      </div>
-
-      <div class="row form-group" ng-controller="searchController">
+      <div class="row form-group">
         <div class="col-lg-6">
           <label for="designations">Designation</label>
           <select name="designations" ng-model="data.designation">
@@ -50,12 +42,11 @@
     </select>
         </div>
 
-        <div class="col-lg-3" ng-controller="searchController">
+        <div class="col-lg-3">
           <label for="major">Major</label>
           <select name="major" ng-model="data.major">
       <option ng-repeat="option in data.majors" ng-value="//option.value//">//option[0]//</option>
     </select>
-    <pre>//data.major | json//</pre><br/>
 
         </div>
 
@@ -70,22 +61,22 @@
           </select>
         </div>
       </div>    
+<form>
+ <label ng-repeat="type1 in data.types">
+     //type1//
+       <input type="radio"
+              ng-model="data.type"
+              ng-value="type1"
+              style="margin: 0px 5px 0px 0px"
+              >
+     </label>
+</form>
 
-      <div class="col-lg-3" ng-controller ="searchController">
-        <label>
-        <input style="margin: 0px 5px 0px 5px" type="radio" name="filter-type" value="male">Project</label>
-        <label>
-        <input style="margin: 0px 5px 0px 5px" type="radio" name="filter-type" value="male">Course</label>
-        <label>
-        <input style="margin: 0px 5px 0px 5px" type="radio" name="filter-type" value="male">Both</label>
-      </div>
-
-      <div ng-controller ="searchController">
-      <button id="apply-filter-btn" class="btn btn-primary pull-right" ng-click="query()">Apply Filter</button>
+      <form ng-submit="query()">
+      <input type="submit"id="apply-filter-btn" class="btn btn-primary pull-right" value="Apply Filter" />
       
       <button id="reset-filter-btn" class="btn btn-primary pull-right" type="reset" style="margin: 0px 5px 0px 0px">Reset Filter</button>
-<pre>//data.major | json//</pre><br/>
-      </div>
+      </form>
     </div>
 
     </form>
@@ -96,29 +87,13 @@
 
 <!--   results table -->
   <div class="container">
-<!--     <div class="panel panel-default">
-      <div class="panel-heading">Your Search Returned:</div> -->
       <table class="table table-hover table-striped">
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Type</th>
+        <td> Name </td>
+        <td> Type </td>
+         <tr ng-repeat="x in data.projects">
+          <td> //x.name[0]// </td>
+          <td> //x.type// </td>
           </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Environmental Policy and Politics</td>
-            <td>Course</td>
-          </tr>
-          <tr>
-            <td>Excel Current Events</td>
-            <td>Project</td>
-          </tr>
-          <tr>
-            <td>Introduction to User Interface Design</td>
-            <td>Course</td>
-          </tr>
-        </tbody>
       </table>
     </div>
   </div>
