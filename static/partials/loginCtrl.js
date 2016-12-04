@@ -29,7 +29,8 @@ angular.module('myApp').controller('loginController',
             console.log(data);
             console.log(UserService.user);
             console.log(UserService.isLoggedIn);
-            //UserService.username = data.username;
+            UserService.username = data.username;
+            UserService.isLoggedIn = true;
             // redirect to main page depending on type
             if (data.userType == "Student") {
               $location.path('/main');

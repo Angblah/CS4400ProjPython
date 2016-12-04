@@ -80,12 +80,15 @@ class Student(Resource):
             conn = mysql.connect()
             cursor = conn.cursor()
 
+            print(_userUsername)
+
             # Select all student info for profile
             stmt = "SELECT * FROM student WHERE Username='{}'".format(_userUsername)
             cursor.execute(stmt)
             data = cursor.fetchall()
+            print(data)
 
-            stmt = "SELECT DEPARTMENT FROM major WHERE Major_Name='{}'".format(data[0][2])
+            stmt2 = "SELECT Dept_Name FROM major WHERE Major_Name='{}'".format(data[0][2])
             cursor.execute(stmt2)
             department = cursor.fetchall()
 
@@ -93,7 +96,7 @@ class Student(Resource):
             if(len(data)>0):
                 if(data):
                     #Format return into JSON object
-                    studentData = {'username': data[0][0], 'email': data[0][1], 'major_name': data[0][2], 'department': department[0][1], 'year': data[0][3]}
+                    studentData = {'username': data[0][0], 'email': data[0][1], 'major_name': data[0][2], 'department': department[0][0], 'year': data[0][3]}
                     js = json.dumps(studentData)
                     resp = Response(js, status=200, mimetype='application/json')
                     return resp
@@ -190,12 +193,17 @@ class GetMajor(Resource):
         try:
             conn = mysql.connect()
             cursor = conn.cursor()
-            stmt = "SELECT Major_Name FROM major"
+            stmt = "SELECT * FROM major"
             cursor.execute(stmt)
             data = cursor.fetchall()
             if(len(data)>0):
                 if(data):
-                    return data
+                    majors = []
+                    for m in data:
+                        majors.append({'Major_Name': m[0], 'Dept_Name': m[1]})
+                    js = json.dumps({'majors': majors})
+                    resp = Response(js, status=200, mimetype='application/json')
+                    return resp
                 else:
                     return {'status':100,'message':'Failure'}
         except Exception as e:

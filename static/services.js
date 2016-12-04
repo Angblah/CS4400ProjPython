@@ -51,6 +51,15 @@ angular.module('myApp').factory('UserService',
         });
     }
 
+    function getMajors(username) {
+        return $http.get('/api/GetMajor')
+        .success(function (data) {
+            return data;
+        })
+        .error(function(data,status) {
+            console.error("Get Student Error", status, data);
+        });
+    }
 
     return ({
         authenticate: authenticate,
@@ -58,7 +67,8 @@ angular.module('myApp').factory('UserService',
         user: user,
         isLoggedIn: isLoggedIn,
         getStudent: getStudent,
-        updateStudent: updateStudent
+        updateStudent: updateStudent,
+        getMajors: getMajors
     });
 }]);
 
