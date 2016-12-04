@@ -12,7 +12,18 @@ angular.module('myApp').factory('AddCourseService',
       });
     }
 
+    function getCategory() {
+        return $http.get('/api/GetCategory')
+        .success(function(data) {
+            return data;
+        })
+        .error(function(data, status) {
+            console.error("Error getting categories")
+        });
+    }
+
     return ({
         addCourse: addCourse,
+        getCategory: getCategory,
     });
 }]);

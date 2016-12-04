@@ -51,7 +51,7 @@ myApp.config(function ($routeProvider) {
     })
     .when('/addproject', {
         templateUrl: 'static/partials/admin/addproj.html',
-        controller: 'loginController'
+        controller: 'addProjCtrl'
     })
     .when('/addcourse', {
         templateUrl: 'static/partials/admin/addcourse.html',
