@@ -1,22 +1,22 @@
-<div class="container">
+<div class="jumbotron">
     <h1>Edit Profile</h1>
-    <div class="row form-group">
-      <label for="majorSelect">Major</label>
-      <select class="form-control" id="majorSelect">
-        <option></option>
-      </select>
-    </div>
-    <div class="row form-group">
-      <label for="yearSelect">Year</label>
-      <select class="form-control" id="yearSelect">
-        <option>Freshman</option>
-        <option>Sophomore</option>
-        <option>Junior</option>
-        <option>Senior</option>
-      </select>
-    </div>
-    <div class="row form-group">
-      <label for="majorSelect">Department</label>
-      <label class="disabled">DepartmentName</label>
-    </div>
+    <form name="editProfForm">
+      <div class="row form-group">
+        <label for="majorSelect">Major: </label>
+        <select class="form-control" id="majorSelect" ng-options="major.Major_Name for major in data.majorOptions"
+        ng-model="data.selectedMajor" ng-change="updateDepartment(data.selectedMajor.Major_Name)">
+        </select>
+      </div>
+      <div class="row form-group">
+        <label for="yearSelect">Year: </label>
+        <select class="form-control" id="yearSelect" ng-options="year for year in data.yearOptions" ng-model="data.selectedYear">
+        </select>
+      </div>
+      <div class="row form-group">
+        <label for="majorSelect">Department: </label>
+        <label class="disabled">//data.selectedDepartment//</label>
+      </div>
+      <button id="cancel-btn" class="btn btn-primary" onClick="location.href='#/profile"> Cancel </button>
+      <button id="save-btn" class="btn btn-primary" ng-click="saveProfile()"> Save Profile </a></button>
+    </form>
 </div>

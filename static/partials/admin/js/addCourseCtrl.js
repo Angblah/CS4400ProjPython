@@ -2,72 +2,110 @@ angular.module('myApp').controller('addCourseCtrl',
   ['$scope', '$location', 'UserService', 'AddCourseService',
   function ($scope, $location, UserService, AddCourseService) {
 
+    // Place to put out queried categories and designations
+    $scope.data = {
+      categories: [],
+      designations: [["Community"],["Sustainable Communities"]],
+    };
+
     $scope.courseform = {
       name: "",
       number: "",
       instructor: "",
       designation: "",
+      categories: "",
       students: "",
     };
 
+    AddCourseService.getCategory()
+      .success(function(data) {
+        $scope.data.categories = data;
+    });
+
     $scope.submit = function() {
-      if($scope.validate($scope.courseform.name, $scope.courseform.number, $scope.courseform.instructor, $scope.courseform.designation, $scope.courseform.students)) {
-        return;
+      var designation = $scope.fetchDesignation();
+      var categories = $scope.fetchCategories();
+      if($scope.validate($scope.courseform.name, $scope.courseform.number, $scope.courseform.instructor, categories, designation[0], $scope.courseform.students)) {
+        $scope.filled = true;
       }
-      console.log($scope.courseform.name);
+      // initial values
       $scope.error = false;
       $scope.disabled = true;
-      // AddCourseService.addCourse()
-      //     .success(function (data) {
-      //       if (data) {
-      //         $scope.disabled = false;
-      //         $location.path('/addcourse');
-      //         $scope.courseform = {};
-      //       } else {
-      //         $scope.error = true;
-      //         $scope.errorMessage = "Unable to fetch Data";
-      //         $scope.disabled = false;
-      //         $scope.courseform = {};
-      //       }
-      // });
+
+      AddCourseService.addCourse($scope.courseform.number, $scope.courseform.name, $scope.courseform.instructor, designation[0], categories, $scope.courseform.students)
+          .success(function (data) {
+            if ($scope.filled) {
+              $scope.disabled = false;
+              $location.path('/addcourse');
+              $scope.courseform = {};
+            } else {
+              $scope.error = true;
+              $scope.errorMessage = "Unable to add course, please fill ALL fields";
+              $scope.disabled = false;
+              $scope.courseform = {};
+            }
+      });
+
     };
 
-    $scope.checkboxCount = function () {
-      return document.querySelectorAll('input[type="checkbox]:checked').length;
+    $scope.fetchCategories = function () {
+      $scope.chosenCat = ""
+      var add = 0
+      for (i = 0; i < cform.category.options.length; i++) {
+        if (cform.category.options[i].selected) {
+          if (i == (cform.category.options.length - 1) || add == 0) {
+            $scope.chosenCat += cform.category.options[i].value;
+          } else {
+            $scope.chosenCat = $scope.chosenCat + "," + cform.category.options[i].value;
+          }
+          add++;
+        }
+      }
+      return $scope.chosenCat;
     };
 
-    $scope.validate = function (name, number, instruct, des, student) {
-      $scope.nameCheckFail = false;
-      $scope.numCheckFail = false;
-      $scope.instructorCheckFail = false;
-      $scope.designationCheckFail = false;
-      $scope.categoryCheckFail  = false;
-      $scope.studentCheckFail = false;
+    $scope.fetchDesignation = function () {
+      $scope.chosenDes = []
+      var index = 0;
+      for (i = 0; i < cform.designations.options.length; i++) {
+        if (cform.designations.options[i].selected) {
+          $scope.chosenDes[index] = cform.designations.options[i].value;
+          index++;
+        }
+      }
+      return $scope.chosenDes;
+    };
 
-      if (name == "") {
-        $scope.nameCheckFail = true;
-        return false;
+    $scope.validate = function (name, number, instruct, cats, des, student) {
+      $scope.nameCheck = false;
+      $scope.numCheck = false;
+      $scope.instructorCheck = false;
+      $scope.designationCheck = false;
+      $scope.categoryCheck  = false;
+      $scope.studentCheck = false;
+
+      if (number != "") {
+        $scope.numCheck = true;
       }
-      if (number == "") {
-        $scope.numCheckFail = true;
-        console.log("no num");
-        return false;
+      if (name != "") {
+        $scope.nameCheck = true;
       }
-      if (instruct == "") {
-        $scope.instructorCheckFail = true;
-        return false;
+      if (instruct != "") {
+        $scope.instructorCheck = true;
       }
-      if (des == "") {
-        $scope.designationCheckFail = true;
-        return false;
+      if (des != "? string: ?") {
+        $scope.designationCheck = true;
       }
-      if ($scope.checkboxCount() == 0) {
-        $scope.categoryCheckFail = true;
-        return false;
+      if (cats != "") {
+        $scope.categoryCheck = true;
       }
-      if (student == "") {
-        $scope.studentCheckFail = true;
-        return false;
+      if (student != "") {
+        $scope.studentCheck = true;
       }
+      if ($scope.numCheck && $scope.studentCheck && $scope.categoryCheck 
+      && $scope.designationCheck && $scope.instructorCheck && $scope.nameCheck) {
+        return true;
+      }
+      return false;
     };  
 }])

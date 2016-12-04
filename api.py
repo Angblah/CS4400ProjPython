@@ -20,7 +20,7 @@ def login():
 
 api = Api(app)
 
-class CreateUser(Resource):
+class Student(Resource):
     def post(self):
         try:
             # Parse the arguments
@@ -65,6 +65,79 @@ class CreateUser(Resource):
             resp = Response(js, status=200, mimetype='application/json')
             return resp
 
+        except Exception as e:
+            return {'error': str(e)}
+
+    def get(self):
+        try:
+            # Parse the arguments
+            parser = reqparse.RequestParser()
+            parser.add_argument('username', type=str, help='Username to filter the student')
+            args = parser.parse_args()
+
+            _userUsername = args['username']
+
+            conn = mysql.connect()
+            cursor = conn.cursor()
+
+            print(_userUsername)
+
+            # Select all student info for profile
+            stmt = "SELECT * FROM student WHERE Username='{}'".format(_userUsername)
+            cursor.execute(stmt)
+            data = cursor.fetchall()
+            studentData = {'username': data[0][0], 'email': data[0][1], 'major_name': data[0][2], 'department': 'NONE', 'year': data[0][3]}
+            print(data[0])
+
+            if(data[0][2]):
+                stmt2 = "SELECT Dept_Name FROM major WHERE Major_Name='{}'".format(data[0][2])
+                cursor.execute(stmt2)
+                department = cursor.fetchall()
+                studentData['department'] = department[0][0]
+
+            #Format return into JSON object
+            if(len(data)>0):
+                if(data):
+                    #Format return into JSON object
+                    print(studentData)
+                    js = json.dumps(studentData)
+                    resp = Response(js, status=200, mimetype='application/json')
+                    return resp
+                else:
+                    return {'status':100,'message':'Student Get failure'}
+
+        except Exception as e:
+            return {'error': str(e)}
+        
+    def put(self):
+        try:
+            # Parse the arguments
+            parser = reqparse.RequestParser()
+            parser.add_argument('username', type=str, help='Username to select user to update')
+            parser.add_argument('major_name', type=str, help='Major name to update')
+            parser.add_argument('year', type=str, help='Year to update')
+            args = parser.parse_args()
+
+            _userUsername = args['username']
+            _userMjr = args['major_name']
+            _userYear = args['year']
+
+            conn = mysql.connect()
+            cursor = conn.cursor()
+
+            # insert into user (username, password, usertype)
+            stmt = "UPDATE student SET Major_Name='{}', Year='{}' WHERE Username='{}'".format(_userMjr, _userYear, _userUsername)
+            cursor.execute(stmt)
+            data = cursor.fetchall() #no data should be returned?
+
+            #Format return into JSON object
+            if(len(data)>0):
+                return {'status':100,'message':'Update student failure'}
+
+            userData = {'username': _userUsername}
+            js = json.dumps(userData)
+            resp = Response(js, status=200, mimetype='application/json')
+            return resp
         except Exception as e:
             return {'error': str(e)}
 
@@ -123,12 +196,17 @@ class GetMajor(Resource):
         try:
             conn = mysql.connect()
             cursor = conn.cursor()
-            stmt = "SELECT Major_Name FROM major"
+            stmt = "SELECT * FROM major"
             cursor.execute(stmt)
             data = cursor.fetchall()
             if(len(data)>0):
                 if(data):
-                    return data
+                    majors = []
+                    for m in data:
+                        majors.append({'Major_Name': m[0], 'Dept_Name': m[1]})
+                    js = json.dumps({'majors': majors})
+                    resp = Response(js, status=200, mimetype='application/json')
+                    return resp
                 else:
                     return {'status':100,'message':'Failure'}
         except Exception as e:
@@ -149,6 +227,7 @@ class GetDesignation(Resource):
                     return {'status':100,'message':'Failure'}
         except Exception as e:
             return {'error': str(e)}
+
 class QueryProject(Resource):
     def get(self):
         try:
@@ -194,6 +273,9 @@ class QueryProject(Resource):
             print(projYear)
 
 
+            print(_projYear)
+            print(_projTitle)
+
             conn = mysql.connect()
             cursor = conn.cursor()
             stmt = "SELECT DISTINCT Proj_Name from project1 WHERE Proj_Name= '{}' OR P_Designation='{}' AND Maj_Restrict='{}'".format(projTitle,projDesignation,projMajor)
@@ -206,6 +288,7 @@ class QueryProject(Resource):
                 return {'status':100,'message':'Failure'}
         except Exception as e:
             return {'error': str(e)}
+
 class QueryCourse(Resource):
     def get(self):
         try:
@@ -235,6 +318,7 @@ class QueryCourse(Resource):
                     return {'status':100,'message':'Failure'}
         except Exception as e:
             return {'error': str(e)}
+            
 class QueryBoth(Resource):
     def get(self):
         try:
@@ -269,8 +353,11 @@ class QueryBoth(Resource):
 class AddCourse(Resource):
     def post(self):
         try:
+<<<<<<< HEAD
             # Handle adding stuff
 
+=======
+>>>>>>> origin/master
             # Parse the arguments
             parser = reqparse.RequestParser()
             parser.add_argument('number', type=str, help='Number of course')
@@ -283,19 +370,71 @@ class AddCourse(Resource):
 
             _courseNum = args['number']
             _courseName = args['name']
-            _courseInstructor = args['instructor_First']
+            _courseInstructor = args['instructor']
             _courseStudents = args['students']
             _courseDesignation = args['designation']
             _courseCategory = args['category']
 
-            if(len(data)>0):
-                if(data):
-                    return data
+            conn = mysql.connect()
+            cursor = conn.cursor()
+
+            # Statement for inserting into courses
+            stmt1 = "INSERT INTO course VALUES ('{}','{}','{}','{}','{}')".format(_courseNum,_courseName,_courseInstructor,_courseStudents,_courseDesignation)
+            cursor.execute(stmt1)
+            data1 = cursor.fetchall() #no data should be returned?
+            if(len(data1)>0):
+                if(data1):
+                    print ('data 1 failure' + data1)
                 else:
-                    return {'status':100,'message':'Failure'}
+                    return {'status':100,'message':'Course add failure'}
+            conn.commit()
+
+            # Need to insert categories
+            _courseCategory = _courseCategory.split(",")
+            for category in _courseCategory:
+                stmt = "INSERT INTO course_category VALUES ('{}', '{}')".format(_courseName, category)
+                cursor.execute(stmt)
+                data2 = cursor.fetchall()
+                if(len(data2)>0):
+                    if(data2):
+                        print ('data 2 failure' + data2)
+                    else:
+                        return {'status':100,'message':'Course add failure in categories'}                
+                conn.commit()  
+            return "added"
         except Exception as e:
             return {'error': str(e)}
 
+class AddProject(Resource):
+    def post(self):
+        try:
+            # Parse the arguments
+            parser = reqparse.RequestParser()
+            parser.add_argument('name', type=str, help='Name of project')
+            parser.add_argument('description', type=str, help='Description of project')
+            parser.add_argument('advisor', type=str, help='Project adviost')
+            parser.add_argument('students', type=str, help='Estimated number of students in project')
+            parser.add_argument('email', type=str, help='Project Adviosr email')
+            parser.add_argument('desination', type=str, help='Project designation')
+            parser.add_argument('category', type=str, help='Project categories')
+            parser.add_argument('requirement', type=str, help='Requirements for project')
+            args = parser.parse_args()
+
+            _projectName = args['name']
+            _projectDescription = args['description']
+            _projectAdvisor = args['advisor']
+            _projectEmail = args['email']
+            _projectStudents = args['students']
+            _projectCategory = args['category']
+            _projectDesignation = args['designation']
+            _projectCategory = args['requirement']
+
+            conn = mysql.connect()
+            cursor = conn.cursor()
+            
+        except Exception as e:
+            return {'error': str(e)}
+ 
 class GetTopTenProjects(Resource):
     def get(self):
         try:
@@ -361,9 +500,10 @@ class GetNumAccepted(Resource):
             return {'error': str(e)}
 
 #Add request url to api
-api.add_resource(CreateUser, '/api/CreateUser')
+api.add_resource(Student, '/api/Student')
 api.add_resource(AuthenticateUser, '/api/AuthenticateUser')
-
+api.add_resource(AddCourse, '/api/AddCourse')
+api.add_resource(AddProject, '/api/AddProject')
 api.add_resource(GetCategory, '/api/GetCategory')
 api.add_resource(GetMajor, '/api/GetMajor')
 api.add_resource(GetDesignation, '/api/GetDesignation')
@@ -373,6 +513,8 @@ api.add_resource(GetProjectByApps, '/api/GetProjectByApps')
 api.add_resource(GetNumApps, '/api/GetNumApps')
 api.add_resource(GetNumAccepted, '/api/GetNumAccepted')
 
+# api.add_resource(SearchProjects, '/api/SearchProjects')
+api.add_resource(AddCourse, '/api/AddCourse')
 api.add_resource(QueryProject, '/api/QueryProject')
 api.add_resource(QueryCourse, '/api/QueryCourse')
 api.add_resource(QueryBoth, '/api/QueryBoth')

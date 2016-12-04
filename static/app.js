@@ -18,11 +18,11 @@ myApp.config(function ($routeProvider) {
     })
     .when('/profile', {
         templateUrl: 'static/partials/student/profile.html',
-        controller: 'loginController'
+        controller: 'profileController'
     })
     .when('/editprofile', {
         templateUrl: 'static/partials/student/editprof.html',
-        controller: 'loginController'
+        controller: 'profileController'
     })
     .when('/studentapps', {
         templateUrl: 'static/partials/student/studapps.html',
@@ -51,7 +51,7 @@ myApp.config(function ($routeProvider) {
     })
     .when('/addproject', {
         templateUrl: 'static/partials/admin/addproj.html',
-        controller: 'loginController'
+        controller: 'addProjCtrl'
     })
     .when('/addcourse', {
         templateUrl: 'static/partials/admin/addcourse.html',

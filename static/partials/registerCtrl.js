@@ -31,7 +31,7 @@ angular.module('myApp').controller('registerController',
           if (data.username) {
             $scope.disabled = false;
             $scope.username = data.username;
-            $location.path('/main');
+            $location.path('/editprofile');
             $scope.registerform = {};
           } else {
             $scope.error = true;
