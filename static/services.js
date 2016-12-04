@@ -1,11 +1,19 @@
 angular.module('myApp').factory('UserService',
-['$timeout', '$http', function ($timeout, $http) {
+['$timeout', '$http', '$q', function ($timeout, $http, $q) {
 
     var user = null;
     var isLoggedIn = false;
 
     function getUser() {
         return user;
+    }
+
+    function logout() {
+        var deferred = $q.defer();
+        user = null;
+        isLoggedIn = false;
+        deferred.resolve("Logged Out");
+        return deferred.promise;
     }
 
     function authenticate(username, password) {
@@ -69,6 +77,7 @@ angular.module('myApp').factory('UserService',
         authenticate: authenticate,
         register: register,
         getUser: getUser,
+        logout: logout,
         isLoggedIn: isLoggedIn,
         getStudent: getStudent,
         updateStudent: updateStudent,

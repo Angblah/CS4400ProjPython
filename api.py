@@ -122,18 +122,15 @@ class Student(Resource):
             _userMjr = args['major_name']
             _userYear = args['year']
 
-            print(_userUsername)
-            print(_userMjr)
-            print(_userYear)
-
             conn = mysql.connect()
             cursor = conn.cursor()
 
-            # insert into user (username, password, usertype)
+            # Update Student with Major Name and Year
             stmt = "UPDATE student SET Major_Name='{}', Year='{}' WHERE Username='{}'".format(_userMjr, _userYear, _userUsername)
+            
             cursor.execute(stmt)
             data = cursor.fetchall() #no data should be returned?
-
+            conn.commit()
             print(data)
 
             #Format return into JSON object

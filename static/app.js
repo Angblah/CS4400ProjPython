@@ -11,6 +11,9 @@ myApp.config(function ($routeProvider) {
         templateUrl: 'static/partials/register.html',
         controller: 'registerController'
     })
+    .when('/logout', {
+        controller: 'logoutController'
+    })
     //Student Partials
     .when('/main', {
         templateUrl: 'static/partials/student/main.html',
