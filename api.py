@@ -133,10 +133,7 @@ class GetMajor(Resource):
                     return {'status':100,'message':'Failure'}
         except Exception as e:
             return {'error': str(e)}
-<<<<<<< HEAD
 
-=======
->>>>>>> 1db6eb22bc8626279f8766b7084fca26bd83dc19
 class GetDesignation(Resource):
     def get(self):
         try:
@@ -154,7 +151,6 @@ class GetDesignation(Resource):
         except Exception as e:
             return {'error': str(e)}
 
-<<<<<<< HEAD
 class AddCourse(Resource):
     def post(self):
         try:
@@ -185,8 +181,6 @@ class AddCourse(Resource):
         except Exception as e:
             return {'error': str(e)}
 
-=======
->>>>>>> 1db6eb22bc8626279f8766b7084fca26bd83dc19
 #Add request url to api
 api.add_resource(CreateUser, '/api/CreateUser')
 api.add_resource(AuthenticateUser, '/api/AuthenticateUser')
