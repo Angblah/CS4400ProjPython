@@ -35,6 +35,7 @@ angular.module('myApp').controller('projectController',
             $scope.studdata.userMajor['Major_Name'] = data['major_name'];
             $scope.studdata.userMajor['Dept_Name'] = data['department'];
             $scope.studdata.year = data['year'];
+            $scope.studdata.username = UserService.getUser();
             $scope.studdata.canApply = $scope.validate();
             console.log($scope.studdata.canApply);
           }
@@ -42,9 +43,10 @@ angular.module('myApp').controller('projectController',
 
       $scope.apply = function() {
           if ($scope.studdata.canApply) {
-            ViewService.apply($scope.data.username, $scope.data.project)
+            ViewService.apply($scope.data.proj_name, $scope.studdata.username)
             .success(function (data) {
                 if (data) {
+                    console.log(data);
                     $location.path('/studentapps');
                 } else {
                     $scope.error = true;
@@ -79,7 +81,7 @@ angular.module('myApp').controller('projectController',
       }
 
       $scope.studdata = {
-          username: UserService.getUser(),
+          username: "",
           userMajor: {Major_Name: "", Dept_Name: ""},
           year: "", 
           canApply: false

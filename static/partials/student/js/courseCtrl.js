@@ -2,7 +2,7 @@ angular.module('myApp').controller('courseController',
   ['$scope', '$location', 'ViewService',
   function ($scope, $location, ViewService) {
     
-      ViewService.getCourse(ViewService.getCourseNum())
+      ViewService.getCourse(ViewService.getCourseName())
       .success(function(data) {
           if(data) {
               /* {"Number": data[0][0], "Course_Name": data[0][1], "Instructor_Name": data[0][2],
@@ -14,6 +14,7 @@ angular.module('myApp').controller('courseController',
                 $scope.data.category = data.C_Category;
                 $scope.data.designation = data.C_Designation;
                 $scope.data.est_num = data.Course_Est_Students;
+                console.log(data);
           }
       });
 

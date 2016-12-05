@@ -444,7 +444,7 @@ class AddCourse(Resource):
             categories = cursor.fetchall()
             print(categories)
             for cat in categories:
-                projData['C_Category'].append(cat[0])
+                courseData['C_Category'].append(cat[0])
 
             #Format return into JSON object
             if(len(data)>0):
@@ -784,13 +784,20 @@ class StudentApply(Resource):
 
             _projname = args['projname']
             _username = args['username']
-            time = datetime.datetime.now
+            #time = datetime.datetime.now.date()
 
-            stmt = "INSERT INTO application VALUES('{}', '{}', '{}', 0)".format(_username,_projname,time)
+            print(_projname)
+            print(_username)
+            #print(time)
+
+            conn = mysql.connect()
+            cursor = conn.cursor()
+            stmt = "INSERT INTO application VALUES('{}', '{}', NOW(), 0)".format(_username,_projname)
             cursor.execute(stmt)
             data = cursor.fetchall()
             conn.commit()
-            return Response("Application Added", status=200, mimetype='application/json')
+            print(data)
+            return {'status':200,'message':'Applied to Proj'}
         except Exception as e:
             return {'error': str(e)}
 
