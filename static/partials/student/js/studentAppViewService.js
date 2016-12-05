@@ -1,10 +1,8 @@
 angular.module('myApp').factory('StudentAppViewService',
 ['$timeout', '$http', 'UserService', function ($timeout, $http, $UserService) {
 
-    function getStudentApplications() {
-        username = $UserService.getUser();
-        console.log(username);
-      return $http.get('/api/GetStudentApplications', {username: "bburns"})
+    function getStudentApplications(username) {
+      return $http.get('/api/GetStudentApplications', {params: {username: username}})
       .success(function(data) {
           return data;
       })

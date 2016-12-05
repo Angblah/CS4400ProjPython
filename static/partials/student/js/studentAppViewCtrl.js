@@ -2,13 +2,18 @@ angular.module('myApp').controller('studentAppViewCtrl',
   ['$scope', 'StudentAppViewService', 'UserService',
   function ($scope, StudentAppViewService, UserService) {
 
-    $scope.user = function() {
-      return UserService.getUser();
-    }
+      // Get Student for profile
+      UserService.getStudent(UserService.getUser())
+      // handle success
+      .success(function(data) {
+          //$location.path('/main');
+          if (data) {
+            $scope.populate(data['username']);
+          }
+      });
 
-    $scope.populate = function() {
-      var user = $scope.user();
-      StudentAppViewService.getStudentApplications()
+    $scope.populate = function(user) {
+      StudentAppViewService.getStudentApplications(user)
       .success(function (data) {
         if (data) {
           $scope.disabled = false;
@@ -22,32 +27,26 @@ angular.module('myApp').controller('studentAppViewCtrl',
       });
     }
 
-    $scope.populate();
-
     $scope.parseApplications = function(data) {
       var results = [];
-      console.log(data);
-      // for (proj in data) {
-      //   var name = data[proj][0];
-      //   var major = data[proj][1];
-      //   if (major == undefined) {major = 'Undecided';}
-      //   var year = data[proj][2];
-      //   if (year == 1) {year = 'Freshman';}
-      //   else if (year == 2) {year = 'Sophomore';}
-      //   else if (year == 3) {year = 'Junior';}
-      //   else {year = 'Senior'}
-      //   var status = data[proj][3];
-      //   if (status == 0) {status = 'pending';}
-      //   else if (status == -1) {status = 'denied';}
-      //   else {status = 'accepted';}
-      //   var username = data[proj][4];
-      //   results.push({'name' : name,
-      //                 'major': major,
-      //                 'year': year,
-      //                 'status': status,
-      //                 'username':username});
-      // }
-      return data;
+      for (i = 0; i < data.apps.length; i++) {
+        var proj = data.apps[i]
+        var name = proj[1];
+        var date = proj[2];
+        var status = proj[3];
+        if (status == 0) {
+          status = 'pending';
+        } else if (status == -1) {
+          status = 'denied';
+        } else {
+          status = 'accepted';
+        }
+
+        results.push({'name' : name,
+                      'date': date,
+                      'status': status});
+      }
+      return results;
     }
 
 }]);

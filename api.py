@@ -80,8 +80,6 @@ class Student(Resource):
             conn = mysql.connect()
             cursor = conn.cursor()
 
-            print(_userUsername)
-
             # Select all student info for profile
             stmt = "SELECT * FROM student WHERE Username='{}'".format(_userUsername)
             cursor.execute(stmt)
@@ -620,14 +618,20 @@ class GetStudentApplications(Resource):
             conn = mysql.connect()
             cursor = conn.cursor()
             stmt = "SELECT * From application WHERE Username='{}'".format(_curUser)
-            print(stmt)
             cursor.execute(stmt)
             data = cursor.fetchall()
-            if(len(data)>0):
+            userData = {'apps': []}
+            if(len(data)>0 and data != ""):
                 if(data):
-                    return data
+                    for app in data:
+                        userData['apps'].append(app)
+                    js = json.dumps(userData)
+                    resp = Response(js, status=200, mimetype='application/json')
+                    return resp
                 else:
                     return {'status':100,'message':'Failure'}
+            else:
+                return userData
         except Exception as e:
             return {'error': str(e)}
 
