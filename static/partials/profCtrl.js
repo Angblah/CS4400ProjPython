@@ -17,10 +17,12 @@ angular.module('myApp').controller('profileController',
               console.log(data);
               $scope.data.email = data.email;
               if (data.major_name) {
-                  $scope.data.selectedMajor.Major_Name = data.major_name;
+                  $scope.data.userMajor.Major_Name = data.major_name;
                   $scope.updateDepartment(data.major_name);
+                  $scope.findSelectedMajor($scope.data.userMajor);
               } else {
                   $scope.data.selectedMajor.Major_Name = "Undecided"
+                  $scope.data.userMajor.Major_Name = "Undecided"
                   $scope.data.selectedDepartment = "None"
               }
               if (data.year) {
@@ -38,6 +40,7 @@ angular.module('myApp').controller('profileController',
           email: "",
           majorOptions: [{Major_Name: "", Dept_Name: ""}],
           selectedMajor: {Major_Name: "", Dept_Name: ""},
+          userMajor: {Major_Name: "", Dept_Name: ""},
           yearOptions: ["Freshman", "Sophomore", "Junior", "Senior"],
           selectedYear: "",
           selectedDepartment: ""
@@ -61,12 +64,20 @@ angular.module('myApp').controller('profileController',
           });
       }
 
+      $scope.findSelectedMajor = function(userMajor) {
+          angular.forEach($scope.data.majorOptions, function(major){
+              if(angular.equals(userMajor, major)){
+                  $scope.data.selectedMajor = major;
+              }
+          });
+      }
+
       $scope.updateDepartment = function(major_name) {
           var majorOptions = $scope.data.majorOptions;
           for (major in majorOptions) {
               if (majorOptions[major].Major_Name === major_name) {
                   $scope.data.selectedDepartment = majorOptions[major].Dept_Name;
-                  $scope.data.selectedMajor.Dept_Name = majorOptions[major].Dept_Name;
+                  $scope.data.userMajor.Dept_Name = majorOptions[major].Dept_Name;
                   return;
               }
           }
