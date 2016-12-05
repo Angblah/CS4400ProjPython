@@ -790,11 +790,9 @@ class StudentApply(Resource):
 
             _projname = args['projname']
             _username = args['username']
-            #time = datetime.datetime.now.date()
 
             print(_projname)
             print(_username)
-            #print(time)
 
             conn = mysql.connect()
             cursor = conn.cursor()
