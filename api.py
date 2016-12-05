@@ -1,6 +1,7 @@
 from flask import Flask, Response, json, send_file
 from flask_restful import Resource, Api, reqparse
 from flaskext.mysql import MySQL
+import datetime
 
 
 mysql = MySQL()
@@ -453,33 +454,35 @@ class AddCourse(Resource):
         try:
             # Parse the arguments
             parser = reqparse.RequestParser()
-            parser.add_argument('coursenum', type=str, help='Course Number to filter the Courses')
+            parser.add_argument('course_Name', type=str, help='Course Number to filter the Courses')
             args = parser.parse_args()
 
-            _courseNum = args['coursenum']
+            _courseName = args['course_Name']
 
             conn = mysql.connect()
             cursor = conn.cursor()
 
             # Select all student info for profile
-            stmt = "SELECT * FROM course WHERE Username='{}'".format(_courseNum)
+            stmt = "SELECT * FROM course WHERE Course_Name='{}'".format(_courseName)
             cursor.execute(stmt)
             data = cursor.fetchall()
-            studentData = {'username': data[0][0], 'email': data[0][1], 'major_name': data[0][2], 'department': 'NONE', 'year': data[0][3]}
-            print(data[0])
+            courseData = {"Number": data[0][0], "Course_Name": data[0][1], "Instructor_Name": data[0][2],
+                "Course_Est_Students": data[0][3], "C_Designation": data[0][4], "C_Category": []}
+            print(data)
 
-            if(data[0][2]):
-                stmt2 = "SELECT Dept_Name FROM major WHERE Major_Name='{}'".format(data[0][2])
-                cursor.execute(stmt2)
-                department = cursor.fetchall()
-                studentData['department'] = department[0][0]
+            stmt2 = "SELECT C_Category FROM course_category WHERE Course_Name='{}'".format(_courseName)
+            cursor.execute(stmt2)
+            categories = cursor.fetchall()
+            print(categories)
+            for cat in categories:
+                projData['C_Category'].append(cat[0])
 
             #Format return into JSON object
             if(len(data)>0):
                 if(data):
                     #Format return into JSON object
-                    print(studentData)
-                    js = json.dumps(studentData)
+                    print(courseData)
+                    js = json.dumps(courseData)
                     resp = Response(js, status=200, mimetype='application/json')
                     return resp
                 else:
@@ -585,33 +588,43 @@ class AddProject(Resource):
         try:
             # Parse the arguments
             parser = reqparse.RequestParser()
-            parser.add_argument('username', type=str, help='Username to filter the student')
+            parser.add_argument('proj_Name', type=str, help='Project Name to filter the Projects')
             args = parser.parse_args()
 
-            _userUsername = args['username']
+            _projName = args['proj_Name']
 
             conn = mysql.connect()
             cursor = conn.cursor()
 
             # Select all student info for profile
-            stmt = "SELECT * FROM student WHERE Username='{}'".format(_userUsername)
+            stmt = "SELECT * FROM project WHERE Proj_Name='{}'".format(_projName)
             cursor.execute(stmt)
             data = cursor.fetchall()
-            studentData = {'username': data[0][0], 'email': data[0][1], 'major_name': data[0][2], 'department': 'NONE', 'year': data[0][3]}
-            print(data[0])
+            projData = {"Proj_Name": data[0][0], "Description": data[0][1], "Advisor_Name": data[0][2],
+                "Advisor_Email": data[0][3], "Proj_Est_Students": data[0][4], "P_Designation": data[0][5],
+                "P_Category": [], "P_Reqs": {}}
+            print(data)
 
-            if(data[0][2]):
-                stmt2 = "SELECT Dept_Name FROM major WHERE Major_Name='{}'".format(data[0][2])
-                cursor.execute(stmt2)
-                department = cursor.fetchall()
-                studentData['department'] = department[0][0]
+            stmt2 = "SELECT P_Category FROM project_category WHERE Proj_Name='{}'".format(_projName)
+            cursor.execute(stmt2)
+            categories = cursor.fetchall()
+            print(categories)
+            for cat in categories:
+                projData['P_Category'].append(cat[0])
 
+            stmt3 = "SELECT * FROM project_requirement WHERE Proj_Name='{}'".format(_projName)
+            cursor.execute(stmt3)
+            reqs = cursor.fetchall()
+            print(reqs)
+            proj_reqs = {"Dept_Restrict": reqs[0][1], "Yr_restrict":reqs[0][2], "Maj_Restrict":reqs[0][3]}
+            projData['P_Reqs'] = proj_reqs
+            
             #Format return into JSON object
             if(len(data)>0):
                 if(data):
                     #Format return into JSON object
-                    print(studentData)
-                    js = json.dumps(studentData)
+                    print(projData)
+                    js = json.dumps(projData)
                     resp = Response(js, status=200, mimetype='application/json')
                     return resp
                 else:
@@ -792,6 +805,49 @@ class AcceptApplication(Resource):
         except Exception as e:
             return {'error': str(e)}
 
+class StudentApply(Resource):
+    def post(self):
+        try:
+            parser = reqparse.RequestParser()
+            parser.add_argument('projname', type=str)
+            parser.add_argument('username', type=str)
+            args = parser.parse_args()
+
+            _projname = args['projname']
+            _username = args['username']
+            time = datetime.datetime.now
+
+            stmt = "INSERT INTO application VALUES('{}', '{}', '{}', 0)".format(_username,_projname,time)
+            cursor.execute(stmt)
+            data = cursor.fetchall()
+            conn.commit()
+        except Exception as e:
+            return {'error': str(e)}
+
+class GetProject(Resource):
+    def get(self):
+        try:
+            parser = reqparse.RequestParser()
+            parser.add_argument('projname', type=str)
+            args = parser.parse_args()
+
+            _projname = args['projname']
+
+            stmt = "SELECT * FROM project_requirement WHERE Proj_Name='{}'".format(_projname,time)
+            cursor.execute(stmt)
+            data = cursor.fetchall()
+            if(len(data)>0):
+                if(data):
+                    #Format return into JSON object
+                    projData = {'major': data[0][3], 'department': data[0][2], 'year': data[0][2]}
+                    js = json.dumps(userData)
+                    resp = Response(js, status=200, mimetype='application/json')
+                    return resp
+                else:
+                    return {'status':100,'message':'Authentication failure'}
+        except Exception as e:
+            return {'error': str(e)}
+
 #Add request url to api
 api.add_resource(Student, '/api/Student')
 api.add_resource(AuthenticateUser, '/api/AuthenticateUser')
@@ -800,6 +856,8 @@ api.add_resource(GetCategory, '/api/GetCategory')
 api.add_resource(GetMajor, '/api/GetMajor')
 api.add_resource(GetDepartments, '/api/GetDepartments')
 api.add_resource(GetDesignation, '/api/GetDesignation')
+api.add_resource(GetProject, '/api/GetProject')
+api.add_resource(StudentApply, '/api/StudentApply')
 
 api.add_resource(GetAdminApplications, '/api/GetAdminApplications')
 api.add_resource(GetStudentApplications, '/api/GetStudentApplications')

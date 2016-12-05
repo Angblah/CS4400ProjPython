@@ -17,19 +17,18 @@
 </div>
 <!--Nav bar-->
 <div class="container jumbotron">
-    <h1>View Course</h1>
-
-    <h2> Course Name: </h2>
+    <h1> Course Name: //data.course_name//</h1>
     
-    <h3> Course Number: </h3>
+    <h3> Course Number: //data.course_num//</h3>
     
-    <h3> Course Instructor: </h3>
+    <h3> Course Instructor: //data.instructor//</h3>
 
     <h3> Category: </h3>
+    <h4 ng-repeat="cat in data.category"> //cat//</h4>
 
-    <h3> Designation: </h3>
+    <h3> Designation: //data.designation//</h3>
 
-    <h3> Estimated # of students: </h3>
+    <h3> Estimated # of students: //data.est_num//</h3>
 
-    <button id="back-btn" class="btn btn-primary" onclick="location.href='#/main'">Back</button>
+    <button id="back-btn" class="btn btn-primary" ng-click="back()">Back</button>
 </div>

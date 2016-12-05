@@ -47,10 +47,10 @@ angular.module('myApp')
     $scope.selectRow = function(application) {
       if (application.type == 'Project') {
         ViewService.setProjName(application.name);
-        // $location.path('/viewproj');
+        $location.path('/viewproject');
       } else {
-        ViewService.setCourseNum(application.name);
-        // $location.path('/viewcourse');
+        ViewService.setCourseName(application.name);
+        $location.path('/viewcourse');
       }
     }
 

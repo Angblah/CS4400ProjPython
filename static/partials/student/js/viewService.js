@@ -1,15 +1,15 @@
 angular.module('myApp').factory('ViewService',
 ['$timeout', '$http', function ($timeout, $http) {
 
-    var CourseNum = null;
+    var CourseName = null;
     var ProjName = null;
 
-    function getCourseNum() {
-        return CourseNum;
+    function getCourseName() {
+        return CourseName;
     }
 
-    function setCourseNum(num) {
-        CourseNum = num;
+    function setCourseName(num) {
+        CourseName = num;
     }
 
     function getProjName() {
@@ -21,12 +21,32 @@ angular.module('myApp').factory('ViewService',
     }
 
     function clearView() {
-        CourseNum = null;
+        CourseName = null;
         ProjName = null;
     }
 
+    function apply(projname, username) {
+        return $http.get('/api/StudentApply', {params: {projname:projname, username: username}})
+            .success(function(data) {
+                return data;
+            })
+            .error(function(data, status) {
+                console.error("Data Load Error", status, data);
+            });
+    }
+
+    function getProj(projname) {
+        return $http.get('/api/GetProject', {params: {projname:projname, username: username}})
+            .success(function(data) {
+                return data;
+            })
+            .error(function(data, status) {
+                console.error("Data Load Error", status, data);
+            });
+    }        
+
     function getProject(proj_Name) {
-        return $http.get('/api/Student', {params: {proj_Name: proj_Name}})
+        return $http.get('/api/AddProject', {params: {proj_Name: proj_Name}})
         .success(function (data) {
             return data;
         })
@@ -35,8 +55,8 @@ angular.module('myApp').factory('ViewService',
         });
     }
 
-    function getCourse(course_num) {
-        return $http.get('/api/Student', {params: {course_num: course_num}})
+    function getCourse(course_Name) {
+        return $http.get('/api/AddCourse', {params: {course_Name: course_Name}})
         .success(function (data) {
             return data;
         })
@@ -46,10 +66,14 @@ angular.module('myApp').factory('ViewService',
     }
 
     return ({
-        getCourseNum: getCourseNum,
-        setCourseNum: setCourseNum,
+        getCourseName: getCourseName,
+        setCourseName: setCourseName,
         getProjName: getProjName,
         setProjName: setProjName,
         clearView: clearView,
+        apply: apply,
+        getProj: getProj,
+        getProject: getProject,
+        getCourse: getCourse
     });
-}]);
+}])
