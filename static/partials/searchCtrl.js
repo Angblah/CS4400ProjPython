@@ -17,12 +17,31 @@ angular.module('myApp')
     //     $scope.data.designations = data;
     // });
     $scope.query = function() {
+        var xd = []
+        if ($scope.data.type == 'Both'){
+            SearchService.query($scope.data.title, $scope.data.category,
+            $scope.data.designation, $scope.data.major, $scope.data.year,
+            'Project')
+        .success(function(data) {
+             xd.push($scope.parseQuery(data));
+        })
+            SearchService.query($scope.data.title, $scope.data.category,
+            $scope.data.designation, $scope.data.major, $scope.data.year,
+            'Course')
+        .success(function(data) {
+            xd.push($scope.parseQuery(data));
+            $scope.data.projects = [].concat.apply([], xd);
+            console.log($scope.data.projects);
+
+        })
+        } else {
         SearchService.query($scope.data.title, $scope.data.category,
             $scope.data.designation, $scope.data.major, $scope.data.year,
             $scope.data.type)
         .success(function(data) {
             $scope.data.projects = $scope.parseQuery(data);
         })
+        }
     }
 
     $scope.selectRow = function(application) {

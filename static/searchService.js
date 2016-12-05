@@ -1,5 +1,5 @@
 angular.module('myApp').factory('SearchService',
-['$timeout', '$http', function ($timeout, $http) {
+['$timeout', '$http', function ($timeout, $http, $q) {
 
     var user = null;
 
@@ -79,7 +79,7 @@ angular.module('myApp').factory('SearchService',
             .success(function(data) {
                 // console.log(data);
                 xd.push(data);
-                return $http.get('/api/QueryCourse', {params:{title:title, category:category, designation:designation}})
+                $http.get('/api/QueryCourse', {params:{title:title, category:category, designation:designation}})
                 .success(function(data) {
                 // console.log(data);
                 xd.push(data);
