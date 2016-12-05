@@ -81,7 +81,7 @@
 <div class="divider" style="margin: 7px"></div>
 <!--   results table -->
   <div class="container">
-      <table class="table table-hover table-striped">
+      <table class="table table-hover">
         <thead>
           <tr>
           <th> Name </th>
@@ -89,7 +89,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr ng-repeat="proj in data.projects">
+          <tr ng-repeat="proj in data.projects" ng-click="selectRow(proj)" >
           <td> //proj.name// </td>
           <td> //proj.type// </td>
           </tr>
