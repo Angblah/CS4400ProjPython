@@ -25,6 +25,26 @@ angular.module('myApp').factory('ViewService',
         ProjName = null;
     }
 
+    function getProject(proj_Name) {
+        return $http.get('/api/Student', {params: {proj_Name: proj_Name}})
+        .success(function (data) {
+            return data;
+        })
+        .error(function(data,status) {
+            console.error("Get Project Error", status, data);
+        });
+    }
+
+    function getCourse(course_num) {
+        return $http.get('/api/Student', {params: {course_num: course_num}})
+        .success(function (data) {
+            return data;
+        })
+        .error(function(data,status) {
+            console.error("Get Course Error", status, data);
+        });
+    }
+
     return ({
         getCourseNum: getCourseNum,
         setCourseNum: setCourseNum,

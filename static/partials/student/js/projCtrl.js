@@ -2,17 +2,29 @@ angular.module('myApp').controller('projectController',
   ['$scope', '$location', 'ViewService',
   function ($scope, $location, ViewService) {
       
+      ViewService.getProj(ViewService.getProjName())
+      .success(function(data) {
+          if(data) {
+
+          }
+      });
+
+      $scope.back = function() {
+          ViewService.clearView();
+          $location.path('/main');
+          $location
+      }
 
       $scope.data = {
-          username: UserService.getUser(),
-          email: "",
-          majorOptions: [{Major_Name: "", Dept_Name: ""}],
-          selectedMajor: {Major_Name: "", Dept_Name: ""},
-          userMajor: {Major_Name: "", Dept_Name: ""},
-          yearOptions: ["Freshman", "Sophomore", "Junior", "Senior"],
-          selectedYear: "",
-          selectedDepartment: ""
+          proj_name: '',
+          advisor: '',
+          advisor_email: '',
+          description: '',
+          category: '',
+          designation: '',
+          est_num: '',
+          dept_req: '',
+          major_req: '',
+          year_req: ''
       }
-      
-     
 }])

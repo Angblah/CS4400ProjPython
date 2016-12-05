@@ -1,18 +1,26 @@
 angular.module('myApp').controller('courseController',
   ['$scope', '$location', 'ViewService',
   function ($scope, $location, ViewService) {
-      
+    
+      ViewService.getCourse(ViewService.getCourseNum())
+      .success(function(data) {
+          if(data) {
+
+          }
+      });
+
+      $scope.back = function() {
+          ViewService.clearView();
+          $location.path('/main');
+          $location
+      }
 
       $scope.data = {
-          username: UserService.getUser(),
-          email: "",
-          majorOptions: [{Major_Name: "", Dept_Name: ""}],
-          selectedMajor: {Major_Name: "", Dept_Name: ""},
-          userMajor: {Major_Name: "", Dept_Name: ""},
-          yearOptions: ["Freshman", "Sophomore", "Junior", "Senior"],
-          selectedYear: "",
-          selectedDepartment: ""
+          course_name: '',
+          course_num: '',
+          instructor: '',
+          category: '',
+          designation: '',
+          est_num: '',
       }
-      
-     
 }])
