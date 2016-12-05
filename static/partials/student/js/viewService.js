@@ -4,12 +4,12 @@ angular.module('myApp').factory('ViewService',
     var CourseName = null;
     var ProjName = null;
 
-    function getCourseNum() {
+    function getCourseName() {
         return CourseName;
     }
 
-    function setCourseNum(num) {
-        CourseNum = num;
+    function setCourseName(num) {
+        CourseName = num;
     }
 
     function getProjName() {
@@ -21,7 +21,7 @@ angular.module('myApp').factory('ViewService',
     }
 
     function clearView() {
-        CourseNum = null;
+        CourseName = null;
         ProjName = null;
     }
 
@@ -46,7 +46,7 @@ angular.module('myApp').factory('ViewService',
     }        
 
     function getProject(proj_Name) {
-        return $http.get('/api/Student', {params: {proj_Name: proj_Name}})
+        return $http.get('/api/AddProject', {params: {proj_Name: proj_Name}})
         .success(function (data) {
             return data;
         })
@@ -55,8 +55,8 @@ angular.module('myApp').factory('ViewService',
         });
     }
 
-    function getCourse(course_num) {
-        return $http.get('/api/Student', {params: {course_num: course_num}})
+    function getCourse(course_Name) {
+        return $http.get('/api/AddCourse', {params: {course_Name: course_Name}})
         .success(function (data) {
             return data;
         })
@@ -66,8 +66,8 @@ angular.module('myApp').factory('ViewService',
     }
 
     return ({
-        getCourseNum: getCourseNum,
-        setCourseNum: setCourseNum,
+        getCourseName: getCourseName,
+        setCourseName: setCourseName,
         getProjName: getProjName,
         setProjName: setProjName,
         clearView: clearView,

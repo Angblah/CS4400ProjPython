@@ -30,7 +30,7 @@ angular.module('myApp')
         ViewService.setProjName(application.name);
         $location.path('/viewproject');
       } else {
-        ViewService.setCourseNum(application.name);
+        ViewService.setCourseName(application.name);
         $location.path('/viewcourse');
       }
     }
