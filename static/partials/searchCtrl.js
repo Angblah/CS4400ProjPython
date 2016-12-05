@@ -1,6 +1,6 @@
 angular.module('myApp')
- .controller('searchController', ['$scope', '$location', 'SearchService',
- function($scope, $location, SearchService) {
+ .controller('searchController', ['$scope', '$location', 'SearchService', 'ViewService',
+ function($scope, $location, SearchService, ViewService) {
     SearchService.getCategory()
     .success(function(data) {
         $scope.data.categories = data;

@@ -1,6 +1,6 @@
 angular.module('myApp').controller('courseController',
-  ['$scope', '$location', 'UserService',
-  function ($scope, $location, UserService) {
+  ['$scope', '$location', 'ViewService',
+  function ($scope, $location, ViewService) {
       
 
       $scope.data = {
