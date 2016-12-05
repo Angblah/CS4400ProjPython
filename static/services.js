@@ -63,7 +63,7 @@ angular.module('myApp').factory('UserService',
         });
     }
 
-    function getMajors(username) {
+    function getMajors() {
         return $http.get('/api/GetMajor')
         .success(function (data) {
             return data;
