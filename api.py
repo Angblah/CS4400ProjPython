@@ -270,7 +270,7 @@ class QueryProject(Resource):
             #build onto statements if null
 
             argys = []
-            stmt = "SELECT * from project1 WHERE "
+            stmt = "SELECT * from project2 WHERE "
             if args['title'] is not None:
                 print('got title')
                 stmt += "Proj_Name='{}'"
@@ -335,7 +335,7 @@ class QueryCourse(Resource):
             #build onto statements if null
 
             argys = []
-            stmt = "SELECT * from course2 WHERE "
+            stmt = "SELECT * from course1 WHERE "
             if args['title'] is not None or args['title'] == "":
                 stmt += "Course_Name='{}'"
                 argys.append(courseTitle)
@@ -381,11 +381,11 @@ class QueryBoth(Resource):
 
             args = parser.parse_args()
 
-            _projTitle = args['title']
-            _projCategory = args['category']
-            _projDesignation = args['designation']
-            _projMajor = args['major']
-            _projYear = args['year']
+            bothTitle = args['title']
+            bothCategory = args['category']
+            bothDesignation = args['designation']
+            bothMajor = args['major']
+            bothYear = args['year']
 
             conn = mysql.connect()
             cursor = conn.cursor()
