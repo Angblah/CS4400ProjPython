@@ -127,7 +127,7 @@ class Student(Resource):
 
             # Update Student with Major Name and Year
             stmt = "UPDATE student SET Major_Name='{}', Year='{}' WHERE Username='{}'".format(_userMjr, _userYear, _userUsername)
-            
+
             cursor.execute(stmt)
             data = cursor.fetchall() #no data should be returned?
             conn.commit()
@@ -302,17 +302,18 @@ class QueryProject(Resource):
                     stmt += "Yr_Restrict='{}'"
                 argys.append(projYear)
 
-            print (stmt)
-            print (argys)
+            # print (argys)
             stmt = stmt.format(*argys)
+            # print (stmt)
 
             conn = mysql.connect()
             cursor = conn.cursor()
             cursor.execute(stmt)
             data = cursor.fetchall()
-            print([{'proj':x,'type':'Project'} for x in data])
+            # print([{'proj':x,'type':'Project'} for x in data])
             if(data):
-                return [{'proj':x,'type':'Project'} for x in data]
+                return data
+                # return [{'proj':x,'type':'Project'} for x in data]
             else:
                 return {'status':100,'message':'Failure'}
         except Exception as e:
@@ -353,17 +354,18 @@ class QueryCourse(Resource):
                     stmt += "C_Designation='{}'"
                 argys.append(courseDesignation)
 
-            print (stmt)
-            print (argys)
+            # print (stmt)
+            # print (argys)
             stmt = stmt.format(*argys)
 
             conn = mysql.connect()
             cursor = conn.cursor()
             cursor.execute(stmt)
             data = cursor.fetchall()
-            print([{'proj':x,'type':'Course'} for x in data])
+            # print([{'proj':x,'type':'Course'} for x in data])
             if(data):
-                return [{'proj':x,'type':'Course'} for x in data]
+                return data
+                # return [{'proj':x,'type':'Course'} for x in data]
             else:
                 return {'status':100,'message':'Failure'}
         except Exception as e:
@@ -474,9 +476,9 @@ class AddProject(Resource):
             _projectStudents = args['students']
             _projectCategory = args['category']
             _projectDesignation = args['designation']
-            _projectMajor = args['major'] 
-            _projectDept = args['department'] 
-            _projectYear = args['year']          
+            _projectMajor = args['major']
+            _projectDept = args['department']
+            _projectYear = args['year']
 
             conn = mysql.connect()
             cursor = conn.cursor()
@@ -502,8 +504,8 @@ class AddProject(Resource):
                     if(data2):
                         print ('data 2 failure' + data2)
                     else:
-                        return {'status':100,'message':'Course add failure in categories'} 
-                conn.commit()             
+                        return {'status':100,'message':'Course add failure in categories'}
+                conn.commit()
 
             # Insert requirements
             # Format SQL statement
@@ -538,8 +540,8 @@ class AddProject(Resource):
                     print ('data 3 failure' + data1)
                 else:
                     return {'status':100,'message':'Course add failure'}
-            conn.commit()            
-            
+            conn.commit()
+
             return "added"
         except Exception as e:
             return {'error': str(e)}
@@ -613,8 +615,8 @@ class GetStudentApplications(Resource):
         try:
             parser = reqparse.RequestParser()
             parser.add_argument('username', type=str, help='Username of student')
-            args = parser.parse_args() 
-            
+            args = parser.parse_args()
+
             _curUser = args['username']
 
             conn = mysql.connect()

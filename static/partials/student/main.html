@@ -30,7 +30,7 @@
         <!-- must use a dropdown for category -->
   <form name="myForm">
     <label for="category"> Category: </label>
-    <select size="1" name="category" ng-model="data.category" multiple>
+    <select size="2" name="category" ng-model="data.category" multiple>
       <option ng-repeat="option in data.categories" ng-value="option">//option[0]//</option>
     </select>
   </form>
@@ -61,7 +61,7 @@
             <option>Senior</option>
           </select>
         </div>
-      </div>    
+      </div>
 <form>
  <label ng-repeat="type1 in data.types">
      //type1//
@@ -75,7 +75,7 @@
 
       <form ng-submit="query()">
       <input type="submit"id="apply-filter-btn" class="btn btn-primary pull-right" value="Apply Filter" />
-      
+
       <button id="reset-filter-btn" class="btn btn-primary pull-right" type="reset" style="margin: 0px 5px 0px 0px">Reset Filter</button>
       </form>
     </div>
@@ -89,12 +89,18 @@
 <!--   results table -->
   <div class="container">
       <table class="table table-hover table-striped">
-        <td> Name </td>
-        <td> Type </td>
-         <tr ng-repeat="x in data.projects">
-          <td> //x.proj[0]// </td>
-          <td> //x.type// </td>
+        <thead>
+          <tr>
+          <th> Name </th>
+          <th> Type </th>
           </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="x in data.projects">
+          <td> //data.projects[x][0]// </td>
+          <td> //data.projects[x][1]// </td>
+          </tr>
+        </tbody>
       </table>
     </div>
   </div>
