@@ -1,11 +1,11 @@
 angular.module('myApp').factory('ViewService',
 ['$timeout', '$http', function ($timeout, $http) {
 
-    var CourseNum = null;
+    var CourseName = null;
     var ProjName = null;
 
     function getCourseNum() {
-        return CourseNum;
+        return CourseName;
     }
 
     function setCourseNum(num) {
@@ -25,11 +25,33 @@ angular.module('myApp').factory('ViewService',
         ProjName = null;
     }
 
+    function apply(projname, username) {
+        return $http.get('/api/StudentApply', {params: {projname:projname, username: username}})
+            .success(function(data) {
+                return data;
+            })
+            .error(function(data, status) {
+                console.error("Data Load Error", status, data);
+            });
+    }
+
+    function getProj(projname) {
+        return $http.get('/api/GetProject', {params: {projname:projname, username: username}})
+            .success(function(data) {
+                return data;
+            })
+            .error(function(data, status) {
+                console.error("Data Load Error", status, data);
+            });        
+    }
+
     return ({
         getCourseNum: getCourseNum,
         setCourseNum: setCourseNum,
         getProjName: getProjName,
         setProjName: setProjName,
         clearView: clearView,
+        apply: apply,
+        getProj: getProj
     });
 }]);
