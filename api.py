@@ -821,6 +821,7 @@ class StudentApply(Resource):
             cursor.execute(stmt)
             data = cursor.fetchall()
             conn.commit()
+            return Response("Application Added", status=200, mimetype='application/json')
         except Exception as e:
             return {'error': str(e)}
 

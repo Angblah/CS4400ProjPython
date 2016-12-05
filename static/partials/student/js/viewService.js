@@ -26,7 +26,7 @@ angular.module('myApp').factory('ViewService',
     }
 
     function apply(projname, username) {
-        return $http.get('/api/StudentApply', {params: {projname:projname, username: username}})
+        return $http.post('/api/StudentApply', {projname:projname, username: username})
             .success(function(data) {
                 return data;
             })

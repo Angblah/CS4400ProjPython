@@ -2,25 +2,6 @@ angular.module('myApp').controller('projectController',
   ['$scope', '$location', 'ViewService', 'UserService',
   function ($scope, $location, ViewService, UserService) {
 
-      $scope.data = {
-          username: UserService.getUser(),
-          userMajor: {Major_Name: "", Dept_Name: ""},
-          course: ViewService.getCourse(),
-          project: ViewService.getProjName(),
-          canApply: false
-      }
-
-      // Get Student for profile
-      UserService.getStudent(username)
-      // handle success
-      .success(function(data) {
-          //$location.path('/main');
-          if (data) {
-            $scope.data.userMajor['Major_Name'] = data['Major_Name'];
-            $scope.data.userMajor['Dept_Name'] = data['Dept_Name'];
-            $scope.data.canApply = $scope.validate();
-  ['$scope', '$location', 'ViewService',
-  function ($scope, $location, ViewService) {
       ViewService.getProject(ViewService.getProjName())
       .success(function(data) {
           if(data) {
@@ -46,20 +27,61 @@ angular.module('myApp').controller('projectController',
           }
       });
 
+      // Get Student for profile
+      UserService.getStudent(UserService.getUser())
+      // handle success
+      .success(function(data) {
+          if (data) {
+            $scope.studdata.userMajor['Major_Name'] = data['major_name'];
+            $scope.studdata.userMajor['Dept_Name'] = data['department'];
+            $scope.studdata.year = data['year'];
+            $scope.studdata.canApply = $scope.validate();
+          }
+      });
+
       $scope.apply = function() {
           if ($scope.data.canApply) {
-         ViewService.apply($scope.data.username, $scope.data.project)
-        .success(function (data) {
-            if (data) {
-                $scope.disabled = false;
-                $scope.projects = $scope.validate(data);
-            } else {
-                $scope.error = true;
-                $scope.projects = [];
-                $scope.errorMessage = "Error retrieving project";
-                $scope.disabled = false;
-            }
-        }); 
+            ViewService.apply($scope.data.username, $scope.data.project)
+            .success(function (data) {
+                if (data) {
+                    $location.path('/studentapps');
+                } else {
+                    $scope.error = true;
+                    $scope.errorMessage = "Error Applying for Project";
+                }
+            }); 
+          } else {
+            $scope.error = true;
+            $scope.errorMessage = "Student does not meet Project requirements";
+          }
+      }
+
+       $scope.validate = function() {
+           console.log($scope.studdata);
+           console.log($scope.data);
+          if ($scope.data.dept_req !== 'None' && $scope.studdata.userMajor.Dept_Name !== $scope.data.dept_req) {
+              return false;
+          }
+          if ($scope.data.major_req !== 'None' && $scope.studdata.userMajor.Major_Name !== $scope.data.major_req) {
+              return false;
+          }
+          if ($scope.data.year_req !== 'None' && $scope.studdata.year !== $scope.data.year_req) {
+              return false;
+          }
+          return true;
+      }
+
+      $scope.back = function() {
+          ViewService.clearView();
+          $location.path('/main');
+          $location
+      }
+
+      $scope.studdata = {
+          username: UserService.getUser(),
+          userMajor: {Major_Name: "", Dept_Name: ""},
+          year: "", 
+          canApply: false
       }
 
       $scope.data = {
@@ -74,21 +96,4 @@ angular.module('myApp').controller('projectController',
           major_req: 'None',
           year_req: 'None'
       }
-
-      $scope.getProj = function(proj) {
-        ViewService.getProj(proj)
-        .success(function (data) {
-            if (data) {
-                $scope.disabled = false;
-                $scope.projects = $scope.validate(data);
-            } else {
-                $scope.error = true;
-                $scope.projects = [];
-                $scope.errorMessage = "Error retrieving project";
-                $scope.disabled = false;
-            }
-        });          
-      };
-      
-     
-}]);
+}])
