@@ -51,5 +51,7 @@ angular.module('myApp').factory('ViewService',
         getProjName: getProjName,
         setProjName: setProjName,
         clearView: clearView,
+        getProject: getProject,
+        getCourse: getCourse
     });
 }]);

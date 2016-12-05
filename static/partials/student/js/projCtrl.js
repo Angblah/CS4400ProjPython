@@ -1,8 +1,9 @@
 angular.module('myApp').controller('projectController',
   ['$scope', '$location', 'ViewService',
   function ($scope, $location, ViewService) {
-      
-      ViewService.getProj(ViewService.getProjName())
+
+      console.log(ViewService.getProjName());
+      ViewService.getProject(ViewService.getProjName())
       .success(function(data) {
           if(data) {
 
