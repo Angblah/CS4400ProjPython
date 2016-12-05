@@ -17,29 +17,28 @@
 </div>
 <!--Nav bar-->
 <div class="container jumbotron">
-    <h1>View Project</h1>
-
-    <h2> Project Name: </h2>
+    <h1>//data.proj_name//</h1>
     
-    <h3> Advisor: </h3>
+    <h3> Advisor: //data.advisor//</h3>
     
-    <h3> Advisor Email: </h3>
+    <h3> Advisor Email: //data.advisor//</h3>
     
     <h3> Description: </h3>
-    <label>//data.description//</label>
+    <h5>//data.description//</h5>
 
     <h3> Category: </h3>
+    <h4 ng-repeat="cat in data.category"> //cat//</h4>
 
-    <h3> Designation: </h3>
+    <h3> Designation: //data.designation//</h3>
 
-    <h3> Estimated # of students: </h3>
+    <h3> Estimated # of students: //data.est_num//</h3>
 
-    <h3> Department Requirement: </h3>
+    <h3> Department Requirement: //data.dept_req//</h3>
 
-    <h3> Major Requirement: </h3>
+    <h3> Major Requirement: //data.major_req// </h3>
 
-    <h3> Year Requirement: </h3>
+    <h3> Year Requirement: //data.year_req//</h3>
 
-    <button id="back-btn" class="btn btn-primary" onclick="location.href='#/main'">Back</button>
+    <button id="back-btn" class="btn btn-primary" ng-click="back()">Back</button>
     <button id="apply-btn" class="btn btn-primary" ng-click="apply()">Apply</button>
 </div>

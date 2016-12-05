@@ -453,33 +453,35 @@ class AddCourse(Resource):
         try:
             # Parse the arguments
             parser = reqparse.RequestParser()
-            parser.add_argument('coursenum', type=str, help='Course Number to filter the Courses')
+            parser.add_argument('course_Name', type=str, help='Course Number to filter the Courses')
             args = parser.parse_args()
 
-            _courseNum = args['coursenum']
+            _courseName = args['course_Name']
 
             conn = mysql.connect()
             cursor = conn.cursor()
 
             # Select all student info for profile
-            stmt = "SELECT * FROM course WHERE Username='{}'".format(_courseNum)
+            stmt = "SELECT * FROM course WHERE Course_Name='{}'".format(_courseName)
             cursor.execute(stmt)
             data = cursor.fetchall()
-            studentData = {'username': data[0][0], 'email': data[0][1], 'major_name': data[0][2], 'department': 'NONE', 'year': data[0][3]}
-            print(data[0])
+            courseData = {"Number": data[0][0], "Course_Name": data[0][1], "Instructor_Name": data[0][2],
+                "Course_Est_Students": data[0][3], "C_Designation": data[0][4], "C_Category": []}
+            print(data)
 
-            if(data[0][2]):
-                stmt2 = "SELECT Dept_Name FROM major WHERE Major_Name='{}'".format(data[0][2])
-                cursor.execute(stmt2)
-                department = cursor.fetchall()
-                studentData['department'] = department[0][0]
+            stmt2 = "SELECT C_Category FROM course_category WHERE Course_Name='{}'".format(_courseName)
+            cursor.execute(stmt2)
+            categories = cursor.fetchall()
+            print(categories)
+            for cat in categories:
+                projData['C_Category'].append(cat[0])
 
             #Format return into JSON object
             if(len(data)>0):
                 if(data):
                     #Format return into JSON object
-                    print(studentData)
-                    js = json.dumps(studentData)
+                    print(courseData)
+                    js = json.dumps(courseData)
                     resp = Response(js, status=200, mimetype='application/json')
                     return resp
                 else:
@@ -585,33 +587,43 @@ class AddProject(Resource):
         try:
             # Parse the arguments
             parser = reqparse.RequestParser()
-            parser.add_argument('username', type=str, help='Username to filter the student')
+            parser.add_argument('proj_Name', type=str, help='Project Name to filter the Projects')
             args = parser.parse_args()
 
-            _userUsername = args['username']
+            _projName = args['proj_Name']
 
             conn = mysql.connect()
             cursor = conn.cursor()
 
             # Select all student info for profile
-            stmt = "SELECT * FROM student WHERE Username='{}'".format(_userUsername)
+            stmt = "SELECT * FROM project WHERE Proj_Name='{}'".format(_projName)
             cursor.execute(stmt)
             data = cursor.fetchall()
-            studentData = {'username': data[0][0], 'email': data[0][1], 'major_name': data[0][2], 'department': 'NONE', 'year': data[0][3]}
-            print(data[0])
+            projData = {"Proj_Name": data[0][0], "Description": data[0][1], "Advisor_Name": data[0][2],
+                "Advisor_Email": data[0][3], "Proj_Est_Students": data[0][4], "P_Designation": data[0][5],
+                "P_Category": [], "P_Reqs": {}}
+            print(data)
 
-            if(data[0][2]):
-                stmt2 = "SELECT Dept_Name FROM major WHERE Major_Name='{}'".format(data[0][2])
-                cursor.execute(stmt2)
-                department = cursor.fetchall()
-                studentData['department'] = department[0][0]
+            stmt2 = "SELECT P_Category FROM project_category WHERE Proj_Name='{}'".format(_projName)
+            cursor.execute(stmt2)
+            categories = cursor.fetchall()
+            print(categories)
+            for cat in categories:
+                projData['P_Category'].append(cat[0])
 
+            stmt3 = "SELECT * FROM project_requirement WHERE Proj_Name='{}'".format(_projName)
+            cursor.execute(stmt3)
+            reqs = cursor.fetchall()
+            print(reqs)
+            proj_reqs = {"Dept_Restrict": reqs[0][1], "Yr_restrict":reqs[0][2], "Maj_Restrict":reqs[0][3]}
+            projData['P_Reqs'] = proj_reqs
+            
             #Format return into JSON object
             if(len(data)>0):
                 if(data):
                     #Format return into JSON object
-                    print(studentData)
-                    js = json.dumps(studentData)
+                    print(projData)
+                    js = json.dumps(projData)
                     resp = Response(js, status=200, mimetype='application/json')
                     return resp
                 else:
