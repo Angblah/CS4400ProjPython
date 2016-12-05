@@ -57,6 +57,9 @@ angular.module('myApp')
     $scope.parseQuery = function(data) {
       var results = [];
       console.log(data);
+      if(data.message) {
+        return [];
+      }
       for (n in data) {
         var name = data[n]['proj'][0];
         var designation = data[n]['proj'][1];
