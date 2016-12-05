@@ -621,10 +621,11 @@ class GetStudentApplications(Resource):
 
             conn = mysql.connect()
             cursor = conn.cursor()
-            stmt = "SELECT * From application WHERE Username='{}'".format(_curUser)
+            stmt = "SELECT * FROM application WHERE Username='{}'".format(_curUser)
             print(stmt)
             cursor.execute(stmt)
             data = cursor.fetchall()
+            print(data)
             if(len(data)>0):
                 if(data):
                     return data

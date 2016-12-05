@@ -2,11 +2,11 @@
 <div class="container-fluid">
     <nav class="navbar navbar-inverse" ng-controller="logoutController">
         <ul class="nav navbar-nav">
-            <li class="nav-item">
-                <a class="nav-link" href="#/profile">Profile</a>
-            </li>
             <li class="nav-item active">
                 <a class="nav-link" href="#/main">Home</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#/profile">Profile</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="#/studentapps">My Applications</a>
@@ -16,3 +16,30 @@
     </nav>
 </div>
 <!--Nav bar-->
+<div class="container jumbotron">
+    <h1>View Project</h1>
+
+    <h2> Project Name: </h2>
+    
+    <h3> Advisor: </h3>
+    
+    <h3> Advisor Email: </h3>
+    
+    <h3> Description: </h3>
+    <label>//data.description//</label>
+
+    <h3> Category: </h3>
+
+    <h3> Designation: </h3>
+
+    <h3> Estimated # of students: </h3>
+
+    <h3> Department Requirement: </h3>
+
+    <h3> Major Requirement: </h3>
+
+    <h3> Year Requirement: </h3>
+
+    <button id="back-btn" class="btn btn-primary" onclick="location.href='#/main'">Back</button>
+    <button id="apply-btn" class="btn btn-primary" ng-click="apply()">Apply</button>
+</div>
