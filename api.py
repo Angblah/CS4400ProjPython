@@ -269,40 +269,43 @@ class QueryProject(Resource):
             print(projMajor)
             print(projYear)
             #build onto statements if null
-
             argys = []
-            stmt = "SELECT * from project2 WHERE "
-            if args['title'] is not None:
-                print('got title')
-                stmt += "Proj_Name='{}'"
-                argys.append(projTitle)
-            if args['category'] is not None:
-                if len(argys) != 0:
-                    stmt += " AND P_Category='{}'"
-                else:
-                    stmt += "P_Category='{}'"
-                argys.append(projCategory)
-            if args['designation'] is not None:
-                if len(argys) != 0:
-                    stmt += " AND P_Designation='{}'"
-                else:
-                    stmt += "P_Designation='{}'"
-                argys.append(projDesignation)
-            if args['major'] is not None:
-                if len(argys) != 0:
-                    stmt += " AND Maj_Restrict='{}'"
-                else:
-                    stmt += "Maj_Restrict='{}'"
-                argys.append(projMajor)
-            if args['year'] is not None:
-                if len(argys) != 0:
-                    stmt += " AND Yr_Restrict='{}'"
-                else:
-                    stmt += "Yr_Restrict='{}'"
-                argys.append(projYear)
 
-            # print (argys)
-            stmt = stmt.format(*argys)
+            if projTitle is None and projCategory is None and projDesignation is None and projMajor is None and projYear is None:
+                stmt = "SELECT * from project2";
+            else:
+                stmt = "SELECT * from project2 WHERE "
+                if args['title'] is not None:
+                    print('got title')
+                    stmt += "Proj_Name='{}'"
+                    argys.append(projTitle)
+                if args['category'] is not None:
+                    if len(argys) != 0:
+                        stmt += " AND P_Category='{}'"
+                    else:
+                        stmt += "P_Category='{}'"
+                    argys.append(projCategory)
+                if args['designation'] is not None:
+                    if len(argys) != 0:
+                        stmt += " AND P_Designation='{}'"
+                    else:
+                        stmt += "P_Designation='{}'"
+                    argys.append(projDesignation)
+                if args['major'] is not None:
+                    if len(argys) != 0:
+                        stmt += " AND Maj_Restrict='{}'"
+                    else:
+                        stmt += "Maj_Restrict='{}'"
+                    argys.append(projMajor)
+                if args['year'] is not None:
+                    if len(argys) != 0:
+                        stmt += " AND Yr_Restrict='{}'"
+                    else:
+                        stmt += "Yr_Restrict='{}'"
+                    argys.append(projYear)
+
+                # print (argys)
+                stmt = stmt.format(*argys)
             # print (stmt)
 
             conn = mysql.connect()
@@ -336,26 +339,29 @@ class QueryCourse(Resource):
             #build onto statements if null
 
             argys = []
-            stmt = "SELECT * from course1 WHERE "
-            if args['title'] is not None or args['title'] == "":
-                stmt += "Course_Name='{}'"
-                argys.append(courseTitle)
-            if args['category'] is not None:
-                if len(argys) != 0:
-                    stmt += " AND C_Category='{}'"
-                else:
-                    stmt += "C_Category='{}'"
-                argys.append(courseCategory)
-            if args['designation'] is not None:
-                if len(argys) != 0:
-                    stmt += " AND C_Designation='{}'"
-                else:
-                    stmt += "C_Designation='{}'"
-                argys.append(courseDesignation)
+            if courseTitle is None and courseCategory is None and courseDesignation is None:
+                stmt = "SELECT * FROM course1"
+            else:
+                stmt = "SELECT * from course1 WHERE "
+                if args['title'] is not None or args['title'] == "":
+                    stmt += "Course_Name='{}'"
+                    argys.append(courseTitle)
+                if args['category'] is not None:
+                    if len(argys) != 0:
+                        stmt += " AND C_Category='{}'"
+                    else:
+                        stmt += "C_Category='{}'"
+                    argys.append(courseCategory)
+                if args['designation'] is not None:
+                    if len(argys) != 0:
+                        stmt += " AND C_Designation='{}'"
+                    else:
+                        stmt += "C_Designation='{}'"
+                    argys.append(courseDesignation)
 
-            # print (stmt)
-            # print (argys)
-            stmt = stmt.format(*argys)
+                # print (stmt)
+                # print (argys)
+                stmt = stmt.format(*argys)
 
             conn = mysql.connect()
             cursor = conn.cursor()
