@@ -370,37 +370,6 @@ class QueryCourse(Resource):
         except Exception as e:
             return {'error': str(e)}
 
-class QueryBoth(Resource):
-    def get(self):
-        try:
-            parser = reqparse.RequestParser()
-            parser.add_argument('title', type=str, help="title of project")
-            parser.add_argument('category', type=str, help="category of project")
-            parser.add_argument('designation', type=str, help="designation of project")
-            parser.add_argument('major', type=str, help="major restriction of project")
-            parser.add_argument('year', type=str, help="year restriction of project")
-
-            args = parser.parse_args()
-
-            bothTitle = args['title']
-            bothCategory = args['category']
-            bothDesignation = args['designation']
-            bothMajor = args['major']
-            bothYear = args['year']
-
-            conn = mysql.connect()
-            cursor = conn.cursor()
-            stmt = "SELECT Proj_Name FROM project1 WHERE Maj_Restrict = '{}'".format(_projMajor)
-            cursor.execute(stmt)
-            data = cursor.fetchall()
-            if(len(data)>0):
-                if(data):
-                    return data
-                else:
-                    return {'status':100,'message':'Failure'}
-        except Exception as e:
-            return {'error': str(e)}
-
 class AddCourse(Resource):
     def post(self):
         try:
@@ -868,12 +837,9 @@ api.add_resource(GetNumAccepted, '/api/GetNumAccepted')
 api.add_resource(RejectApplication, '/api/RejectApplication')
 api.add_resource(AcceptApplication, '/api/AcceptApplication')
 
-
-# api.add_resource(SearchProjects, '/api/SearchProjects')
 api.add_resource(AddCourse, '/api/AddCourse')
 api.add_resource(QueryProject, '/api/QueryProject')
 api.add_resource(QueryCourse, '/api/QueryCourse')
-api.add_resource(QueryBoth, '/api/QueryBoth')
 
 if __name__ == '__main__':
     app.run()
