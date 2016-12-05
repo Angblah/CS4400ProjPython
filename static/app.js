@@ -33,11 +33,11 @@ myApp.config(function ($routeProvider) {
     })
     .when('/viewcourse', {
         templateUrl: 'static/partials/student/viewcourse.html',
-        controller: 'loginController'
+        controller: 'courseController'
     })
     .when('/viewproject', {
         templateUrl: 'static/partials/student/viewproj.html',
-        controller: 'loginController'
+        controller: 'projectController'
     })
     //Admin Partials
     .when('/adminapps', {

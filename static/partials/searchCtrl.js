@@ -1,6 +1,6 @@
 angular.module('myApp')
- .controller('searchController', ['$scope', '$location', 'SearchService',
- function($scope, $location, SearchService) {
+ .controller('searchController', ['$scope', '$location', 'SearchService', 'ViewService',
+ function($scope, $location, SearchService, ViewService) {
     SearchService.getCategory()
     .success(function(data) {
         $scope.data.categories = data;
@@ -22,9 +22,17 @@ angular.module('myApp')
             $scope.data.type)
         .success(function(data) {
             $scope.data.projects = $scope.parseQuery(data);
-            console.log("this is data");
-            console.log($scope.data.projects);
         })
+    }
+
+    $scope.selectRow = function(application) {
+      if (application.type == 'Project') {
+        ViewService.setProjName(application.name);
+        // $location.path('/viewproj');
+      } else {
+        ViewService.setCourseNum(application.name);
+        // $location.path('/viewcourse');
+      }
     }
 
     $scope.parseQuery = function(data) {
@@ -57,8 +65,6 @@ angular.module('myApp')
     designations: [["Community"],["Sustainable Communities"]],
     majors: [],
     projects: [
-      // {0:'Danger Zone',
-      //   1: 'Project'}
     ],
     types: ['Project','Course','Both'],
    };

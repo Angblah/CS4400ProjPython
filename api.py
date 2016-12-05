@@ -449,6 +449,44 @@ class AddCourse(Resource):
             return "added"
         except Exception as e:
             return {'error': str(e)}
+    def get(self):
+        try:
+            # Parse the arguments
+            parser = reqparse.RequestParser()
+            parser.add_argument('coursenum', type=str, help='Course Number to filter the Courses')
+            args = parser.parse_args()
+
+            _courseNum = args['coursenum']
+
+            conn = mysql.connect()
+            cursor = conn.cursor()
+
+            # Select all student info for profile
+            stmt = "SELECT * FROM course WHERE Username='{}'".format(_courseNum)
+            cursor.execute(stmt)
+            data = cursor.fetchall()
+            studentData = {'username': data[0][0], 'email': data[0][1], 'major_name': data[0][2], 'department': 'NONE', 'year': data[0][3]}
+            print(data[0])
+
+            if(data[0][2]):
+                stmt2 = "SELECT Dept_Name FROM major WHERE Major_Name='{}'".format(data[0][2])
+                cursor.execute(stmt2)
+                department = cursor.fetchall()
+                studentData['department'] = department[0][0]
+
+            #Format return into JSON object
+            if(len(data)>0):
+                if(data):
+                    #Format return into JSON object
+                    print(studentData)
+                    js = json.dumps(studentData)
+                    resp = Response(js, status=200, mimetype='application/json')
+                    return resp
+                else:
+                    return {'status':100,'message':'Student Get failure'}
+
+        except Exception as e:
+            return {'error': str(e)}
 
 class AddProject(Resource):
     def post(self):
@@ -543,6 +581,45 @@ class AddProject(Resource):
             return "added"
         except Exception as e:
             return {'error': str(e)}
+    def get(self):
+        try:
+            # Parse the arguments
+            parser = reqparse.RequestParser()
+            parser.add_argument('username', type=str, help='Username to filter the student')
+            args = parser.parse_args()
+
+            _userUsername = args['username']
+
+            conn = mysql.connect()
+            cursor = conn.cursor()
+
+            # Select all student info for profile
+            stmt = "SELECT * FROM student WHERE Username='{}'".format(_userUsername)
+            cursor.execute(stmt)
+            data = cursor.fetchall()
+            studentData = {'username': data[0][0], 'email': data[0][1], 'major_name': data[0][2], 'department': 'NONE', 'year': data[0][3]}
+            print(data[0])
+
+            if(data[0][2]):
+                stmt2 = "SELECT Dept_Name FROM major WHERE Major_Name='{}'".format(data[0][2])
+                cursor.execute(stmt2)
+                department = cursor.fetchall()
+                studentData['department'] = department[0][0]
+
+            #Format return into JSON object
+            if(len(data)>0):
+                if(data):
+                    #Format return into JSON object
+                    print(studentData)
+                    js = json.dumps(studentData)
+                    resp = Response(js, status=200, mimetype='application/json')
+                    return resp
+                else:
+                    return {'status':100,'message':'Student Get failure'}
+
+        except Exception as e:
+            return {'error': str(e)}
+
 
 class GetTopTenProjects(Resource):
     def get(self):
