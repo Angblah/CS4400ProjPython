@@ -36,11 +36,12 @@ angular.module('myApp').controller('projectController',
             $scope.studdata.userMajor['Dept_Name'] = data['department'];
             $scope.studdata.year = data['year'];
             $scope.studdata.canApply = $scope.validate();
+            console.log($scope.studdata.canApply);
           }
       });
 
       $scope.apply = function() {
-          if ($scope.data.canApply) {
+          if ($scope.studdata.canApply) {
             ViewService.apply($scope.data.username, $scope.data.project)
             .success(function (data) {
                 if (data) {
