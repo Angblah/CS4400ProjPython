@@ -42,7 +42,8 @@ angular.module('myApp').factory('ViewService',
             })
             .error(function(data, status) {
                 console.error("Data Load Error", status, data);
-            });        
+            });
+    }        
 
     function getProject(proj_Name) {
         return $http.get('/api/Student', {params: {proj_Name: proj_Name}})
@@ -75,4 +76,4 @@ angular.module('myApp').factory('ViewService',
         getProject: getProject,
         getCourse: getCourse
     });
-}]);
+}])
