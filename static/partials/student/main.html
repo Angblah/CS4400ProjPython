@@ -16,7 +16,6 @@
   </nav>
 </div>
 
-
 <div class="container">
   <h1 class="display-3">Search for a Course/Project</h1>
   <form id="searchform" method ="post" action="/search">
@@ -83,11 +82,17 @@
 <!--   results table -->
   <div class="container">
       <table class="table table-hover table-striped">
-        <td> Name </td>
-        <td> Type </td>
-        <tr ng-repeat="x in data.projects">
-          <td> //x.proj[0]// </td>
-          <td> //x.type// </td>
-        </tr>
+        <thead>
+          <tr>
+          <th> Name </th>
+          <th> Type </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="x in data.projects">
+          <td> //data.projects[x][0]// </td>
+          <td> //data.projects[x][1]// </td>
+          </tr>
+        </tbody>
       </table>
   </div>
