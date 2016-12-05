@@ -21,31 +21,30 @@ angular.module('myApp')
             $scope.data.designation, $scope.data.major, $scope.data.year,
             $scope.data.type)
         .success(function(data) {
-            // $scope.data.projects = parseQuery(data);
+            $scope.data.projects = $scope.parseQuery(data);
             console.log("this is data");
-            console.log(data);
+            console.log($scope.data.projects);
         })
     }
 
     $scope.parseQuery = function(data) {
       var results = [];
+      console.log(data);
       for (n in data) {
-        var name = data[n][proj][0];
-        var designation = data[n][proj][1];
-        var category = data[n][proj][2];
-        var requirements = data[n][proj][4];
-        var type = data[n][type];
-
-
-
-
-
+        var name = data[n]['proj'][0];
+        var designation = data[n]['proj'][1];
+        var category = data[n]['proj'][2];
+        var requirements = data[n]['proj'][4];
+        var type = data[n]['type'];
+        results.push(
+          {'name' : name,
+          'designation': designation,
+          'category': category,
+          'requirements': requirements,
+          'type': type});
       }
-
-
+      return results;
     }
-
-
 
     $scope.data = {
     title: null,

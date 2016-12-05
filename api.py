@@ -312,8 +312,8 @@ class QueryProject(Resource):
             data = cursor.fetchall()
             # print([{'proj':x,'type':'Project'} for x in data])
             if(data):
-                return data
-                # return [{'proj':x,'type':'Project'} for x in data]
+                # return data
+                return [{'proj':x,'type':'Project'} for x in data]
             else:
                 return {'status':100,'message':'Failure'}
         except Exception as e:
@@ -364,8 +364,8 @@ class QueryCourse(Resource):
             data = cursor.fetchall()
             # print([{'proj':x,'type':'Course'} for x in data])
             if(data):
-                return data
-                # return [{'proj':x,'type':'Course'} for x in data]
+                # return data
+                return [{'proj':x,'type':'Course'} for x in data]
             else:
                 return {'status':100,'message':'Failure'}
         except Exception as e:
