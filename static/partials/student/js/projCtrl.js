@@ -19,10 +19,10 @@ angular.module('myApp').controller('projectController',
                     $scope.data.dept_req = data.P_Reqs.Dept_Restrict;
                 }
                 if (data.P_Reqs.Maj_Restrict) {
-                    $scope.data.dept_req = data.P_Reqs.Maj_Restrict;
+                    $scope.data.major_req = data.P_Reqs.Maj_Restrict;
                 }
                 if (data.P_Reqs.Yr_Restrict) {
-                    $scope.data.dept_req = data.P_Reqs.Yr_Restrict;
+                    $scope.data.year_req = data.P_Reqs.Yr_Restrict;
                 }
           }
       });
